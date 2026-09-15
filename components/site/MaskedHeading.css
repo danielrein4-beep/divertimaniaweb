@@ -1,0 +1,67 @@
+.masked-heading {
+  position: relative;
+  display: block;
+  margin: 0;
+  width: 100%;
+  color: transparent;
+  user-select: none;
+  cursor: default;
+  isolation: isolate;
+}
+
+.masked-heading__measure {
+  visibility: hidden;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  gap: 0 0.3em;
+}
+
+.masked-heading__word {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.masked-heading__baseline {
+  display: inline-block;
+  width: 0;
+  height: 0;
+  vertical-align: bottom;
+}
+
+.masked-heading__defs {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+.masked-heading__reveal {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  will-change: opacity, transform, clip-path;
+}
+
+.masked-heading__clip {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.masked-heading__media {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--neon-green, #9dff3c);
+  will-change: transform, filter;
+}
+
+.masked-heading__source {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}

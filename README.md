@@ -1,36 +1,51 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Divertimania — Propuesta de sitio web
 
-## Getting Started
+Proyecto independiente (no forma parte de aurora-plus). Sitio público con catálogo de
+servicios y un panel de administración con calendario de eventos y control de recursos.
 
-First, run the development server:
+## Requisitos
+
+- Node.js 18+
+- npm
+
+## Cómo correr todo en local
 
 ```bash
+npm install
+npm run db:seed   # crea/reinicia la base de datos SQLite con datos de ejemplo
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Abre [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Acceso al panel admin
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+[http://localhost:3000/admin/login](http://localhost:3000/admin/login)
 
-## Learn More
+- Usuario: `admin`
+- Contraseña: `divertimania2024`
 
-To learn more about Next.js, take a look at the following resources:
+## Qué incluye
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+**Sitio público**
+- Home, catálogo por categoría, galería, contacto (formulario que llega a la bandeja de
+  solicitudes del admin) y un calendario de disponibilidad informativo.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+**Panel admin** (`/admin`)
+- Calendario de eventos con creación/edición
+- Asignación de recursos (trajes, equipos, personal) a cada evento, con **aviso de
+  conflicto** cuando un recurso queda sobre-asignado entre eventos que se solapan en
+  horario — sin bloquear la creación de eventos simultáneos, ya que Divertimania sí puede
+  cubrir varios eventos el mismo día con distintos equipos.
+- Gestión de inventario de recursos (cantidad disponible por recurso)
+- Bandeja de solicitudes de contacto del formulario público
 
-## Deploy on Vercel
+## Notas de diseño
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Paleta e identidad basadas en el Instagram de Divertimania (@divertimania2): fondo
+  oscuro con acentos verde neón, dorado y magenta.
+- Las fotos son placeholders con la misma paleta — para producción, reemplazar por fotos
+  reales del equipo (ver `components/site/PlaceholderImage.tsx` y los `fotoUrl` en el
+  modelo de datos).
+- Base de datos SQLite local (`prisma/dev.db`) — portable a Postgres para producción
+  cambiando el `datasource` en `prisma/schema.prisma`.

@@ -1,0 +1,95 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// SQLite no soporta enums nativos en Prisma; se documentan como comentario
+// y se validan en la capa de aplicación (lib/validation.ts).
+// EstadoEvento: COTIZACION | CONFIRMADO | CANCELADO
+// TipoRecurso: PERSONAJE | EQUIPO | PERSONAL
+// EstadoSolicitud: NUEVA | CONTACTADA | CONVERTIDA | DESCARTADA
+
+model Cliente {
+  id        String   @id @default(cuid())
+  nombre    String
+  telefono  String?
+  email     String?
+  createdAt DateTime @default(now())
+  eventos   Evento[]
+}
+
+model Evento {
+  id          String       @id @default(cuid())
+  fecha       String // YYYY-MM-DD
+  horaInicio  String // HH:mm
+  horaFin     String // HH:mm
+  tipo        String
+  ubicacion   String?
+  estado      String       @default("COTIZACION")
+  notas       String?
+  clienteId   String
+  cliente     Cliente      @relation(fields: [clienteId], references: [id])
+  servicios   EventoServicio[]
+  recursos    EventoRecurso[]
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+}
+
+model Servicio {
+  id          String   @id @default(cuid())
+  categoria   String
+  nombre      String
+  descripcion String
+  fotoUrl     String?
+  orden       Int      @default(0)
+  eventos     EventoServicio[]
+}
+
+model EventoServicio {
+  eventoId   String
+  servicioId String
+  evento     Evento   @relation(fields: [eventoId], references: [id], onDelete: Cascade)
+  servicio   Servicio @relation(fields: [servicioId], references: [id], onDelete: Cascade)
+
+  @@id([eventoId, servicioId])
+}
+
+model Recurso {
+  id            String      @id @default(cuid())
+  nombre        String
+  tipo          String
+  cantidadTotal Int         @default(1)
+  fotoUrl       String?
+  eventos       EventoRecurso[]
+}
+
+model EventoRecurso {
+  eventoId      String
+  recursoId     String
+  cantidadUsada Int     @default(1)
+  evento        Evento  @relation(fields: [eventoId], references: [id], onDelete: Cascade)
+  recurso       Recurso @relation(fields: [recursoId], references: [id], onDelete: Cascade)
+
+  @@id([eventoId, recursoId])
+}
+
+model SolicitudContacto {
+  id           String          @id @default(cuid())
+  nombre       String
+  telefono     String
+  email        String?
+  mensaje      String
+  fechaDeseada String?
+  estado       String          @default("NUEVA")
+  createdAt    DateTime        @default(now())
+}
+
+model AdminUser {
+  id           String @id @default(cuid())
+  usuario      String @unique
+  passwordHash String
+}

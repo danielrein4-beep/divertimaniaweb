@@ -1,26 +1,64 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #0a0a0f;
+  --background-elevated: #14141d;
+  --background-card: #191922;
+  --foreground: #f5f5f7;
+  --muted: #a3a3b0;
+  --border: rgba(255, 255, 255, 0.08);
+
+  --neon-green: #9dff3c;
+  --neon-green-dark: #6fd400;
+  --gold: #ffd166;
+  --magenta: #ff4fd8;
+
+  --font-display: var(--font-baloo);
+  --font-body: var(--font-inter);
 }
 
 @theme inline {
   --color-background: var(--background);
+  --color-background-elevated: var(--background-elevated);
+  --color-background-card: var(--background-card);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+  --color-neon-green: var(--neon-green);
+  --color-neon-green-dark: var(--neon-green-dark);
+  --color-gold: var(--gold);
+  --color-magenta: var(--magenta);
+  --font-display: var(--font-display);
+  --font-body: var(--font-body);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-body), ui-sans-serif, system-ui, sans-serif;
+}
+
+h1, h2, h3, h4, .font-display {
+  font-family: var(--font-display), ui-sans-serif, system-ui, sans-serif;
+}
+
+.text-glow {
+  text-shadow: 0 0 20px rgba(157, 255, 60, 0.45);
+}
+
+.card-glass {
+  background: var(--background-card);
+  border: 1px solid var(--border);
+}
+
+.bg-radial-glow {
+  background:
+    radial-gradient(circle at 20% 0%, rgba(157, 255, 60, 0.12), transparent 45%),
+    radial-gradient(circle at 85% 15%, rgba(255, 79, 216, 0.12), transparent 40%),
+    var(--background);
+}
+
+::selection {
+  background: var(--neon-green);
+  color: #0a0a0f;
 }
