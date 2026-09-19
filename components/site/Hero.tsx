@@ -33,7 +33,7 @@ export default function Hero() {
   }, [phase]);
 
   return (
-    <section className="relative mx-auto flex min-h-[90vh] max-w-6xl flex-col items-center justify-center gap-6 overflow-hidden px-4 py-8 text-center sm:px-6">
+    <section className="relative mx-auto flex min-h-[90vh] max-w-6xl flex-col items-center justify-start gap-6 overflow-hidden px-4 pt-10 pb-8 text-center sm:px-6 sm:pt-14">
       {phase === "intro" && (
         <IntroMontage videos={REEL_VIDEOS} maxRows={3} durationMs={4000} fadeMs={900} onComplete={() => setPhase("reveal")} />
       )}
