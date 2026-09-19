@@ -12,6 +12,7 @@ datasource db {
 // EstadoEvento: COTIZACION | CONFIRMADO | CANCELADO
 // TipoRecurso: PERSONAJE | EQUIPO | PERSONAL
 // EstadoSolicitud: NUEVA | CONTACTADA | CONVERTIDA | DESCARTADA
+// TipoOpcion: VARIANTE | DINAMICA
 
 model Cliente {
   id        String   @id @default(cuid())
@@ -47,6 +48,23 @@ model Servicio {
   fotoUrl     String?
   orden       Int      @default(0)
   eventos     EventoServicio[]
+  opciones    Opcion[]
+}
+
+// Variantes de un personaje (agrupadas por "grupo", ej. "Rapunzel": sola / con
+// el príncipe / con todos los personajes) o dinámicas/juegos seleccionables
+// de un servicio tipo evento (ej. "Baby Shower": 7+ juegos con video corto).
+model Opcion {
+  id          String   @id @default(cuid())
+  servicioId  String
+  servicio    Servicio @relation(fields: [servicioId], references: [id], onDelete: Cascade)
+  tipo        String // VARIANTE | DINAMICA
+  grupo       String? // nombre del personaje al que pertenece (solo VARIANTE)
+  nombre      String
+  descripcion String?
+  videoUrl    String?
+  fotoUrl     String?
+  orden       Int      @default(0)
 }
 
 model EventoServicio {
@@ -86,6 +104,31 @@ model SolicitudContacto {
   fechaDeseada String?
   estado       String          @default("NUEVA")
   createdAt    DateTime        @default(now())
+}
+
+model Recreador {
+  id          String   @id @default(cuid())
+  nombre      String
+  cargo       String
+  descripcion String
+  fotoUrl     String?
+  orden       Int      @default(0)
+  activo      Boolean  @default(true)
+}
+
+model Novedad {
+  id          String    @id @default(cuid())
+  badge       String
+  titulo      String
+  descripcion String
+  fotoUrl     String?
+  ctaTexto    String    @default("Consultar disponibilidad")
+  ctaUrl      String?
+  activo      Boolean   @default(true)
+  fechaInicio DateTime?
+  fechaFin    DateTime?
+  orden       Int       @default(0)
+  createdAt   DateTime  @default(now())
 }
 
 model AdminUser {

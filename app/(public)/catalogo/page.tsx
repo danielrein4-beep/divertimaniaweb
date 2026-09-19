@@ -68,7 +68,11 @@ export default async function CatalogoPage({
               <h2 className="mb-5 text-2xl font-bold">{categoria}</h2>
               <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
                 {items.map((servicio) => (
-                  <div key={servicio.id} className="card-glass overflow-hidden rounded-2xl">
+                  <Link
+                    key={servicio.id}
+                    href={`/catalogo/${servicio.id}`}
+                    className="card-glass group overflow-hidden rounded-2xl transition-colors hover:border-neon-green/50"
+                  >
                     {servicio.fotoUrl ? (
                       <div
                         className="relative w-full border-b border-border bg-background-elevated"
@@ -78,7 +82,7 @@ export default async function CatalogoPage({
                           src={servicio.fotoUrl}
                           alt={servicio.nombre}
                           fill
-                          className="object-cover"
+                          className="object-cover transition-transform group-hover:scale-105"
                           sizes="(max-width: 768px) 100vw, 33vw"
                         />
                       </div>
@@ -91,8 +95,9 @@ export default async function CatalogoPage({
                     <div className="p-5">
                       <h3 className="text-lg font-semibold">{servicio.nombre}</h3>
                       <p className="mt-2 text-sm text-muted">{servicio.descripcion}</p>
+                      <span className="mt-3 inline-block text-sm font-medium text-neon-green">Ver detalles →</span>
                     </div>
-                  </div>
+                  </Link>
                 ))}
               </div>
             </section>

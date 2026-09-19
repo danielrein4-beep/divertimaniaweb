@@ -25,3 +25,11 @@ export const ESTADO_SOLICITUD_LABEL: Record<EstadoSolicitud, string> = {
   CONVERTIDA: "Convertida",
   DESCARTADA: "Descartada",
 };
+
+export const TIPOS_OPCION = ["VARIANTE", "DINAMICA"] as const;
+export type TipoOpcion = (typeof TIPOS_OPCION)[number];
+
+export const TIPO_OPCION_LABEL: Record<TipoOpcion, string> = {
+  VARIANTE: "Variante de personaje",
+  DINAMICA: "Dinámica / juego",
+};

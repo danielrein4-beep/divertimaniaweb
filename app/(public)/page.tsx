@@ -5,6 +5,7 @@ import Hero from "@/components/site/Hero";
 import AccordionGallery, { type AccordionGalleryItem } from "@/components/site/AccordionGallery";
 import { CATEGORIAS } from "@/lib/site";
 import { getImageAspect } from "@/lib/imageAspect";
+import { prisma } from "@/lib/db";
 
 const DESTACADOS = [
   { nombre: "Espumanía", fotoUrl: "/images/espumania-foam.png" },
@@ -28,10 +29,22 @@ const CATEGORIA_ITEMS: AccordionGalleryItem[] = CATEGORIAS.map((categoria) => ({
   link: `/catalogo?categoria=${encodeURIComponent(categoria)}`,
 }));
 
-export default function Home() {
+export default async function Home() {
+  const now = new Date();
+  const novedadesActivas = await prisma.novedad.findMany({
+    where: {
+      activo: true,
+      AND: [
+        { OR: [{ fechaInicio: null }, { fechaInicio: { lte: now } }] },
+        { OR: [{ fechaFin: null }, { fechaFin: { gte: now } }] },
+      ],
+    },
+    orderBy: { orden: "asc" },
+  });
+
   return (
     <div>
-      <Hero />
+      <Hero novedades={novedadesActivas} />
 
       <section className="mx-auto max-w-6xl px-4 pb-16 sm:px-6">
         <h2 className="mb-6 text-center text-2xl font-bold sm:text-3xl">¿Qué estás celebrando?</h2>

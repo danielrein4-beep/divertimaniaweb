@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import IntroMontage from "@/components/site/IntroMontage";
 import MaskedHeading from "@/components/site/MaskedHeading";
+import NovedadesPanel, { type NovedadDTO } from "@/components/site/NovedadesPanel";
 import { WHATSAPP_LINK } from "@/lib/site";
 
 const REEL_VIDEOS: string[] = [
@@ -23,8 +24,11 @@ const REEL_VIDEOS: string[] = [
 
 const REVEAL_DURATION_MS = 50000;
 
-export default function Hero() {
-  const [phase, setPhase] = useState<"intro" | "reveal">(REEL_VIDEOS.length > 0 ? "intro" : "reveal");
+type Phase = "intro" | "novedades" | "reveal";
+
+export default function Hero({ novedades = [] }: { novedades?: NovedadDTO[] }) {
+  const [phase, setPhase] = useState<Phase>(REEL_VIDEOS.length > 0 ? "intro" : "reveal");
+  const novedad = novedades[0];
 
   useEffect(() => {
     if (phase !== "reveal") return;
@@ -35,7 +39,17 @@ export default function Hero() {
   return (
     <section className="relative mx-auto flex min-h-[90vh] max-w-6xl flex-col items-center justify-start gap-6 overflow-hidden px-4 pt-10 pb-8 text-center sm:px-6 sm:pt-14">
       {phase === "intro" && (
-        <IntroMontage videos={REEL_VIDEOS} maxRows={3} durationMs={4000} fadeMs={900} onComplete={() => setPhase("reveal")} />
+        <IntroMontage
+          videos={REEL_VIDEOS}
+          maxRows={3}
+          durationMs={4000}
+          fadeMs={900}
+          onComplete={() => setPhase(novedad ? "novedades" : "reveal")}
+        />
+      )}
+
+      {phase === "novedades" && novedad && (
+        <NovedadesPanel novedad={novedad} durationMs={5500} fadeMs={700} onComplete={() => setPhase("reveal")} />
       )}
 
       <div

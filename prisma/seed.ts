@@ -225,6 +225,36 @@ async function main() {
     await prisma.servicio.create({ data: { ...s, orden: i } });
   }
 
+  const princesas = await prisma.servicio.findFirst({ where: { nombre: "Princesas Disney" } });
+  if (princesas) {
+    await prisma.opcion.createMany({
+      data: [
+        { servicioId: princesas.id, tipo: "VARIANTE", grupo: "Rapunzel", nombre: "Rapunzel sola", descripcion: "Solo el personaje de Rapunzel para fotos, baile y animación.", orden: 0 },
+        { servicioId: princesas.id, tipo: "VARIANTE", grupo: "Rapunzel", nombre: "Rapunzel con el príncipe", descripcion: "Rapunzel acompañada de Flynn/el príncipe.", orden: 1 },
+        { servicioId: princesas.id, tipo: "VARIANTE", grupo: "Rapunzel", nombre: "Rapunzel con todos los personajes", descripcion: "Show completo con Rapunzel y el resto de las princesas disponibles.", orden: 2 },
+        { servicioId: princesas.id, tipo: "VARIANTE", grupo: "Elsa (Frozen)", nombre: "Elsa sola", descripcion: "Solo Elsa para fotos, baile y animación.", orden: 3 },
+        { servicioId: princesas.id, tipo: "VARIANTE", grupo: "Elsa (Frozen)", nombre: "Elsa y Anna", descripcion: "Show con las dos hermanas de Frozen.", orden: 4 },
+        { servicioId: princesas.id, tipo: "VARIANTE", grupo: "Elsa (Frozen)", nombre: "Elsa, Anna y Olaf", descripcion: "Show completo de Frozen con los tres personajes.", orden: 5 },
+      ],
+    });
+  }
+
+  const babyShower = await prisma.servicio.findFirst({ where: { nombre: "Baby Shower o Revelación de Género" } });
+  if (babyShower) {
+    await prisma.opcion.createMany({
+      data: [
+        { servicioId: babyShower.id, tipo: "DINAMICA", nombre: "Carrera de biberones", descripcion: "Los invitados compiten llenando un biberón con agua lo más rápido posible.", orden: 0 },
+        { servicioId: babyShower.id, tipo: "DINAMICA", nombre: "Adivina la pancita", descripcion: "Medir el contorno de la pancita de la mamá con papel higiénico, a ojo.", orden: 1 },
+        { servicioId: babyShower.id, tipo: "DINAMICA", nombre: "El pañal sorpresa", descripcion: "Diferentes tipos de chocolate derretido en pañales para adivinar cuál es cuál.", orden: 2 },
+        { servicioId: babyShower.id, tipo: "DINAMICA", nombre: "Bingo de bebé", descripcion: "Cartones temáticos de bebé, el clásico bingo con premios.", orden: 3 },
+        { servicioId: babyShower.id, tipo: "DINAMICA", nombre: "¿Niño o niña?", descripcion: "Dinámica de predicciones de los invitados antes de la revelación.", orden: 4 },
+        { servicioId: babyShower.id, tipo: "DINAMICA", nombre: "Memoria de bebé", descripcion: "Juego de memoria con tarjetas de artículos de bebé.", orden: 5 },
+        { servicioId: babyShower.id, tipo: "DINAMICA", nombre: "Decora el body", descripcion: "Los invitados decoran bodies para el bebé como recuerdo.", orden: 6 },
+        { servicioId: babyShower.id, tipo: "DINAMICA", nombre: "Trivia de mamá y papá", descripcion: "Preguntas sobre los futuros padres para ver quién los conoce mejor.", orden: 7 },
+      ],
+    });
+  }
+
   for (const r of recursos) {
     await prisma.recurso.create({ data: r });
   }

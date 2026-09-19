@@ -8,6 +8,9 @@ const LINKS = [
   { href: "/admin/dashboard", label: "Calendario" },
   { href: "/admin/eventos", label: "Eventos" },
   { href: "/admin/recursos", label: "Recursos" },
+  { href: "/admin/catalogo", label: "Catálogo" },
+  { href: "/admin/equipo", label: "Equipo" },
+  { href: "/admin/novedades", label: "Novedades" },
   { href: "/admin/solicitudes", label: "Solicitudes" },
 ];
 
