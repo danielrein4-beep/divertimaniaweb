@@ -29,37 +29,44 @@ const ITEMS = FOTOS.map((foto) => ({
 
 export default function GaleriaPage() {
   return (
-    <div className="mx-auto max-w-7xl px-4 pt-12 pb-16 sm:px-6 sm:pt-14">
-      <div className="mb-8 text-center">
+    <div className="relative min-h-[calc(100vh-73px)] w-full overflow-hidden">
+      {/* Header sutil sobre el fondo de la galería */}
+      <div className="pointer-events-none absolute inset-x-0 top-0 z-20 flex flex-col items-center justify-center bg-gradient-to-b from-background via-background/85 to-transparent px-4 pt-10 pb-16 text-center">
         <h1 className="font-display text-3xl font-extrabold sm:text-4xl">Galería</h1>
-        <p className="mt-2 text-muted">Un vistazo al ambiente y la energía que creamos en cada evento.</p>
+        <p className="mt-2 max-w-xl text-sm text-muted sm:text-base">
+          Un vistazo al ambiente y la energía que creamos en cada evento.
+        </p>
       </div>
 
-      <div className="relative h-[660px] w-full overflow-hidden rounded-3xl border border-border bg-background-elevated">
+      {/* Muro 3D DriftWall a pantalla completa */}
+      <div className="relative h-[calc(100vh-73px)] min-h-[700px] w-full">
         <DriftWall
           items={ITEMS}
-          columns={5}
-          tileWidth={220}
-          tileHeight={145}
-          gap={18}
-          tilt={16}
-          turn={-14}
+          columns={6}
+          tileWidth={240}
+          tileHeight={158}
+          gap={20}
+          tilt={14}
+          turn={-12}
           perspective={1200}
-          depth={120}
-          speed={38}
+          depth={100}
+          speed={36}
           direction="up"
-          variance={0.45}
-          parallax={0.6}
-          lift={64}
-          fade={0.6}
-          dim={0.4}
+          variance={0.4}
+          parallax={0.7}
+          lift={70}
+          fade={0.2}
+          dim={0.3}
           overlayColor="#0a0a0f"
-          radius={14}
+          radius={16}
           roll={0}
           pauseOnHover={false}
           grayscale={false}
         />
       </div>
+
+      {/* Difuminado inferior sutil que conecta con el footer */}
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 h-20 bg-gradient-to-t from-background to-transparent" />
     </div>
   );
 }

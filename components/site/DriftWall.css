@@ -4,8 +4,6 @@
   height: 100%;
   overflow: hidden;
   perspective: var(--dw-perspective, 1200px);
-  mask-image: radial-gradient(circle at center, rgba(0, 0, 0, 1) var(--dw-edge, 40%), rgba(0, 0, 0, 0) 100%);
-  -webkit-mask-image: radial-gradient(circle at center, rgba(0, 0, 0, 1) var(--dw-edge, 40%), rgba(0, 0, 0, 0) 100%);
   user-select: none;
 }
 
