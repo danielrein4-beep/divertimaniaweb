@@ -218,8 +218,65 @@ async function main() {
   await prisma.cliente.deleteMany();
   await prisma.servicio.deleteMany();
   await prisma.recurso.deleteMany();
+  await prisma.recreador.deleteMany();
+  await prisma.novedad.deleteMany();
   await prisma.solicitudContacto.deleteMany();
   await prisma.adminUser.deleteMany();
+
+  const recreadoresData = [
+    {
+      nombre: "Daniel Reina",
+      cargo: "Director & Animador Principal",
+      descripcion: "Conducción de eventos masivos, bodas, 15 años y dirección de shows temáticos.",
+      fotoUrl: "/images/bolas-disco-equipo.jpg",
+      orden: 0,
+      activo: true,
+    },
+    {
+      nombre: "Valeria Morales",
+      cargo: "Coordinadora de Shows Infantiles",
+      descripcion: "Animación dinámica, juegos recreativos, pintacaritas y personificación de princesas.",
+      fotoUrl: "/images/princesa-rapunzel.jpg",
+      orden: 1,
+      activo: true,
+    },
+    {
+      nombre: "Carlos Mendoza",
+      cargo: "Animador & Dinámicas de Piscina",
+      descripcion: "Especialista en actividades acuáticas, cañón de espuma y coreografías Divertidance.",
+      fotoUrl: "/images/dia-piscina-espuma.png",
+      orden: 2,
+      activo: true,
+    },
+    {
+      nombre: "Mariana Gómez",
+      cargo: "Especialista en Baby Shower & Revelaciones",
+      descripcion: "Más de 7 años liderando dinámicas emotivas y divertidas para la dulce espera.",
+      fotoUrl: "/images/baby-shower.png",
+      orden: 3,
+      activo: true,
+    },
+    {
+      nombre: "Alejandro Pérez",
+      cargo: "Showman & Coreógrafo",
+      descripcion: "Bailarín profesional en Bolas Disco, shows K-pop, Catrinas y producciones especiales.",
+      fotoUrl: "/images/bolas-disco-duo.jpg",
+      orden: 4,
+      activo: true,
+    },
+    {
+      nombre: "Sofía Hernández",
+      cargo: "Tallerista & Estación Creativa",
+      descripcion: "Guía de Diverti Artistas, pulseras, decoración de galletas y manualidades artísticas.",
+      fotoUrl: "/images/diverti-artistas.png",
+      orden: 5,
+      activo: true,
+    },
+  ];
+
+  for (const rec of recreadoresData) {
+    await prisma.recreador.create({ data: rec });
+  }
 
   for (const [i, s] of servicios.entries()) {
     await prisma.servicio.create({ data: { ...s, orden: i } });
