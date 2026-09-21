@@ -272,6 +272,22 @@ async function main() {
       orden: 5,
       activo: true,
     },
+    {
+      nombre: "Javier Torres",
+      cargo: "Operador de Cañón & Efectos",
+      descripcion: "Especialista en máquinas de espuma, iluminación inteligente y logística técnica.",
+      fotoUrl: "/images/espumania-foam.png",
+      orden: 6,
+      activo: true,
+    },
+    {
+      nombre: "Camila Rivas",
+      cargo: "Animadora & Personajes Temáticos",
+      descripcion: "Personificación teatral de princesas, personajes infantiles y animación musical.",
+      fotoUrl: "/images/rapunzel-cumpleanos.png",
+      orden: 7,
+      activo: true,
+    },
   ];
 
   for (const rec of recreadoresData) {
