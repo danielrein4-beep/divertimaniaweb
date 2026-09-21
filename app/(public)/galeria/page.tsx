@@ -29,13 +29,13 @@ const ITEMS = FOTOS.map((foto) => ({
 
 export default function GaleriaPage() {
   return (
-    <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6">
-      <div className="mb-6 text-center">
+    <div className="mx-auto max-w-7xl px-4 pt-12 pb-16 sm:px-6 sm:pt-14">
+      <div className="mb-8 text-center">
         <h1 className="font-display text-3xl font-extrabold sm:text-4xl">Galería</h1>
         <p className="mt-2 text-muted">Un vistazo al ambiente y la energía que creamos en cada evento.</p>
       </div>
 
-      <div className="relative h-[650px] w-full overflow-hidden rounded-3xl border border-border bg-background-elevated">
+      <div className="relative h-[660px] w-full overflow-hidden rounded-3xl border border-border bg-background-elevated">
         <DriftWall
           items={ITEMS}
           columns={5}
