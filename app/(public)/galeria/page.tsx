@@ -1,6 +1,4 @@
-import Image from "next/image";
-import PlaceholderImage from "@/components/site/PlaceholderImage";
-import { getImageAspect } from "@/lib/imageAspect";
+import DriftWall from "@/components/site/DriftWall";
 
 const FOTOS = [
   { label: "Animación Infantil", src: "/images/animacion-infantil-conejos.png" },
@@ -24,38 +22,43 @@ const FOTOS = [
   { label: "Atracciones", src: "/images/pelotas-boom-piscina.png" },
 ];
 
-const PLACEHOLDERS = ["Toy Story", "Encanto", "Paw Patrol", "El Chacal de la Trompeta"];
+const ITEMS = FOTOS.map((foto) => ({
+  image: foto.src,
+  title: foto.label,
+}));
 
 export default function GaleriaPage() {
   return (
-    <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6">
-      <div className="mb-10 text-center">
+    <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6">
+      <div className="mb-6 text-center">
         <h1 className="font-display text-3xl font-extrabold sm:text-4xl">Galería</h1>
-        <p className="mt-2 text-muted">Un vistazo al ambiente que creamos en cada evento.</p>
+        <p className="mt-2 text-muted">Un vistazo al ambiente y la energía que creamos en cada evento.</p>
       </div>
 
-      <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
-        {FOTOS.map((foto) => (
-          <div
-            key={foto.src}
-            className="relative w-full overflow-hidden rounded-2xl border border-border bg-background-elevated"
-            style={{ aspectRatio: getImageAspect(foto.src) }}
-          >
-            <Image
-              src={foto.src}
-              alt={foto.label}
-              fill
-              className="object-cover"
-              sizes="(max-width: 768px) 50vw, 25vw"
-            />
-            <span className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 to-transparent px-3 py-3 text-xs font-medium text-white">
-              {foto.label}
-            </span>
-          </div>
-        ))}
-        {PLACEHOLDERS.map((label, i) => (
-          <PlaceholderImage key={label + i} label={label} className="aspect-square w-full" />
-        ))}
+      <div className="relative h-[650px] w-full overflow-hidden rounded-3xl border border-border bg-background-elevated">
+        <DriftWall
+          items={ITEMS}
+          columns={5}
+          tileWidth={220}
+          tileHeight={145}
+          gap={18}
+          tilt={16}
+          turn={-14}
+          perspective={1200}
+          depth={120}
+          speed={38}
+          direction="up"
+          variance={0.45}
+          parallax={0.6}
+          lift={64}
+          fade={0.6}
+          dim={0.4}
+          overlayColor="#0a0a0f"
+          radius={14}
+          roll={0}
+          pauseOnHover={false}
+          grayscale={false}
+        />
       </div>
     </div>
   );

@@ -1,0 +1,98 @@
+.drift-wall {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  perspective: var(--dw-perspective, 1200px);
+  mask-image: radial-gradient(circle at center, rgba(0, 0, 0, 1) var(--dw-edge, 40%), rgba(0, 0, 0, 0) 100%);
+  -webkit-mask-image: radial-gradient(circle at center, rgba(0, 0, 0, 1) var(--dw-edge, 40%), rgba(0, 0, 0, 0) 100%);
+  user-select: none;
+}
+
+.drift-wall__plane {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: flex;
+  gap: var(--dw-gap, 18px);
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.drift-wall__col {
+  position: relative;
+  width: var(--dw-tile-w, 200px);
+  transform-style: preserve-3d;
+}
+
+.drift-wall__track {
+  display: flex;
+  flex-direction: column;
+  gap: var(--dw-gap, 18px);
+  will-change: transform;
+  transform-style: preserve-3d;
+}
+
+.drift-wall__tile {
+  position: relative;
+  width: var(--dw-tile-w, 200px);
+  height: var(--dw-tile-h, 132px);
+  border-radius: var(--dw-radius, 14px);
+  overflow: hidden;
+  cursor: pointer;
+  outline: none;
+  text-decoration: none;
+  display: block;
+  transform-style: preserve-3d;
+  transition: transform 0.25s cubic-bezier(0.2, 0, 0, 1), box-shadow 0.25s ease;
+}
+
+.drift-wall__tile.is-active,
+.drift-wall__tile:focus-visible {
+  transform: translateZ(var(--dw-lift, 64px));
+  z-index: 10;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), 0 0 0 2px var(--neon-green, #9dff3c);
+}
+
+.drift-wall__inner {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  overflow: hidden;
+  border: 1px solid var(--border, rgba(255, 255, 255, 0.08));
+}
+
+.drift-wall__inner img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  filter: grayscale(var(--dw-gray, 0)) brightness(calc(1 - var(--dw-dim, 0.55) * 0.4));
+  transition: filter 0.3s ease, transform 0.3s ease;
+}
+
+.drift-wall__tile.is-active .drift-wall__inner img,
+.drift-wall__tile:hover .drift-wall__inner img {
+  filter: grayscale(0) brightness(1.05);
+  transform: scale(1.05);
+}
+
+.drift-wall__overlay {
+  position: absolute;
+  inset: 0;
+  background: var(--dw-overlay, #0a0a0f);
+  opacity: var(--dw-dim, 0.55);
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.drift-wall__tile.is-active .drift-wall__overlay,
+.drift-wall__tile:hover .drift-wall__overlay {
+  opacity: 0;
+}
+
+.drift-wall--reduced .drift-wall__track {
+  will-change: auto;
+}
