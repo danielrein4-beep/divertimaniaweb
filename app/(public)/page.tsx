@@ -4,7 +4,6 @@ import PlaceholderImage from "@/components/site/PlaceholderImage";
 import Hero from "@/components/site/Hero";
 import AccordionGallery, { type AccordionGalleryItem } from "@/components/site/AccordionGallery";
 import { CATEGORIAS } from "@/lib/site";
-import { getImageAspect } from "@/lib/imageAspect";
 
 const DESTACADOS = [
   { nombre: "Espumanía", fotoUrl: "/images/espumania-foam.png" },
@@ -83,8 +82,7 @@ export default function Home() {
             {DESTACADOS.map((show) =>
               show.fotoUrl ? (
                 <div
-                  className="relative w-full overflow-hidden rounded-2xl border border-border bg-background-card"
-                  style={{ aspectRatio: getImageAspect(show.fotoUrl) }}
+                  className="relative aspect-[4/5] w-full overflow-hidden rounded-2xl border border-border bg-background-card"
                   key={show.nombre}
                 >
                   <Image src={show.fotoUrl} alt={show.nombre} fill className="object-cover" sizes="(max-width: 768px) 50vw, 25vw" />
