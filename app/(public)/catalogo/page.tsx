@@ -3,7 +3,6 @@ import Image from "next/image";
 import { prisma } from "@/lib/db";
 import PlaceholderImage from "@/components/site/PlaceholderImage";
 import { CATEGORIAS, WHATSAPP_LINK } from "@/lib/site";
-import { getImageAspect } from "@/lib/imageAspect";
 
 export const dynamic = "force-dynamic";
 
@@ -71,13 +70,10 @@ export default async function CatalogoPage({
                   <Link
                     key={servicio.id}
                     href={`/catalogo/${servicio.id}`}
-                    className="card-glass group overflow-hidden rounded-2xl transition-colors hover:border-neon-green/50"
+                    className="card-glass group flex flex-col overflow-hidden rounded-2xl transition-colors hover:border-neon-green/50"
                   >
                     {servicio.fotoUrl ? (
-                      <div
-                        className="relative w-full border-b border-border bg-background-elevated"
-                        style={{ aspectRatio: getImageAspect(servicio.fotoUrl) }}
-                      >
+                      <div className="relative aspect-[4/5] w-full border-b border-border bg-background-elevated">
                         <Image
                           src={servicio.fotoUrl}
                           alt={servicio.nombre}
@@ -92,7 +88,7 @@ export default async function CatalogoPage({
                         className="aspect-[4/5] w-full rounded-none border-0 border-b border-border"
                       />
                     )}
-                    <div className="p-5">
+                    <div className="flex flex-1 flex-col p-5">
                       <h3 className="text-lg font-semibold">{servicio.nombre}</h3>
                       <p className="mt-2 text-sm text-muted">{servicio.descripcion}</p>
                       <span className="mt-3 inline-block text-sm font-medium text-neon-green">Ver detalles →</span>
