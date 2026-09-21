@@ -9,7 +9,12 @@ const FOTOS = [
   { label: "Superhéroes", src: "/images/superheroes.jpg" },
   { label: "Bolas Disco", src: "/images/bolas-disco-duo.jpg" },
   { label: "Bolas Disco", src: "/images/bolas-disco-equipo.jpg" },
-  { label: "Princesas", src: "/images/princesa-rapunzel.jpg" },
+  { label: "Princesas - Rapunzel", src: "/images/princesa-rapunzel.jpg" },
+  { label: "Rapunzel y Amigos", src: "/images/rapunzel-cumpleanos.png" },
+  { label: "La Bella y la Bestia", src: "/images/bella-y-bestia.png" },
+  { label: "Show de Plim Plim", src: "/images/plim-plim-animacion.png" },
+  { label: "Pascua y Conejos", src: "/images/pascua-conejos-recreacion.png" },
+  { label: "Navidad con Mickey", src: "/images/mickey-navidad-show.png" },
   { label: "Casa de Mickey Mouse", src: "/images/minnie.jpg" },
   { label: "Casa de Mickey Mouse", src: "/images/mickey-minnie-graduacion.jpg" },
   { label: "Show según temática", src: "/images/show-tematico-catrina.jpg" },
@@ -42,15 +47,15 @@ export default function GaleriaPage() {
       <div className="relative h-[calc(100vh-73px)] min-h-[700px] w-full">
         <DriftWall
           items={ITEMS}
-          columns={6}
-          tileWidth={240}
-          tileHeight={158}
-          gap={20}
+          columns={5}
+          tileWidth={250}
+          tileHeight={165}
+          gap={22}
           tilt={14}
           turn={-12}
           perspective={1200}
           depth={100}
-          speed={36}
+          speed={34}
           direction="up"
           variance={0.4}
           parallax={0.7}
