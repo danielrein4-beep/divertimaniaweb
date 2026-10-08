@@ -10,7 +10,7 @@ export interface PersonajeItem {
   fotoUrl: string | null;
 }
 
-export default function PersonajesCarousel({ personajes }: { personajes: PersonajeItem[] }) {
+export default function PersonajesCarousel({ personajes, total }: { personajes: PersonajeItem[]; total?: number }) {
   if (!personajes || personajes.length === 0) return null;
 
   return (
@@ -19,7 +19,7 @@ export default function PersonajesCarousel({ personajes }: { personajes: Persona
         <SectionHeader
           title="Los favoritos de los niños"
           underlineWord="favoritos"
-          subtitle="Personajes oficiales con vestuarios impecables para fotos, bailes y abrazos inolvidables."
+          subtitle="Llegan a tu fiesta a bailar, jugar y tomarse fotos con todos los niños."
           tilt="right"
         />
 
@@ -27,7 +27,7 @@ export default function PersonajesCarousel({ personajes }: { personajes: Persona
           href="/catalogo?categoria=Personajes"
           className="text-sm font-semibold text-neon-green hover:underline shrink-0"
         >
-          Ver todos los personajes →
+          {total ? `Ver los ${total} personajes →` : "Ver todos los personajes →"}
         </Link>
       </div>
 

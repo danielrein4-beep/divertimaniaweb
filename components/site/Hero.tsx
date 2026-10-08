@@ -1,11 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
 import IntroMontage from "@/components/site/IntroMontage";
 import MaskedHeading from "@/components/site/MaskedHeading";
 import NovedadesPanel, { type NovedadDTO } from "@/components/site/NovedadesPanel";
-import { WHATSAPP_LINK } from "@/lib/site";
+import CotizarButtons from "@/components/site/CotizarButtons";
 
 const REEL_VIDEOS: string[] = [
   "/reels/reel-1.mp4",
@@ -87,25 +86,10 @@ export default function Hero({ novedades = [] }: { novedades?: NovedadDTO[] }) {
         )}
 
         <p className="max-w-xl text-lg text-muted">
-          Animación, shows y personajes para bodas, 15 años, corporativos y fiestas infantiles
-          en el Estado Táchira.
+          Personajes, shows y animación para cumpleaños, baby showers, 15 años, bodas y
+          empresas. Llegamos a todo el Táchira.
         </p>
-        <div className="flex flex-wrap items-center justify-center gap-4">
-          <Link
-            href="/catalogo"
-            className="rounded-full bg-neon-green px-6 py-3 font-semibold text-background transition-transform hover:scale-105"
-          >
-            Ver catálogo
-          </Link>
-          <a
-            href={WHATSAPP_LINK}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="rounded-full border border-border px-6 py-3 font-semibold text-foreground transition-colors hover:border-neon-green hover:text-neon-green"
-          >
-            Escríbenos por WhatsApp
-          </a>
-        </div>
+        <CotizarButtons />
       </div>
     </section>
   );

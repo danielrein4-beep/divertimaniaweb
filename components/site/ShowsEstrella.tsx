@@ -15,6 +15,7 @@ export interface ShowEstrellaData {
   masPedido: boolean;
   destacado: boolean;
   soloAdultos: boolean;
+  tieneOpciones?: boolean;
 }
 
 export default function ShowsEstrella({ shows }: { shows: ShowEstrellaData[] }) {
@@ -26,9 +27,9 @@ export default function ShowsEstrella({ shows }: { shows: ShowEstrellaData[] }) 
   return (
     <section className="mx-auto max-w-6xl px-4 sm:px-6 py-14">
       <SectionHeader
-        title="Shows estrella que encienden tu fiesta"
-        underlineWord="estrella"
-        subtitle="Las experiencias más pedidas y espectaculares de Divertimania en todo el Táchira."
+        title="Lo que más nos piden"
+        underlineWord="piden"
+        subtitle="Los shows que nunca fallan para prender la fiesta."
         tilt="left"
         className="mb-8"
       />
@@ -49,6 +50,7 @@ export default function ShowsEstrella({ shows }: { shows: ShowEstrellaData[] }) 
             masPedido={show.masPedido}
             destacado={show.destacado}
             soloAdultos={show.soloAdultos}
+            tieneOpciones={show.tieneOpciones}
             priority={idx < 2}
           />
         ))}
