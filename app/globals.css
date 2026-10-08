@@ -3,24 +3,54 @@
 :root {
   --background: #0a0a0f;
   --background-elevated: #14141d;
-  --background-card: #191922;
+  --background-card: #181824;
+  --background-card-hover: #1f1f2e;
   --foreground: #f5f5f7;
+  --foreground-muted: #8e8e9e;
   --muted: #a3a3b0;
   --border: rgba(255, 255, 255, 0.08);
+  --border-focus: rgba(157, 255, 60, 0.6);
 
+  /* Identidad y acentos */
   --neon-green: #9dff3c;
   --neon-green-dark: #6fd400;
   --gold: #ffd166;
   --magenta: #ff4fd8;
+  --cyan: #00e5ff;
+  --orange: #ff8447;
+  --purple: #b366ff;
 
+  /* Colores por Categoría */
+  --cat-infantil: #9dff3c;
+  --cat-babyshower: #ff4fd8;
+  --cat-personajes: #00e5ff;
+  --cat-adultos: #ffd166;
+  --cat-creativa: #ff8447;
+  --cat-atracciones: #b366ff;
+
+  /* Tipografías */
   --font-display: var(--font-baloo);
   --font-body: var(--font-inter);
+
+  /* Radios */
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+  --radius-full: 9999px;
+
+  /* Sombras y Glows sutiles */
+  --shadow-card: 0 4px 20px rgba(0, 0, 0, 0.4);
+  --shadow-neon: 0 0 24px rgba(157, 255, 60, 0.28);
+  --shadow-magenta: 0 0 24px rgba(255, 79, 216, 0.25);
+  --glow-subtle: 0 0 12px rgba(157, 255, 60, 0.2);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-background-elevated: var(--background-elevated);
   --color-background-card: var(--background-card);
+  --color-background-card-hover: var(--background-card-hover);
   --color-foreground: var(--foreground);
   --color-muted: var(--muted);
   --color-border: var(--border);
@@ -28,6 +58,9 @@
   --color-neon-green-dark: var(--neon-green-dark);
   --color-gold: var(--gold);
   --color-magenta: var(--magenta);
+  --color-cyan: var(--cyan);
+  --color-orange: var(--orange);
+  --color-purple: var(--purple);
   --font-display: var(--font-display);
   --font-body: var(--font-body);
 }
@@ -35,30 +68,132 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-body), ui-sans-serif, system-ui, sans-serif;
+  font-family: var(--font-body), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  overflow-x: hidden;
 }
 
 h1, h2, h3, h4, .font-display {
   font-family: var(--font-display), ui-sans-serif, system-ui, sans-serif;
+  letter-spacing: -0.015em;
+}
+
+/* Escala Tipográfica de Estudio */
+.type-display {
+  font-size: clamp(2.25rem, 6vw, 4.25rem);
+  line-height: 1.05;
+  font-weight: 800;
+}
+
+.type-h1 {
+  font-size: clamp(1.85rem, 4.5vw, 3rem);
+  line-height: 1.15;
+  font-weight: 800;
+}
+
+.type-h2 {
+  font-size: clamp(1.5rem, 3.5vw, 2.25rem);
+  line-height: 1.2;
+  font-weight: 700;
+}
+
+.type-h3 {
+  font-size: clamp(1.25rem, 2.5vw, 1.65rem);
+  line-height: 1.25;
+  font-weight: 700;
+}
+
+.type-body {
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.type-small {
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+/* Gesto visual de la marca: Stickers y Trazo Lúdico */
+.sticker-tilt-left {
+  transform: rotate(-1.5deg);
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.sticker-tilt-right {
+  transform: rotate(1.5deg);
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.sticker-tilt-left:hover,
+.sticker-tilt-right:hover {
+  transform: rotate(0deg) scale(1.02);
+}
+
+.photo-polaroid {
+  background: #ffffff;
+  padding: 8px 8px 18px 8px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  border-radius: 4px;
+  transform: rotate(-1deg);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.photo-polaroid:hover {
+  transform: rotate(0deg) scale(1.03);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.6);
+}
+
+.card-glass {
+  background: var(--background-card);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-card);
+}
+
+.card-glass-hover {
+  background: var(--background-card);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-card);
+  transition: transform 0.25s ease, border-color 0.25s ease, background-color 0.25s ease;
+}
+
+.card-glass-hover:hover {
+  background: var(--background-card-hover);
+  border-color: rgba(255, 255, 255, 0.16);
+  transform: translateY(-2px);
 }
 
 .text-glow {
   text-shadow: 0 0 20px rgba(157, 255, 60, 0.45);
 }
 
-.card-glass {
-  background: var(--background-card);
-  border: 1px solid var(--border);
-}
-
 .bg-radial-glow {
   background:
-    radial-gradient(circle at 20% 0%, rgba(157, 255, 60, 0.12), transparent 45%),
-    radial-gradient(circle at 85% 15%, rgba(255, 79, 216, 0.12), transparent 40%),
+    radial-gradient(circle at 15% 5%, rgba(157, 255, 60, 0.08), transparent 40%),
+    radial-gradient(circle at 85% 20%, rgba(255, 79, 216, 0.07), transparent 35%),
     var(--background);
 }
 
 ::selection {
   background: var(--neon-green);
   color: #0a0a0f;
+}
+
+/* Touch areas y accesibilidad */
+.touch-target {
+  min-height: 44px;
+  min-width: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Reducción de movimiento */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
