@@ -28,34 +28,39 @@ export default function ServicioCamposEditor({ initialServicio }: { initialServi
     setGuardando(true);
     setMensaje(null);
 
-    const res = await fetch(`/api/servicios/${servicio.id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        nombre: servicio.nombre,
-        categoria: servicio.categoria,
-        descripcion: servicio.descripcion,
-        fotoUrl: servicio.fotoUrl?.trim() || null,
-        incluye: servicio.incluye?.trim() || null,
-        edadIdeal: servicio.edadIdeal?.trim() || null,
-        duracion: servicio.duracion?.trim() || null,
-        masPedido: servicio.masPedido,
-        destacado: servicio.destacado,
-        soloAdultos: servicio.soloAdultos,
-        ocasiones: servicio.ocasiones?.trim() || null,
-        combinaCon: servicio.combinaCon?.trim() || null,
-      }),
-    });
+    try {
+      const res = await fetch(`/api/servicios/${servicio.id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          nombre: servicio.nombre,
+          categoria: servicio.categoria,
+          descripcion: servicio.descripcion,
+          fotoUrl: servicio.fotoUrl?.trim() || null,
+          incluye: servicio.incluye?.trim() || null,
+          edadIdeal: servicio.edadIdeal?.trim() || null,
+          duracion: servicio.duracion?.trim() || null,
+          masPedido: servicio.masPedido,
+          destacado: servicio.destacado,
+          soloAdultos: servicio.soloAdultos,
+          ocasiones: servicio.ocasiones?.trim() || null,
+          combinaCon: servicio.combinaCon?.trim() || null,
+        }),
+      });
 
-    if (res.ok) {
-      const data = await res.json();
-      setServicio(data.servicio);
-      setMensaje("¡Cambios guardados exitosamente!");
-      setTimeout(() => setMensaje(null), 3000);
-    } else {
-      setMensaje("Error al guardar los cambios.");
+      const data = await res.json().catch(() => ({}));
+      if (res.ok) {
+        setServicio(data.servicio);
+        setMensaje("¡Cambios guardados exitosamente!");
+        setTimeout(() => setMensaje(null), 3000);
+      } else {
+        setMensaje(data.error ?? "Error al guardar los cambios.");
+      }
+    } catch {
+      setMensaje("Sin conexión. Intenta de nuevo.");
+    } finally {
+      setGuardando(false);
     }
-    setGuardando(false);
   }
 
   return (

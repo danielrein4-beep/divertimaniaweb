@@ -26,35 +26,52 @@ export default function MediaManager({
   const [poster, setPoster] = useState("");
   const [orden, setOrden] = useState(0);
   const [guardando, setGuardando] = useState(false);
+  const [error, setError] = useState("");
 
   async function handleCreate(e: FormEvent) {
     e.preventDefault();
     setGuardando(true);
-    const res = await fetch(`/api/servicios/${servicioId}/media`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        url,
-        tipo,
-        poster: poster.trim() || null,
-        orden,
-      }),
-    });
-
-    if (res.ok) {
-      const data = await res.json();
+    setError("");
+    try {
+      const res = await fetch(`/api/servicios/${servicioId}/media`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          url,
+          tipo,
+          poster: poster.trim() || null,
+          orden,
+        }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        setError(data.error ?? "No se pudo guardar. Revisa que tu sesión siga activa.");
+        return;
+      }
       setMedia((prev) => [...prev, data.media].sort((a, b) => a.orden - b.orden));
       setUrl("");
       setPoster("");
       setOrden(media.length + 1);
+    } catch {
+      setError("Sin conexión. Intenta de nuevo.");
+    } finally {
+      setGuardando(false);
     }
-    setGuardando(false);
   }
 
   async function handleDelete(id: string) {
     if (!confirm("¿Eliminar este archivo multimedia del servicio?")) return;
-    setMedia((prev) => prev.filter((m) => m.id !== id));
-    await fetch(`/api/servicios/${servicioId}/media/${id}`, { method: "DELETE" });
+    setError("");
+    try {
+      const res = await fetch(`/api/servicios/${servicioId}/media/${id}`, { method: "DELETE" });
+      if (!res.ok && res.status !== 404) {
+        setError("No se pudo eliminar. Revisa que tu sesión siga activa.");
+        return;
+      }
+      setMedia((prev) => prev.filter((m) => m.id !== id));
+    } catch {
+      setError("Sin conexión. Intenta de nuevo.");
+    }
   }
 
   return (
@@ -63,6 +80,12 @@ export default function MediaManager({
         <h2 className="text-lg font-semibold text-foreground">Fotos y Videos (Galería y Reels)</h2>
         <span className="text-xs text-muted">{media.length} elementos</span>
       </div>
+
+      {error && (
+        <p role="alert" className="rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-2 text-sm text-red-300">
+          {error}
+        </p>
+      )}
 
       <form onSubmit={handleCreate} className="card-glass flex flex-wrap items-end gap-3 rounded-2xl p-5">
         <label className="flex flex-col gap-1 text-sm">

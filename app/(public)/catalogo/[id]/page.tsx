@@ -38,7 +38,7 @@ export default async function ServicioPage({ params }: { params: Promise<{ id: s
   const servicio = await getServicio(id);
   if (!servicio) notFound();
 
-  const relacionadosIds = (servicio.combinaCon ?? "").split(",").filter(Boolean);
+  const relacionadosIds = (servicio.combinaCon ?? "").split(",").map((s) => s.trim()).filter(Boolean);
   const relacionados = relacionadosIds.length
     ? await prisma.servicio.findMany({
         where: { id: { in: relacionadosIds }, soloAdultos: false },

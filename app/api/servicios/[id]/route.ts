@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { prisma } from "@/lib/db";
 import { requireAdmin } from "@/lib/auth";
+import { normalizarLista, rutaLocalSchema } from "@/lib/validation";
 
 export async function GET(_request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -22,7 +23,7 @@ const updateServicioSchema = z.object({
   nombre: z.string().trim().min(2).optional(),
   categoria: z.string().trim().min(2).optional(),
   descripcion: z.string().trim().optional(),
-  fotoUrl: z.string().trim().nullable().optional(),
+  fotoUrl: rutaLocalSchema.nullable().optional(),
   incluye: z.string().trim().nullable().optional(),
   edadIdeal: z.string().trim().nullable().optional(),
   duracion: z.string().trim().nullable().optional(),
@@ -45,10 +46,15 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
     return NextResponse.json({ error: parsed.error.issues[0]?.message ?? "Datos inválidos" }, { status: 400 });
   }
 
-  const servicio = await prisma.servicio.update({
-    where: { id },
-    data: parsed.data,
-  });
+  const data = { ...parsed.data };
+  if (data.ocasiones !== undefined) data.ocasiones = normalizarLista(data.ocasiones);
+  if (data.combinaCon !== undefined) data.combinaCon = normalizarLista(data.combinaCon);
 
+  const existe = await prisma.servicio.count({ where: { id } });
+  if (!existe) {
+    return NextResponse.json({ error: "Servicio no encontrado" }, { status: 404 });
+  }
+
+  const servicio = await prisma.servicio.update({ where: { id }, data });
   return NextResponse.json({ servicio });
 }

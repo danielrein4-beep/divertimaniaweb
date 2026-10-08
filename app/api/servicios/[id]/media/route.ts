@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { prisma } from "@/lib/db";
-import { TIPOS_SERVICIO_MEDIA } from "@/lib/validation";
 import { requireAdmin } from "@/lib/auth";
+import { TIPOS_SERVICIO_MEDIA, rutaLocalSchema } from "@/lib/validation";
 
 export async function GET(_request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -14,9 +14,9 @@ export async function GET(_request: NextRequest, { params }: { params: Promise<{
 }
 
 const mediaSchema = z.object({
-  url: z.string().trim().min(2),
+  url: rutaLocalSchema,
   tipo: z.enum(TIPOS_SERVICIO_MEDIA),
-  poster: z.string().trim().nullable().optional(),
+  poster: rutaLocalSchema.nullable().optional(),
   orden: z.number().int().default(0),
 });
 
@@ -31,15 +31,14 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
     return NextResponse.json({ error: parsed.error.issues[0]?.message ?? "Datos inválidos" }, { status: 400 });
   }
 
+  const existe = await prisma.servicio.count({ where: { id } });
+  if (!existe) {
+    return NextResponse.json({ error: "Servicio no encontrado" }, { status: 404 });
+  }
+
   const { url, tipo, poster, orden } = parsed.data;
   const media = await prisma.servicioMedia.create({
-    data: {
-      servicioId: id,
-      url,
-      tipo,
-      poster: poster || null,
-      orden,
-    },
+    data: { servicioId: id, url, tipo, poster: poster || null, orden },
   });
 
   return NextResponse.json({ media }, { status: 201 });

@@ -9,9 +9,11 @@ export async function DELETE(
   const denied = await requireAdmin();
   if (denied) return denied;
 
-  const { mediaId } = await params;
-  await prisma.servicioMedia.delete({
-    where: { id: mediaId },
-  });
+  const { id, mediaId } = await params;
+  // Solo borra si el archivo pertenece a este servicio.
+  const { count } = await prisma.servicioMedia.deleteMany({ where: { id: mediaId, servicioId: id } });
+  if (count === 0) {
+    return NextResponse.json({ error: "Archivo no encontrado" }, { status: 404 });
+  }
   return NextResponse.json({ ok: true });
 }
