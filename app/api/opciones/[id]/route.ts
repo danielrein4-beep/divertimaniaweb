@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { prisma } from "@/lib/db";
 import { TIPOS_OPCION } from "@/lib/validation";
+import { requireAdmin } from "@/lib/auth";
 
 const schema = z.object({
   tipo: z.enum(TIPOS_OPCION),
@@ -14,6 +15,9 @@ const schema = z.object({
 });
 
 export async function PUT(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  const denied = await requireAdmin();
+  if (denied) return denied;
+
   const { id } = await params;
   const body = await request.json().catch(() => null);
   const parsed = schema.safeParse(body);
@@ -38,6 +42,9 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
 }
 
 export async function DELETE(_request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  const denied = await requireAdmin();
+  if (denied) return denied;
+
   const { id } = await params;
   await prisma.opcion.delete({ where: { id } }).catch(() => null);
   return NextResponse.json({ ok: true });

@@ -2,10 +2,14 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { prisma } from "@/lib/db";
 import { ESTADOS_SOLICITUD } from "@/lib/validation";
+import { requireAdmin } from "@/lib/auth";
 
 const schema = z.object({ estado: z.enum(ESTADOS_SOLICITUD) });
 
 export async function PUT(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  const denied = await requireAdmin();
+  if (denied) return denied;
+
   const { id } = await params;
   const body = await request.json().catch(() => null);
   const parsed = schema.safeParse(body);

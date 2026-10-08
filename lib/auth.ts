@@ -46,3 +46,12 @@ export async function getSession(): Promise<{ usuario: string } | null> {
     return null;
   }
 }
+
+/** Para rutas API de administración: devuelve un 401 si no hay sesión válida. */
+export async function requireAdmin(): Promise<Response | null> {
+  const session = await getSession().catch(() => null);
+  if (!session) {
+    return Response.json({ error: "No autorizado" }, { status: 401 });
+  }
+  return null;
+}

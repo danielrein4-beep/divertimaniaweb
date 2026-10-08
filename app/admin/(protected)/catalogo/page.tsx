@@ -2,6 +2,8 @@ import Link from "next/link";
 import { prisma } from "@/lib/db";
 import { CATEGORIAS } from "@/lib/site";
 
+export const dynamic = "force-dynamic";
+
 export default async function AdminCatalogoPage() {
   const servicios = await prisma.servicio.findMany({
     orderBy: [{ categoria: "asc" }, { orden: "asc" }],

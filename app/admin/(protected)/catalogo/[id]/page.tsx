@@ -6,6 +6,8 @@ import MediaManager from "@/components/admin/MediaManager";
 import ServicioCamposEditor from "@/components/admin/ServicioCamposEditor";
 import { type TipoOpcion, type TipoServicioMedia } from "@/lib/validation";
 
+export const dynamic = "force-dynamic";
+
 export default async function AdminServicioOpcionesPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const servicio = await prisma.servicio.findUnique({

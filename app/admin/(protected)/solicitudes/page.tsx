@@ -1,6 +1,8 @@
 import { prisma } from "@/lib/db";
 import SolicitudesManager from "@/components/admin/SolicitudesManager";
 
+export const dynamic = "force-dynamic";
+
 export default async function SolicitudesPage() {
   const solicitudes = await prisma.solicitudContacto.findMany({ orderBy: { createdAt: "desc" } });
 

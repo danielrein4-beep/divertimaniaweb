@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { prisma } from "@/lib/db";
 import { ESTADOS_EVENTO } from "@/lib/validation";
+import { requireAdmin } from "@/lib/auth";
 
 export async function GET(request: NextRequest) {
   const fecha = request.nextUrl.searchParams.get("fecha") ?? undefined;
@@ -35,6 +36,9 @@ const eventoSchema = z.object({
 });
 
 export async function POST(request: NextRequest) {
+  const denied = await requireAdmin();
+  if (denied) return denied;
+
   const body = await request.json().catch(() => null);
   const parsed = eventoSchema.safeParse(body);
   if (!parsed.success) {

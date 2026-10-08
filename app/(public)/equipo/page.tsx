@@ -2,6 +2,8 @@ import { prisma } from "@/lib/db";
 import { WHATSAPP_LINK } from "@/lib/site";
 import ChromaGrid from "@/components/site/ChromaGrid";
 
+export const dynamic = "force-dynamic";
+
 const ACCENT_PALETTE = [
   { border: "#9dff3c", gradient: "linear-gradient(145deg, #9dff3c, #0a0a0f)" },
   { border: "#ff4fd8", gradient: "linear-gradient(210deg, #ff4fd8, #0a0a0f)" },
