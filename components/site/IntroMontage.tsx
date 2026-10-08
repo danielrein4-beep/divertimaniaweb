@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
+import { useIsClient } from "@/lib/useIsClient";
 
 type IntroMontageProps = {
   videos: string[];
@@ -66,11 +67,7 @@ export default function IntroMontage({
   const [grid, setGrid] = useState({ rows: 1, cols: 1 });
   const [fading, setFading] = useState(false);
   const [mounted, setMounted] = useState(false);
-  const [canPortal, setCanPortal] = useState(false);
-
-  useEffect(() => {
-    setCanPortal(true);
-  }, []);
+  const canPortal = useIsClient();
 
   const shuffledVideos = useMemo(() => shuffle(videos), [videos]);
 

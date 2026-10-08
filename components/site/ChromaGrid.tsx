@@ -39,8 +39,8 @@ export const ChromaGrid = ({
 }: ChromaGridProps) => {
   const rootRef = useRef<HTMLDivElement>(null);
   const fadeRef = useRef<HTMLDivElement>(null);
-  const setX = useRef<any>(null);
-  const setY = useRef<any>(null);
+  const setX = useRef<((value: number) => void) | null>(null);
+  const setY = useRef<((value: number) => void) | null>(null);
   const pos = useRef({ x: 0, y: 0 });
 
   const demo: ChromaGridItem[] = [
@@ -115,8 +115,8 @@ export const ChromaGrid = ({
   useEffect(() => {
     const el = rootRef.current;
     if (!el) return;
-    setX.current = gsap.quickSetter(el, "--x", "px");
-    setY.current = gsap.quickSetter(el, "--y", "px");
+    setX.current = gsap.quickSetter(el, "--x", "px") as (value: number) => void;
+    setY.current = gsap.quickSetter(el, "--y", "px") as (value: number) => void;
     const { width, height } = el.getBoundingClientRect();
     pos.current = { x: width / 2, y: height / 2 };
     if (setX.current) setX.current(pos.current.x);

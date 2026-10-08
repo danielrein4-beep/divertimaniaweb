@@ -156,7 +156,6 @@ export default function AccordionGallery({
   useEffect(() => {
     applyLayout(!firstRunRef.current);
     firstRunRef.current = false;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [applyLayout]);
 
   useEffect(
