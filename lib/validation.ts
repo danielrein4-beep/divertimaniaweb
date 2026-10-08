@@ -33,3 +33,11 @@ export const TIPO_OPCION_LABEL: Record<TipoOpcion, string> = {
   VARIANTE: "Variante de personaje",
   DINAMICA: "Dinámica / juego",
 };
+
+export const TIPOS_SERVICIO_MEDIA = ["FOTO", "VIDEO"] as const;
+export type TipoServicioMedia = (typeof TIPOS_SERVICIO_MEDIA)[number];
+
+export const TIPO_SERVICIO_MEDIA_LABEL: Record<TipoServicioMedia, string> = {
+  FOTO: "Foto de galería",
+  VIDEO: "Video (Reel)",
+};

@@ -47,8 +47,27 @@ model Servicio {
   descripcion String
   fotoUrl     String?
   orden       Int      @default(0)
+  incluye     String?
+  edadIdeal   String?
+  duracion    String?
+  masPedido   Boolean  @default(false)
+  destacado   Boolean  @default(false)
+  soloAdultos Boolean  @default(false)
+  ocasiones   String?  // cumpleanos, baby-shower, quince, boda, corporativo, graduacion, navidad
+  combinaCon  String?  // IDs separados por comas
   eventos     EventoServicio[]
   opciones    Opcion[]
+  media       ServicioMedia[]
+}
+
+model ServicioMedia {
+  id         String   @id @default(cuid())
+  servicioId String
+  servicio   Servicio @relation(fields: [servicioId], references: [id], onDelete: Cascade)
+  url        String
+  tipo       String   // FOTO | VIDEO
+  poster     String?
+  orden      Int      @default(0)
 }
 
 // Variantes de un personaje (agrupadas por "grupo", ej. "Rapunzel": sola / con
