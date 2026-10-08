@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import Image from "next/image";
-import { WHATSAPP_LINK } from "@/lib/site";
+import { buildWhatsAppLink } from "@/lib/site";
 
 export type NovedadDTO = {
   id: string;
@@ -46,8 +46,11 @@ export default function NovedadesPanel({
 
   if (!canPortal) return null;
 
-  const href = novedad.ctaUrl || WHATSAPP_LINK;
-  const external = href.startsWith("http");
+  const href =
+    novedad.ctaUrl ||
+    buildWhatsAppLink(
+      `Hola Divertimania 👋 Vengo de la página web y quiero consultar la novedad: ${novedad.titulo}.`
+    );
 
   return createPortal(
     <div

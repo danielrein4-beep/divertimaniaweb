@@ -53,7 +53,10 @@ export default async function ServicioPage({ params }: { params: Promise<{ id: s
       {tieneOpciones && (
         <div className="mt-6">
           <ServicioDetalle
+            servicioId={servicio.id}
             servicioNombre={servicio.nombre}
+            servicioCategoria={servicio.categoria}
+            servicioFotoUrl={servicio.fotoUrl}
             opciones={servicio.opciones.map((o) => ({ ...o, tipo: o.tipo as TipoOpcion }))}
           />
         </div>
