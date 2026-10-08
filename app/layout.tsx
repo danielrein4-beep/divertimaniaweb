@@ -38,7 +38,7 @@ export const metadata: Metadata = {
     siteName: "Divertimania Show",
     images: [
       {
-        url: "/rapunzel-cumpleanos.png",
+        url: "/images/rapunzel-cumpleanos.png",
         width: 1200,
         height: 630,
         alt: "Divertimania - Animación de eventos en Táchira",
@@ -52,7 +52,7 @@ export const metadata: Metadata = {
     title: "Divertimania | Tu fiesta armada en 2 minutos",
     description:
       "Shows en vivo, personajes y animación de eventos en el Estado Táchira.",
-    images: ["/rapunzel-cumpleanos.png"],
+    images: ["/images/rapunzel-cumpleanos.png"],
   },
 };
 

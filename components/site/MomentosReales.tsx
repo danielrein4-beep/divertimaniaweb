@@ -6,11 +6,11 @@ import SectionHeader from "@/components/ui/SectionHeader";
 import Button from "@/components/ui/Button";
 
 const TIRA_FOTOS = [
-  { src: "/mickey-minnie-graduacion.jpg", alt: "Mickey y Minnie en graduación escolar", label: "Graduación divertida" },
-  { src: "/frozen-olaf-elsa.jpg", alt: "Elsa y Olaf show en vivo", label: "Aventura congelada" },
-  { src: "/bolas-disco-duo.jpg", alt: "Bolas Disco en 15 años", label: "Hora loca de impacto" },
-  { src: "/show-led-hoop.jpg", alt: "Show LED interactivo", label: "Luces y energía" },
-  { src: "/dia-piscina-espuma.png", alt: "Espumanía en fiesta de piscina", label: "Fiesta de piscina" },
+  { src: "/images/mickey-minnie-graduacion.jpg", alt: "Mickey y Minnie en graduación escolar", label: "Graduación divertida" },
+  { src: "/images/frozen-olaf-elsa.jpg", alt: "Elsa y Olaf show en vivo", label: "Aventura congelada" },
+  { src: "/images/bolas-disco-duo.jpg", alt: "Bolas Disco en 15 años", label: "Hora loca de impacto" },
+  { src: "/images/show-led-hoop.jpg", alt: "Show LED interactivo", label: "Luces y energía" },
+  { src: "/images/dia-piscina-espuma.png", alt: "Espumanía en fiesta de piscina", label: "Fiesta de piscina" },
 ];
 
 export default function MomentosReales() {
@@ -32,7 +32,7 @@ export default function MomentosReales() {
             <div className="relative rotate-[-1.5deg] rounded-3xl border-2 border-border/80 bg-surface/90 p-3 shadow-2xl backdrop-blur-sm transition-transform duration-300 hover:rotate-0 hover:scale-[1.02]">
               <div className="relative aspect-[4/5] w-full overflow-hidden rounded-2xl bg-surface-raised">
                 <Image
-                  src="/rapunzel-cumpleanos.png"
+                  src="/images/rapunzel-cumpleanos.png"
                   alt="Cumpleañera emocionada con Rapunzel en San Cristóbal"
                   fill
                   sizes="(max-width: 768px) 90vw, 400px"

@@ -10,9 +10,9 @@ if (!(Test-Path $outDir)) {
 $targets = @(
   @{ name = "inicio"; url = "http://localhost:3000" },
   @{ name = "catalogo"; url = "http://localhost:3000/catalogo" },
-  @{ name = "ficha_galeria"; url = "http://localhost:3000/catalogo/cmuzw4zkk000t13fxq1brxcnk" },
-  @{ name = "princesas_variantes"; url = "http://localhost:3000/catalogo/cmuzw4zkk000t13fxq1brxcnk" },
-  @{ name = "babyshower_dinamicas"; url = "http://localhost:3000/catalogo/cmuzw4zjd000c13fxp53xhv7c" },
+  @{ name = "ficha_galeria"; url = "http://localhost:3000/catalogo/cmuzx7eea000qysua1hz5ec4x" },
+  @{ name = "princesas_variantes"; url = "http://localhost:3000/catalogo/cmuzx7eea000qysua1hz5ec4x" },
+  @{ name = "babyshower_dinamicas"; url = "http://localhost:3000/catalogo/cmuzx7ed80009ysuabayaqdkf" },
   @{ name = "consulta_fecha"; url = "http://localhost:3000/disponibilidad" }
 )
 
