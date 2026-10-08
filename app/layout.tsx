@@ -14,12 +14,49 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Divertimania | Eventos y Animación en Táchira",
+  metadataBase: new URL("https://divertimaniashow.com"),
+  title: {
+    default: "Divertimania | Tu fiesta armada en 2 minutos | Táchira",
+    template: "%s | Divertimania Táchira",
+  },
   description:
-    "Creamos momentos inolvidables: bodas, 15 años, corporativos y fiestas infantiles. Animación, shows, personajes, hora loca y más.",
+    "Shows en vivo, personajes, hora loca, baby showers y fiestas infantiles en San Cristóbal y todo el Estado Táchira, Venezuela. Cotiza tu fiesta por WhatsApp en 2 minutos.",
+  keywords: [
+    "Divertimania",
+    "fiestas infantiles tachira",
+    "animacion san cristobal",
+    "personajes tachira",
+    "baby shower san cristobal",
+    "hora loca tachira",
+    "shows en vivo venezuela",
+  ],
+  openGraph: {
+    title: "Divertimania | Tu fiesta armada en 2 minutos",
+    description:
+      "Shows en vivo, personajes, hora loca y fiestas infantiles en todo el Estado Táchira.",
+    url: "https://divertimaniashow.com",
+    siteName: "Divertimania Show",
+    images: [
+      {
+        url: "/rapunzel-cumpleanos.png",
+        width: 1200,
+        height: 630,
+        alt: "Divertimania - Animación de eventos en Táchira",
+      },
+    ],
+    locale: "es_VE",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Divertimania | Tu fiesta armada en 2 minutos",
+    description:
+      "Shows en vivo, personajes y animación de eventos en el Estado Táchira.",
+    images: ["/rapunzel-cumpleanos.png"],
+  },
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html
       lang="es"
