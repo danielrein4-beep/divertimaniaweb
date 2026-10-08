@@ -1,13 +1,16 @@
 "use client";
 
+import { usePathname } from "next/navigation";
 import { useMiFiesta } from "@/context/MiFiestaContext";
+import { esFichaDeServicio } from "@/lib/site";
 import { getGeneralWhatsAppLink } from "@/lib/whatsapp";
 
 export default function WhatsAppButton() {
   const { items, isPanelOpen } = useMiFiesta();
+  const pathname = usePathname();
 
-  // Se oculta si hay al menos 1 servicio en Mi fiesta o si el panel está abierto
-  if (items.length > 0 || isPanelOpen) return null;
+  // Cede el lugar a la barra de Mi fiesta, al panel y a la barra fija de la ficha.
+  if (items.length > 0 || isPanelOpen || esFichaDeServicio(pathname)) return null;
 
   return (
     <a

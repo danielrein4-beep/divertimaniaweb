@@ -1,447 +1,161 @@
 "use client";
 
-import React, { useId } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import {
-  Trash2,
-  Calendar,
-  Clock,
-  Sparkles,
-  ArrowRight,
-  ArrowLeft,
-  CheckCircle2,
-  Send,
-  MessageCircle,
-} from "lucide-react";
+import { ArrowLeft, ArrowRight, CheckCircle2, MessageCircle, Sparkles, Trash2 } from "lucide-react";
 import { useMiFiesta } from "@/context/MiFiestaContext";
 import Sheet from "@/components/ui/Sheet";
-import Chip from "@/components/ui/Chip";
-import { getAsesoriaWhatsAppLink } from "@/lib/whatsapp";
-
-const EVENTO_TIPOS = [
-  "Cumpleaños",
-  "Baby Shower",
-  "Revelación de género",
-  "15 años",
-  "Boda",
-  "Corporativo",
-  "Graduación",
-  "Navidad",
-  "Otro",
-];
-
-const LUGARES = ["Casa", "Salón de fiestas", "Piscina o club", "Al aire libre", "Otro"];
-
-const INVITADOS = ["Hasta 15", "15-30", "30-50", "Más de 50"];
-
-const MUNICIPIOS_SUGERENCIAS = [
-  "San Cristóbal",
-  "Cárdenas",
-  "Torbes",
-  "Guásimos",
-  "Andrés Bello",
-  "Junín",
-  "Libertad",
-  "Independencia",
-  "Fernández Feo",
-  "Otro",
-];
+import EventoFormFields, { EnviarCotizacionButton } from "@/components/mifiesta/EventoFormFields";
 
 export default function MiFiestaSheet() {
-  const {
-    items,
-    removeItem,
-    clearFiesta,
-    isPanelOpen,
-    closePanel,
-    step,
-    setStep,
-    formData,
-    updateFormData,
-    sendWhatsAppCotizacion,
-    isEnviado,
-  } = useMiFiesta();
+  const { items, removeItem, clearFiesta, isPanelOpen, closePanel, step, setStep, sendWhatsAppCotizacion, isEnviado } =
+    useMiFiesta();
 
-  const dataListId = useId();
+  const titulo = isEnviado ? "¡Listo!" : step === 1 ? "Tu fiesta" : "Tu evento";
+  const descripcion = isEnviado
+    ? "Te respondemos por WhatsApp con tu cotización."
+    : step === 1
+      ? "Revisa lo que elegiste. Puedes quitar o agregar más."
+      : "Con estos datos te cotizamos sin vueltas.";
 
-  // Validación de formulario
-  const isNombreValid = Boolean(formData.nombre.trim());
-  const isFechaValid = Boolean(formData.fecha);
-  const isZonaValid = Boolean(formData.zona.trim());
-  const isFormComplete = isNombreValid && isFechaValid && isZonaValid && items.length > 0;
-
-  const getMissingFieldText = () => {
-    if (items.length === 0) return "Agrega al menos 1 servicio";
-    if (!isNombreValid) return "Escribe tu nombre";
-    if (!isFechaValid) return "Selecciona la fecha del evento";
-    if (!isZonaValid) return "Indica el municipio o zona";
-    return "Enviar cotización por WhatsApp";
-  };
+  const footer = isEnviado ? null : step === 1 ? (
+    <button
+      type="button"
+      onClick={() => setStep(2)}
+      className="touch-target flex w-full items-center justify-center gap-2 rounded-full bg-neon-green px-6 py-3.5 text-sm font-bold text-background transition-all hover:bg-neon-green-dark active:scale-[0.98]"
+    >
+      {items.length > 0 ? "Seguir: datos del evento" : "Pedir asesoría sin elegir servicios"}
+      <ArrowRight className="h-4 w-4" aria-hidden />
+    </button>
+  ) : (
+    <div className="flex items-center gap-3">
+      <button
+        type="button"
+        onClick={() => setStep(1)}
+        aria-label="Volver a tu fiesta"
+        className="touch-target shrink-0 rounded-full border border-border p-3 text-muted transition-colors hover:text-foreground"
+      >
+        <ArrowLeft className="h-5 w-5" />
+      </button>
+      <EnviarCotizacionButton />
+    </div>
+  );
 
   return (
     <Sheet
       isOpen={isPanelOpen}
       onClose={closePanel}
-      title={
-        isEnviado ? (
-          "¡Cotización lista!"
-        ) : (
-          <div className="flex items-center gap-2">
-            <span>Arma tu cotización</span>
-            <span className="rounded-full bg-neon-green/15 text-neon-green text-xs font-semibold px-2 py-0.5">
-              Paso {step} de 2
-            </span>
-          </div>
-        )
-      }
-      description={
-        isEnviado
-          ? "Te responderemos a la brevedad con la propuesta ideal."
-          : step === 1
-          ? "Revisa los shows y dinámicas que has agregado."
-          : "Cuéntanos sobre tu evento para personalizar tu presupuesto."
-      }
+      title={titulo}
+      description={descripcion}
+      footer={footer}
+      progress={isEnviado ? undefined : step / 2}
     >
-      {/* PANTALLA DE ÉXITO */}
       {isEnviado ? (
-        <div className="flex flex-col items-center justify-center text-center py-8 gap-5 animate-in fade-in zoom-in-95 duration-200">
-          <div className="w-16 h-16 rounded-full bg-neon-green/20 border border-neon-green text-neon-green flex items-center justify-center shadow-[0_0_24px_rgba(157,255,60,0.3)]">
-            <CheckCircle2 className="w-9 h-9" />
-          </div>
-
-          <div className="flex flex-col gap-2 max-w-sm">
-            <h3 className="type-h3 text-foreground font-bold">
-              ¡Listo! Te respondemos con tu cotización por WhatsApp 🎉
-            </h3>
+        <div className="flex flex-col items-center gap-5 py-8 text-center">
+          <CheckCircle2 className="h-14 w-14 text-neon-green" aria-hidden />
+          <div className="flex max-w-sm flex-col gap-2">
+            <h3 className="type-h3 font-bold">Se abrió WhatsApp con todo listo</h3>
             <p className="text-sm text-muted">
-              Se abrió WhatsApp con todos los detalles de tu fiesta listos para enviar.
-              Si no se abrió automáticamente, puedes reenviarlo con el botón de abajo.
+              Solo dale a enviar. Si no se abrió, tócalo de nuevo aquí abajo.
             </p>
           </div>
-
-          <div className="flex flex-col sm:flex-row gap-3 w-full max-w-xs mt-3">
+          <div className="flex w-full max-w-xs flex-col gap-3">
             <button
               type="button"
               onClick={sendWhatsAppCotizacion}
-              className="touch-target w-full rounded-full bg-neon-green py-3 px-5 text-sm font-bold text-[#0a0a0f] hover:bg-neon-green-dark transition-all cursor-pointer"
+              className="touch-target w-full rounded-full bg-neon-green px-5 py-3 text-sm font-bold text-background transition-colors hover:bg-neon-green-dark"
             >
-              Reenviar a WhatsApp
+              Abrir WhatsApp otra vez
             </button>
             <button
               type="button"
               onClick={clearFiesta}
-              className="touch-target w-full rounded-full border border-white/15 bg-white/5 py-3 px-5 text-sm font-semibold text-foreground hover:bg-white/10 transition-all cursor-pointer"
+              className="touch-target w-full rounded-full border border-border px-5 py-3 text-sm font-semibold transition-colors hover:border-white/30"
             >
-              Vaciar mi fiesta
+              Ya lo envié, vaciar mi fiesta
             </button>
           </div>
         </div>
-      ) : (
-        <div className="flex flex-col gap-6">
-          {/* Barra de progreso */}
-          <div className="flex items-center gap-2">
-            <div
-              className={`h-1.5 flex-1 rounded-full transition-colors ${
-                step >= 1 ? "bg-neon-green" : "bg-white/10"
-              }`}
-            />
-            <div
-              className={`h-1.5 flex-1 rounded-full transition-colors ${
-                step >= 2 ? "bg-neon-green" : "bg-white/10"
-              }`}
-            />
+      ) : step === 1 ? (
+        items.length === 0 ? (
+          <div className="flex flex-col items-center gap-4 py-10 text-center">
+            <Sparkles className="h-10 w-10 text-neon-green/70" aria-hidden />
+            <div>
+              <h3 className="type-h3 font-semibold">Tu fiesta está vacía</h3>
+              <p className="mt-1 max-w-xs text-sm text-muted">
+                Toca el <strong className="text-foreground">+</strong> en los shows y personajes que te gusten y
+                aparecerán aquí.
+              </p>
+            </div>
+            <Link
+              href="/catalogo"
+              onClick={closePanel}
+              className="touch-target rounded-full border border-neon-green/60 px-5 py-2.5 text-sm font-bold text-neon-green transition-colors hover:bg-neon-green/10"
+            >
+              Ver el catálogo
+            </Link>
           </div>
-
-          {/* PASO 1: TUS SERVICIOS */}
-          {step === 1 && (
-            <div className="flex flex-col gap-5">
-              {items.length === 0 ? (
-                <div className="flex flex-col items-center justify-center text-center py-10 gap-4">
-                  <div className="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-muted">
-                    <Sparkles className="w-7 h-7 text-neon-green/70" />
-                  </div>
-                  <div>
-                    <h3 className="type-h3 text-foreground font-semibold">Tu fiesta aún está vacía</h3>
-                    <p className="text-xs sm:text-sm text-muted mt-1 max-w-xs">
-                      Explora nuestro catálogo y presiona el botón &quot;+&quot; en los personajes o shows que más te gusten.
-                    </p>
-                  </div>
-                  <div className="flex flex-col sm:flex-row gap-2.5 mt-2 w-full max-w-xs">
-                    <Link
-                      href="/catalogo"
-                      onClick={closePanel}
-                      className="touch-target rounded-full bg-neon-green px-5 py-2.5 text-xs sm:text-sm font-bold text-[#0a0a0f] text-center hover:bg-neon-green-dark transition-colors"
-                    >
-                      Explorar catálogo
-                    </Link>
-                    <a
-                      href={getAsesoriaWhatsAppLink()}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="touch-target inline-flex items-center justify-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-2.5 text-xs sm:text-sm font-semibold text-foreground text-center hover:bg-white/10 transition-colors"
-                    >
-                      <MessageCircle className="w-4 h-4 text-neon-green" />
-                      <span>Quiero asesoría</span>
-                    </a>
-                  </div>
-                </div>
-              ) : (
-                <>
-                  <div className="flex flex-col gap-3">
-                    {items.map((item) => (
-                      <div
-                        key={item.id}
-                        className="flex items-center justify-between gap-3 p-3.5 rounded-2xl bg-[#181826] border border-white/10 hover:border-white/15 transition-colors"
-                      >
-                        <div className="flex items-center gap-3 min-w-0">
-                          <div className="relative h-14 w-14 rounded-xl overflow-hidden bg-black/40 shrink-0">
-                            {item.fotoUrl ? (
-                              <Image
-                                src={item.fotoUrl}
-                                alt={item.nombre}
-                                fill
-                                className="object-cover"
-                                sizes="56px"
-                              />
-                            ) : (
-                              <div className="flex h-full w-full items-center justify-center bg-neon-green/10 text-neon-green">
-                                <Sparkles className="w-5 h-5" />
-                              </div>
-                            )}
-                          </div>
-
-                          <div className="flex flex-col min-w-0">
-                            <span className="text-[11px] font-medium text-muted uppercase">
-                              {item.categoria}
-                            </span>
-                            <span className="text-sm font-bold text-foreground truncate">
-                              {item.nombre}
-                            </span>
-                            {item.variante && (
-                              <span className="text-xs text-neon-green font-medium truncate">
-                                Variante: {item.variante}
-                              </span>
-                            )}
-                            {item.dinamicas && item.dinamicas.length > 0 && (
-                              <span className="text-[11px] text-muted line-clamp-1">
-                                {item.dinamicas.length} dinámicas seleccionadas
-                              </span>
-                            )}
-                          </div>
-                        </div>
-
-                        <button
-                          type="button"
-                          onClick={() => removeItem(item.id)}
-                          aria-label={`Quitar ${item.nombre}`}
-                          className="touch-target p-2 rounded-full text-muted hover:text-red-400 hover:bg-red-500/10 transition-colors shrink-0 cursor-pointer"
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </button>
+        ) : (
+          <ul className="flex flex-col gap-3">
+            {items.map((item) => (
+              <li
+                key={item.id}
+                className="flex items-center justify-between gap-3 rounded-2xl border border-border bg-background-card p-3"
+              >
+                <div className="flex min-w-0 items-center gap-3">
+                  <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-xl bg-background-elevated">
+                    {item.fotoUrl ? (
+                      <Image src={item.fotoUrl} alt="" fill className="object-cover" sizes="56px" />
+                    ) : (
+                      <div className="flex h-full w-full items-center justify-center text-neon-green">
+                        <Sparkles className="h-5 w-5" aria-hidden />
                       </div>
-                    ))}
+                    )}
                   </div>
-
-                  <div className="pt-2">
-                    <button
-                      type="button"
-                      onClick={() => setStep(2)}
-                      className="touch-target w-full flex items-center justify-center gap-2 rounded-full bg-neon-green py-3 px-6 text-sm font-bold text-[#0a0a0f] hover:bg-neon-green-dark hover:scale-[1.01] active:scale-[0.98] transition-all cursor-pointer shadow-lg"
-                    >
-                      <span>Continuar con los datos del evento</span>
-                      <ArrowRight className="w-4 h-4" />
-                    </button>
-                  </div>
-                </>
-              )}
-            </div>
-          )}
-
-          {/* PASO 2: TU EVENTO */}
-          {step === 2 && (
-            <div className="flex flex-col gap-5">
-              {/* Microcopy de confianza */}
-              <div className="p-3.5 rounded-2xl bg-neon-green/5 border border-neon-green/20 text-xs text-foreground/90">
-                Cada fiesta es única: te enviamos tu cotización personalizada por WhatsApp
-                según fecha, zona y servicios.
-              </div>
-
-              {/* Formulario */}
-              <div className="flex flex-col gap-4">
-                {/* Nombre */}
-                <label className="flex flex-col gap-1.5 text-xs sm:text-sm font-medium">
-                  Tu nombre completo <span className="text-neon-green">*</span>
-                  <input
-                    type="text"
-                    required
-                    value={formData.nombre}
-                    onChange={(e) => updateFormData({ nombre: e.target.value })}
-                    placeholder="Ej. Daniela Pérez"
-                    className="rounded-xl border border-white/10 bg-[#161622] px-3.5 py-2.5 text-sm text-foreground placeholder:text-muted/60 outline-none focus:border-neon-green"
-                  />
-                </label>
-
-                {/* Tipo de evento */}
-                <div className="flex flex-col gap-1.5 text-xs sm:text-sm font-medium">
-                  <span>Tipo de evento <span className="text-neon-green">*</span></span>
-                  <div className="flex flex-wrap gap-1.5">
-                    {EVENTO_TIPOS.map((tipo) => (
-                      <Chip
-                        key={tipo}
-                        selected={formData.tipoEvento === tipo}
-                        onClick={() => updateFormData({ tipoEvento: tipo })}
-                      >
-                        {tipo}
-                      </Chip>
-                    ))}
+                  <div className="flex min-w-0 flex-col">
+                    <span className="truncate text-sm font-bold">{item.nombre}</span>
+                    {item.variante && <span className="truncate text-xs text-neon-green">{item.variante}</span>}
+                    {item.dinamicas && item.dinamicas.length > 0 && (
+                      <span className="line-clamp-2 text-xs text-muted">{item.dinamicas.join(", ")}</span>
+                    )}
+                    {!item.variante && !item.dinamicas?.length && (
+                      <span className="truncate text-xs text-muted">{item.categoria}</span>
+                    )}
                   </div>
                 </div>
-
-                {/* Cumpleañero (condicional) */}
-                {formData.tipoEvento === "Cumpleaños" && (
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 p-3.5 rounded-2xl bg-white/[0.03] border border-white/10">
-                    <label className="flex flex-col gap-1 text-xs font-medium">
-                      Nombre del cumpleañero/a
-                      <input
-                        type="text"
-                        value={formData.cumpleaneroNombre || ""}
-                        onChange={(e) => updateFormData({ cumpleaneroNombre: e.target.value })}
-                        placeholder="Ej. Sofía"
-                        className="rounded-lg border border-white/10 bg-[#161622] px-3 py-2 text-xs sm:text-sm text-foreground outline-none focus:border-neon-green"
-                      />
-                    </label>
-                    <label className="flex flex-col gap-1 text-xs font-medium">
-                      Edad que cumple
-                      <input
-                        type="text"
-                        value={formData.cumpleaneroEdad || ""}
-                        onChange={(e) => updateFormData({ cumpleaneroEdad: e.target.value })}
-                        placeholder="Ej. 5"
-                        className="rounded-lg border border-white/10 bg-[#161622] px-3 py-2 text-xs sm:text-sm text-foreground outline-none focus:border-neon-green"
-                      />
-                    </label>
-                  </div>
-                )}
-
-                {/* Fecha y Hora */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <label className="flex flex-col gap-1.5 text-xs sm:text-sm font-medium">
-                    <span className="flex items-center gap-1.5">
-                      <Calendar className="w-3.5 h-3.5 text-neon-green" />
-                      Fecha de la fiesta <span className="text-neon-green">*</span>
-                    </span>
-                    <input
-                      type="date"
-                      required
-                      value={formData.fecha}
-                      onChange={(e) => updateFormData({ fecha: e.target.value })}
-                      className="rounded-xl border border-white/10 bg-[#161622] px-3.5 py-2.5 text-sm text-foreground outline-none focus:border-neon-green"
-                    />
-                  </label>
-
-                  <label className="flex flex-col gap-1.5 text-xs sm:text-sm font-medium">
-                    <span className="flex items-center gap-1.5">
-                      <Clock className="w-3.5 h-3.5 text-muted" />
-                      Hora de inicio (opcional)
-                    </span>
-                    <input
-                      type="text"
-                      value={formData.horaInicio || ""}
-                      onChange={(e) => updateFormData({ horaInicio: e.target.value })}
-                      placeholder="Ej. 3:00 PM"
-                      className="rounded-xl border border-white/10 bg-[#161622] px-3.5 py-2.5 text-sm text-foreground placeholder:text-muted/60 outline-none focus:border-neon-green"
-                    />
-                  </label>
-                </div>
-
-                {/* Zona o Municipio */}
-                <label className="flex flex-col gap-1.5 text-xs sm:text-sm font-medium">
-                  Municipio o zona <span className="text-neon-green">*</span>
-                  <input
-                    type="text"
-                    required
-                    list={dataListId}
-                    value={formData.zona}
-                    onChange={(e) => updateFormData({ zona: e.target.value })}
-                    placeholder="Ej. San Cristóbal, Cárdenas, Barrio Obrero..."
-                    className="rounded-xl border border-white/10 bg-[#161622] px-3.5 py-2.5 text-sm text-foreground placeholder:text-muted/60 outline-none focus:border-neon-green"
-                  />
-                  <datalist id={dataListId}>
-                    {MUNICIPIOS_SUGERENCIAS.map((m) => (
-                      <option key={m} value={m} />
-                    ))}
-                  </datalist>
-                </label>
-
-                {/* Lugar */}
-                <div className="flex flex-col gap-1.5 text-xs sm:text-sm font-medium">
-                  <span>Lugar del evento <span className="text-neon-green">*</span></span>
-                  <div className="flex flex-wrap gap-1.5">
-                    {LUGARES.map((lugar) => (
-                      <Chip
-                        key={lugar}
-                        selected={formData.lugar === lugar}
-                        onClick={() => updateFormData({ lugar })}
-                      >
-                        {lugar}
-                      </Chip>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Invitados aproximados */}
-                <div className="flex flex-col gap-1.5 text-xs sm:text-sm font-medium">
-                  <span>Cantidad aproximada de invitados <span className="text-neon-green">*</span></span>
-                  <div className="flex flex-wrap gap-1.5">
-                    {INVITADOS.map((inv) => (
-                      <Chip
-                        key={inv}
-                        selected={formData.invitados === inv}
-                        onClick={() => updateFormData({ invitados: inv })}
-                      >
-                        {inv}
-                      </Chip>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Comentarios */}
-                <label className="flex flex-col gap-1.5 text-xs sm:text-sm font-medium">
-                  Detalles o requerimientos adicionales (opcional)
-                  <textarea
-                    rows={2}
-                    value={formData.comentarios || ""}
-                    onChange={(e) => updateFormData({ comentarios: e.target.value })}
-                    placeholder="Cuéntanos si tienes temáticas especiales o dudas..."
-                    className="rounded-xl border border-white/10 bg-[#161622] px-3.5 py-2.5 text-sm text-foreground placeholder:text-muted/60 outline-none focus:border-neon-green"
-                  />
-                </label>
-              </div>
-
-              {/* Botón de envío síncrono */}
-              <div className="flex items-center gap-3 pt-2">
                 <button
                   type="button"
-                  onClick={() => setStep(1)}
-                  className="touch-target rounded-full p-2.5 border border-white/10 bg-white/5 text-muted hover:text-foreground hover:bg-white/10 transition-colors"
-                  aria-label="Volver al paso 1"
+                  onClick={() => removeItem(item.id)}
+                  aria-label={`Quitar ${item.nombre}${item.variante ? ` (${item.variante})` : ""}`}
+                  className="touch-target shrink-0 rounded-full p-2 text-muted transition-colors hover:bg-red-500/10 hover:text-red-400"
                 >
-                  <ArrowLeft className="w-5 h-5" />
+                  <Trash2 className="h-4 w-4" />
                 </button>
-
-                <button
-                  type="button"
-                  disabled={!isFormComplete}
-                  onClick={sendWhatsAppCotizacion}
-                  className="touch-target flex-1 flex items-center justify-center gap-2 rounded-full bg-neon-green py-3.5 px-6 text-sm font-bold text-[#0a0a0f] hover:bg-neon-green-dark hover:scale-[1.01] active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none transition-all cursor-pointer shadow-lg"
-                >
-                  <Send className="w-4 h-4" />
-                  <span>{getMissingFieldText()}</span>
-                </button>
-              </div>
-            </div>
+              </li>
+            ))}
+            <li>
+              <Link
+                href="/catalogo"
+                onClick={closePanel}
+                className="flex items-center justify-center gap-2 rounded-2xl border border-dashed border-border p-3 text-sm font-medium text-muted transition-colors hover:border-neon-green/60 hover:text-neon-green"
+              >
+                + Agregar algo más
+              </Link>
+            </li>
+          </ul>
+        )
+      ) : (
+        <div className="flex flex-col gap-5">
+          {items.length === 0 && (
+            <p className="flex items-start gap-2 rounded-2xl border border-border bg-background-card p-3.5 text-sm text-muted">
+              <MessageCircle className="mt-0.5 h-4 w-4 shrink-0 text-neon-green" aria-hidden />
+              No elegiste servicios: te recomendamos lo ideal según tu evento.
+            </p>
           )}
+          <EventoFormFields />
+          <p className="text-xs text-muted">
+            No publicamos precios porque cada fiesta es distinta: te cotizamos según fecha, zona y servicios.
+          </p>
         </div>
       )}
     </Sheet>

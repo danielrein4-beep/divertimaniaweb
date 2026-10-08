@@ -1,102 +1,92 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import { useEffect, useRef, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import { X } from "lucide-react";
+import { useIsClient } from "@/lib/useIsClient";
 
 export interface SheetProps {
   isOpen: boolean;
   onClose: () => void;
-  title?: React.ReactNode;
-  description?: React.ReactNode;
-  children: React.ReactNode;
-  footer?: React.ReactNode;
+  title?: ReactNode;
+  description?: ReactNode;
+  children: ReactNode;
+  footer?: ReactNode;
+  /** 0 a 1: muestra una barra de progreso bajo el encabezado. */
+  progress?: number;
 }
 
-export default function Sheet({
-  isOpen,
-  onClose,
-  title,
-  description,
-  children,
-  footer,
-}: SheetProps) {
-  const [mounted, setMounted] = useState(false);
+/** Bottom sheet en celular, panel lateral en escritorio. */
+export default function Sheet({ isOpen, onClose, title, description, children, footer, progress }: SheetProps) {
+  const isClient = useIsClient();
+  const panelRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  // Lock body scroll and handle Escape key
   useEffect(() => {
     if (!isOpen) return;
 
+    const previousFocus = document.activeElement as HTMLElement | null;
     const originalOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
+    panelRef.current?.focus();
 
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
     };
-
     window.addEventListener("keydown", handleKeyDown);
+
     return () => {
       document.body.style.overflow = originalOverflow;
       window.removeEventListener("keydown", handleKeyDown);
+      previousFocus?.focus?.();
     };
   }, [isOpen, onClose]);
 
-  if (!mounted || !isOpen) return null;
+  if (!isClient || !isOpen) return null;
 
   return createPortal(
-    <div
-      role="dialog"
-      aria-modal="true"
-      className="fixed inset-0 z-50 flex justify-end items-end md:items-stretch"
-    >
-      {/* Backdrop */}
-      <div
-        onClick={onClose}
-        className="fixed inset-0 bg-black/75 backdrop-blur-sm transition-opacity animate-in fade-in duration-200"
-      />
+    <div className="fixed inset-0 z-[60] flex items-end justify-end md:items-stretch">
+      <div onClick={onClose} className="anim-fade fixed inset-0 bg-black/70 backdrop-blur-sm" aria-hidden />
 
-      {/* Sheet Content: Bottom Sheet on Mobile, Slide-over on Desktop */}
-      <div className="relative z-10 w-full md:max-w-xl flex flex-col bg-[#12121a] border-t md:border-t-0 md:border-l border-white/10 shadow-2xl rounded-t-3xl md:rounded-none max-h-[92vh] md:max-h-full h-auto md:h-full animate-in slide-in-from-bottom md:slide-in-from-right duration-250 ease-out">
-        {/* Mobile Drag Pill */}
-        <div className="flex md:hidden justify-center pt-3 pb-1">
-          <div className="w-12 h-1.5 rounded-full bg-white/20" />
+      <div
+        ref={panelRef}
+        role="dialog"
+        aria-modal="true"
+        aria-label={typeof title === "string" ? title : undefined}
+        tabIndex={-1}
+        className="anim-sheet relative z-10 flex max-h-[92dvh] w-full flex-col rounded-t-3xl border-t border-border bg-background-elevated shadow-2xl outline-none md:h-full md:max-h-full md:max-w-lg md:rounded-none md:border-l md:border-t-0"
+      >
+        <div className="flex justify-center pt-3 md:hidden" aria-hidden>
+          <div className="h-1.5 w-12 rounded-full bg-white/20" />
         </div>
 
-        {/* Header */}
-        <div className="flex items-start justify-between px-6 py-4 border-b border-white/10 shrink-0">
-          <div className="flex flex-col gap-1 pr-4">
-            {typeof title === "string" ? (
-              <h2 className="type-h3 text-foreground font-bold tracking-tight">{title}</h2>
-            ) : (
-              title
-            )}
-            {description && (
-              <p className="text-xs sm:text-sm text-muted">{description}</p>
-            )}
+        <div className="flex shrink-0 items-start justify-between gap-4 px-5 pb-3 pt-3 md:px-6 md:pt-6">
+          <div className="flex flex-col gap-1">
+            {typeof title === "string" ? <h2 className="type-h3 font-bold">{title}</h2> : title}
+            {description && <p className="text-sm text-muted">{description}</p>}
           </div>
-
           <button
             type="button"
             onClick={onClose}
-            aria-label="Cerrar panel"
-            className="touch-target -mr-2 rounded-full p-2.5 text-muted hover:text-foreground hover:bg-white/10 transition-colors"
+            aria-label="Cerrar"
+            className="touch-target -mr-2 rounded-full p-2.5 text-muted transition-colors hover:bg-white/10 hover:text-foreground"
           >
-            <X className="w-5 h-5" />
+            <X className="h-5 w-5" />
           </button>
         </div>
 
-        {/* Scrollable Body */}
-        <div className="flex-1 overflow-y-auto px-6 py-5 overscroll-contain">
-          {children}
-        </div>
+        {progress !== undefined && (
+          <div className="mx-5 h-1 shrink-0 overflow-hidden rounded-full bg-white/10 md:mx-6" aria-hidden>
+            <div
+              className="h-full rounded-full bg-neon-green transition-[width] duration-300"
+              style={{ width: `${Math.round(progress * 100)}%` }}
+            />
+          </div>
+        )}
 
-        {/* Optional Sticky Footer */}
+        <div className="flex-1 overflow-y-auto overscroll-contain px-5 py-5 md:px-6">{children}</div>
+
         {footer && (
-          <div className="p-4 sm:px-6 sm:py-4 border-t border-white/10 bg-[#161622] shrink-0">
+          <div className="shrink-0 border-t border-border bg-background-elevated px-5 py-4 pb-[max(1rem,env(safe-area-inset-bottom))] md:px-6">
             {footer}
           </div>
         )}

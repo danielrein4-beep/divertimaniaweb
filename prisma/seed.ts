@@ -310,7 +310,7 @@ const servicios: ServicioSeed[] = [
   {
     categoria: "Personajes",
     nombre: "Plim Plim",
-    descripcion: "[COMPLETAR]",
+    descripcion: "Show del payaso Plim Plim para los más pequeños de la casa.",
     fotoUrl: "/images/plim-plim-animacion.png",
     incluye: "Personaje oficial del Payaso Plim Plim\nCanciones de valores y amistad\nFotos y momento especial en la torta",
     edadIdeal: "1 a 5 años",
@@ -332,7 +332,7 @@ const servicios: ServicioSeed[] = [
     duracion: "1.5 horas",
     masPedido: false,
     destacado: false,
-    soloAdultos: true,
+    soloAdultos: false,
     ocasiones: "quince,boda,corporativo,graduacion",
   },
   {
@@ -365,7 +365,7 @@ const servicios: ServicioSeed[] = [
   {
     categoria: "Show para Adultos",
     nombre: "Show LED",
-    descripcion: "[COMPLETAR]",
+    descripcion: "Bailarines con trajes, aros y luces LED para encender la pista.",
     fotoUrl: "/images/show-led-hoop.jpg",
     incluye: "Bailarines y anfitriones con trajes LED de última generación\nAro de luz futurista y gafas luminosas\nVaras de luz neón para los invitados a la pista\nShow visual impactante para bodas y 15 años",
     edadIdeal: "Jóvenes y adultos",
@@ -385,7 +385,7 @@ const servicios: ServicioSeed[] = [
     masPedido: false,
     destacado: false,
     soloAdultos: true,
-    ocasiones: "corporativo",
+    ocasiones: "",
   },
 
   // Estación Creativa
@@ -529,11 +529,11 @@ async function main() {
   await prisma.novedad.create({
     data: {
       badge: "Temporada 2026",
-      titulo: "Shows navideños 2026 🎄",
+      titulo: "Shows navideños 2026",
       descripcion: "Mickey y Minnie vestidos de Navidad con duendes y animación especial de fin de año. ¡Aparta tu fecha con anticipación!",
       fotoUrl: "/images/mickey-navidad-show.png",
       ctaTexto: "Consultar fecha navideña",
-      ctaUrl: "/catalogo",
+      ctaUrl: "/catalogo?ocasion=navidad",
       activo: true,
       fechaInicio: new Date("2026-10-01T00:00:00.000Z"),
       fechaFin: new Date("2027-01-15T23:59:59.000Z"),

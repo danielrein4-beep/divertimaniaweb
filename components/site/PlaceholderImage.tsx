@@ -5,12 +5,15 @@ interface PlaceholderImageProps {
   label: string;
   categoria?: string;
   className?: string;
+  /** Solo la inicial grande, sin textos (para tarjetas que ya muestran el nombre encima). */
+  compact?: boolean;
 }
 
 export default function PlaceholderImage({
   label,
   categoria = "",
   className = "",
+  compact = false,
 }: PlaceholderImageProps) {
   // Configuración por categoría
   const getTheme = () => {
@@ -73,6 +76,19 @@ export default function PlaceholderImage({
 
   const theme = getTheme();
   const IconComponent = theme.Icon;
+
+  if (compact) {
+    return (
+      <div
+        aria-hidden
+        className={`relative flex items-start justify-center overflow-hidden bg-gradient-to-br pt-[18%] ${theme.gradient} select-none ${className}`}
+      >
+        <span className={`font-display text-[5.5rem] font-extrabold leading-none opacity-30 ${theme.iconColor}`}>
+          {label.trim().charAt(0).toUpperCase()}
+        </span>
+      </div>
+    );
+  }
 
   return (
     <div

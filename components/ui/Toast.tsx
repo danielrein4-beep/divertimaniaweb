@@ -22,11 +22,12 @@ export function ToastProvider({ children }: { children: ReactNode }) {
 
   const showToast = useCallback((message: string, type: ToastType = "success") => {
     const id = Math.random().toString(36).substring(2, 9);
-    setToasts((prev) => [...prev, { id, message, type }]);
+    // Uno a la vez: el aviso nuevo reemplaza al anterior.
+    setToasts([{ id, message, type }]);
 
     setTimeout(() => {
       setToasts((prev) => prev.filter((t) => t.id !== id));
-    }, 3200);
+    }, 2600);
   }, []);
 
   const removeToast = (id: string) => {
@@ -37,12 +38,12 @@ export function ToastProvider({ children }: { children: ReactNode }) {
     <ToastContext.Provider value={{ showToast }}>
       {children}
       {/* Toast container floating at bottom-center on mobile, top-right on desktop */}
-      <div className="fixed z-[100] bottom-20 md:bottom-auto md:top-6 left-1/2 -translate-x-1/2 md:translate-x-0 md:left-auto md:right-6 flex flex-col gap-2 max-w-sm w-[90vw] pointer-events-none">
+      <div className="fixed z-[55] bottom-24 md:bottom-auto md:top-6 left-1/2 -translate-x-1/2 md:translate-x-0 md:left-auto md:right-6 flex flex-col gap-2 max-w-sm w-[90vw] pointer-events-none">
         {toasts.map((toast) => (
           <div
             key={toast.id}
             role="status"
-            className="pointer-events-auto flex items-center justify-between gap-3 px-4 py-3 rounded-2xl bg-[#161622]/95 border border-white/15 text-foreground shadow-2xl backdrop-blur-md animate-in fade-in slide-in-from-bottom-2 md:slide-in-from-top-2 duration-200"
+            className="pointer-events-auto flex items-center justify-between gap-3 px-4 py-3 rounded-2xl bg-[#161622]/95 border border-white/15 text-foreground shadow-2xl backdrop-blur-md anim-rise"
           >
             <div className="flex items-center gap-2.5">
               {toast.type === "success" && (

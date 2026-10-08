@@ -197,3 +197,37 @@ h1, h2, h3, h4, .font-display {
     scroll-behavior: auto !important;
   }
 }
+
+/* Animaciones de entrada (cortas, se apagan con prefers-reduced-motion) */
+@keyframes anim-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes anim-rise {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes anim-sheet-up {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+@keyframes anim-sheet-left {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+@keyframes anim-pop {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.18); }
+  100% { transform: scale(1); }
+}
+.anim-fade { animation: anim-fade 0.2s ease-out both; }
+.anim-rise { animation: anim-rise 0.3s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.anim-pop { animation: anim-pop 0.35s ease-out; }
+.anim-sheet { animation: anim-sheet-up 0.32s cubic-bezier(0.22, 1, 0.36, 1) both; }
+@media (min-width: 768px) {
+  .anim-sheet { animation-name: anim-sheet-left; }
+}
+
+/* Carruseles con scroll horizontal sin barra visible */
+.scrollbar-none { scrollbar-width: none; }
+.scrollbar-none::-webkit-scrollbar { display: none; }

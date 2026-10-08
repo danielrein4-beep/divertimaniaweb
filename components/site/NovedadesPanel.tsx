@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import Image from "next/image";
 import { buildWhatsAppLink } from "@/lib/site";
+import { useIsClient } from "@/lib/useIsClient";
 
 export type NovedadDTO = {
   id: string;
@@ -26,11 +27,9 @@ export default function NovedadesPanel({
   fadeMs?: number;
   onComplete: () => void;
 }) {
-  const [canPortal, setCanPortal] = useState(false);
+  const canPortal = useIsClient();
   const [visible, setVisible] = useState(false);
   const [fading, setFading] = useState(false);
-
-  useEffect(() => setCanPortal(true), []);
 
   useEffect(() => {
     const raf = requestAnimationFrame(() => setVisible(true));

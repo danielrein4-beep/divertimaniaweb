@@ -1,18 +1,18 @@
 "use client";
 
-import React, { useRef, useState } from "react";
+import { useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Plus, Check, Flame, Clock, Users, ShieldAlert } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { Check, Clock, Flame, Plus, Users } from "lucide-react";
 import { useMiFiesta } from "@/context/MiFiestaContext";
 import PlaceholderImage from "@/components/site/PlaceholderImage";
-import Badge from "./Badge";
 
 export interface ServicioCardProps {
   id: string;
   nombre: string;
   categoria: string;
-  descripcion: string;
+  descripcion?: string;
   fotoUrl?: string | null;
   videoUrl?: string | null;
   posterUrl?: string | null;
@@ -22,6 +22,8 @@ export interface ServicioCardProps {
   destacado?: boolean;
   soloAdultos?: boolean;
   priority?: boolean;
+  /** Tiene variantes o dinámicas: el "+" lleva a la ficha para elegirlas. */
+  tieneOpciones?: boolean;
 }
 
 export default function ServicioCard({
@@ -36,48 +38,45 @@ export default function ServicioCard({
   masPedido,
   soloAdultos,
   priority = false,
+  tieneOpciones = false,
 }: ServicioCardProps) {
   const { isInFiesta, toggleItem } = useMiFiesta();
+  const router = useRouter();
   const added = isInFiesta(id);
-  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
 
-  const handleMouseEnter = () => {
-    if (videoUrl && videoRef.current) {
-      videoRef.current
-        .play()
-        .then(() => setIsPlaying(true))
-        .catch(() => {});
-    }
+  // Video de muestra solo con mouse (en celular no se descarga).
+  const startVideo = () => {
+    videoRef.current
+      ?.play()
+      .then(() => setIsPlaying(true))
+      .catch(() => {});
+  };
+  const stopVideo = () => {
+    if (!videoRef.current) return;
+    videoRef.current.pause();
+    videoRef.current.currentTime = 0;
+    setIsPlaying(false);
   };
 
-  const handleMouseLeave = () => {
-    if (videoUrl && videoRef.current) {
-      videoRef.current.pause();
-      videoRef.current.currentTime = 0;
-      setIsPlaying(false);
+  const handleAdd = () => {
+    if (tieneOpciones) {
+      router.push(`/catalogo/${id}`);
+      return;
     }
-  };
-
-  const handleAddClick = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    toggleItem({
-      servicioId: id,
-      nombre,
-      categoria,
-      fotoUrl,
-    });
+    toggleItem({ servicioId: id, nombre, categoria, fotoUrl });
   };
 
   return (
     <div
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-      className="group relative flex flex-col overflow-hidden rounded-2xl bg-[#14141e] border border-white/10 shadow-lg hover:border-white/25 hover:shadow-2xl transition-all duration-300"
+      onMouseEnter={videoUrl ? startVideo : undefined}
+      onMouseLeave={videoUrl ? stopVideo : undefined}
+      className={`group relative overflow-hidden rounded-2xl border bg-background-card transition-colors ${
+        added ? "border-neon-green/70" : "border-border hover:border-white/25"
+      }`}
     >
-      <Link href={`/catalogo/${id}`} className="block relative aspect-[4/5] w-full overflow-hidden bg-black/40">
-        {/* Foto a sangre o Placeholder */}
+      <Link href={`/catalogo/${id}`} className="relative block aspect-[4/5] w-full overflow-hidden">
         {fotoUrl ? (
           <Image
             src={fotoUrl}
@@ -85,89 +84,86 @@ export default function ServicioCard({
             fill
             priority={priority}
             sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-            className={`object-cover transition-transform duration-500 ease-out group-hover:scale-105 ${
-              isPlaying ? "opacity-0" : "opacity-100"
-            }`}
+            className="object-cover transition-transform duration-500 ease-out group-hover:scale-105"
           />
         ) : (
-          <PlaceholderImage label={nombre} categoria={categoria} className="h-full w-full" />
+          <PlaceholderImage label={nombre} categoria={categoria} compact className="h-full w-full" />
         )}
 
-        {/* Video en hover en escritorio */}
         {videoUrl && (
           <video
             ref={videoRef}
             src={videoUrl}
-            poster={posterUrl || fotoUrl || undefined}
+            poster={posterUrl || undefined}
             muted
             loop
             playsInline
             preload="none"
+            aria-hidden
             className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-300 ${
-              isPlaying ? "opacity-100" : "opacity-0 pointer-events-none"
+              isPlaying ? "opacity-100" : "opacity-0"
             }`}
           />
         )}
 
-        {/* Degradado oscuro abajo para contraste y legibilidad óptima */}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0f] via-[#0a0a0f]/40 to-transparent opacity-90 pointer-events-none" />
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/90 via-black/25 to-transparent" />
 
-        {/* Badges superiores */}
-        <div className="absolute top-3 left-3 right-3 flex items-start justify-between gap-1.5 pointer-events-none">
-          <div className="flex flex-wrap items-center gap-1.5 max-w-[80%]">
+        {(masPedido || soloAdultos) && (
+          <div className="pointer-events-none absolute left-2.5 top-2.5 flex flex-wrap gap-1.5">
             {soloAdultos && (
-              <Badge variant="danger" size="sm" icon={<ShieldAlert className="w-3 h-3" />}>
-                +18
-              </Badge>
+              <span className="rounded-full bg-red-500/90 px-2 py-0.5 text-[11px] font-bold text-white">+18</span>
             )}
             {masPedido && (
-              <Badge variant="gold" size="sm" icon={<Flame className="w-3 h-3 text-amber-400" />}>
+              <span className="inline-flex items-center gap-1 rounded-full bg-black/60 px-2 py-0.5 text-[11px] font-semibold text-gold backdrop-blur-sm">
+                <Flame className="h-3 w-3" aria-hidden />
                 Más pedido
-              </Badge>
+              </span>
             )}
           </div>
-        </div>
+        )}
 
-        {/* Botón circular "+" flotante (✓ cuando ya está en Mi fiesta) */}
-        <button
-          type="button"
-          onClick={handleAddClick}
-          aria-label={added ? `Quitar ${nombre} de mi fiesta` : `Agregar ${nombre} a mi fiesta`}
-          className={`absolute bottom-3.5 right-3.5 z-10 touch-target w-11 h-11 rounded-full flex items-center justify-center transition-all duration-200 shadow-xl cursor-pointer ${
-            added
-              ? "bg-neon-green text-[#0a0a0f] scale-105 shadow-[0_0_16px_rgba(157,255,60,0.4)]"
-              : "bg-[#181824]/90 text-foreground hover:bg-neon-green hover:text-[#0a0a0f] border border-white/15 hover:border-neon-green active:scale-95"
-          }`}
-        >
-          {added ? <Check className="w-5 h-5 stroke-[2.5]" /> : <Plus className="w-5 h-5 stroke-[2.5]" />}
-        </button>
-
-        {/* Nombre y metadatos sobre la foto */}
-        <div className="absolute bottom-3 left-3.5 right-16 flex flex-col gap-1 pointer-events-none">
-          <span className="text-[11px] font-semibold tracking-wider text-muted/90 uppercase line-clamp-1">
-            {categoria}
-          </span>
-          <h3 className="type-h3 text-foreground font-bold text-base sm:text-lg leading-tight line-clamp-2 drop-shadow-md group-hover:text-neon-green transition-colors">
+        <div className="pointer-events-none absolute inset-x-3 bottom-3 pr-12">
+          <h3 className="line-clamp-2 font-display text-base font-extrabold leading-tight text-white sm:text-lg">
             {nombre}
           </h3>
-
-          {/* Badges sutiles de edad o duración */}
-          <div className="flex items-center gap-2 mt-0.5 text-xs text-muted/80">
-            {edadIdeal && (
-              <span className="inline-flex items-center gap-1">
-                <Users className="w-3 h-3" />
-                <span>{edadIdeal}</span>
-              </span>
-            )}
-            {duracion && (
-              <span className="inline-flex items-center gap-1">
-                <Clock className="w-3 h-3" />
-                <span>{duracion}</span>
-              </span>
-            )}
-          </div>
+          {(edadIdeal || duracion) && (
+            <p className="mt-1 hidden items-center gap-3 text-xs text-white/70 sm:flex">
+              {edadIdeal && (
+                <span className="inline-flex items-center gap-1">
+                  <Users className="h-3 w-3" aria-hidden />
+                  {edadIdeal}
+                </span>
+              )}
+              {duracion && (
+                <span className="inline-flex items-center gap-1">
+                  <Clock className="h-3 w-3" aria-hidden />
+                  {duracion}
+                </span>
+              )}
+            </p>
+          )}
         </div>
       </Link>
+
+      <button
+        type="button"
+        onClick={handleAdd}
+        aria-label={
+          tieneOpciones
+            ? `Elegir opciones de ${nombre}`
+            : added
+              ? `Quitar ${nombre} de mi fiesta`
+              : `Agregar ${nombre} a mi fiesta`
+        }
+        aria-pressed={tieneOpciones ? undefined : added}
+        className={`absolute bottom-2.5 right-2.5 z-10 flex h-11 w-11 items-center justify-center rounded-full shadow-lg transition-all active:scale-90 ${
+          added
+            ? "anim-pop bg-neon-green text-background"
+            : "border border-white/20 bg-black/60 text-white backdrop-blur-sm hover:border-neon-green hover:bg-neon-green hover:text-background"
+        }`}
+      >
+        {added ? <Check className="h-5 w-5 stroke-[2.5]" /> : <Plus className="h-5 w-5 stroke-[2.5]" />}
+      </button>
     </div>
   );
 }
