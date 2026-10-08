@@ -36,6 +36,7 @@ interface MiFiestaContextValue {
   clearFiesta: () => void;
   isPanelOpen: boolean;
   openPanel: (step?: 1 | 2) => void;
+  openSheet: (step?: 1 | 2) => void;
   closePanel: () => void;
   step: 1 | 2;
   setStep: (step: 1 | 2) => void;
@@ -288,6 +289,7 @@ Mi nombre es ${formData.nombre.trim()}.`;
         clearFiesta,
         isPanelOpen,
         openPanel,
+        openSheet: openPanel,
         closePanel,
         step,
         setStep,

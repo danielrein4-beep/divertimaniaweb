@@ -75,7 +75,7 @@ export default function QueCelebras() {
   };
 
   return (
-    <section className="mx-auto max-w-6xl px-4 sm:px-6 py-12">
+    <section id="que-celebras" className="mx-auto max-w-6xl px-4 sm:px-6 py-12 scroll-mt-20">
       <SectionHeader
         title="¿Qué estás celebrando hoy?"
         underlineWord="celebrando"
