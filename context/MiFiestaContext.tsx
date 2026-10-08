@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useCallback, useContext, useMemo, useState, useSyncExternalStore, type ReactNode } from "react";
+import { createContext, useCallback, useContext, useMemo, useRef, useState, useSyncExternalStore, type ReactNode } from "react";
 import { buildWhatsAppLink } from "@/lib/site";
 import { useToast } from "@/components/ui/Toast";
 import {
@@ -32,10 +32,22 @@ interface MiFiestaContextValue {
   formData: EventoFormData;
   updateFormData: (data: Partial<EventoFormData>) => void;
   sendWhatsAppCotizacion: () => void;
+  /** Vuelve a abrir WhatsApp con el mismo mensaje, sin registrar otra solicitud. */
+  reabrirWhatsApp: () => void;
   isEnviado: boolean;
 }
 
 const MiFiestaContext = createContext<MiFiestaContextValue | null>(null);
+
+// Se abre en el mismo clic (sin await antes) para que el navegador no lo bloquee.
+function abrirWhatsApp(mensaje: string) {
+  const link = buildWhatsAppLink(mensaje);
+  if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+    window.location.href = link;
+  } else {
+    window.open(link, "_blank", "noopener,noreferrer");
+  }
+}
 
 export function MiFiestaProvider({ children }: { children: ReactNode }) {
   const { items, form } = useSyncExternalStore(
@@ -46,6 +58,7 @@ export function MiFiestaProvider({ children }: { children: ReactNode }) {
   const [isPanelOpen, setIsPanelOpen] = useState(false);
   const [step, setStep] = useState<1 | 2>(1);
   const [isEnviado, setIsEnviado] = useState(false);
+  const ultimoMensajeRegistrado = useRef<string | null>(null);
   const { showToast } = useToast();
 
   const getItem = useCallback(
@@ -110,19 +123,17 @@ export function MiFiestaProvider({ children }: { children: ReactNode }) {
   const sendWhatsAppCotizacion = useCallback(() => {
     const { items: actuales, form: datos } = miFiestaStore.getSnapshot();
     const mensaje = buildMensajeCotizacion(actuales, datos);
-
-    // Se abre en el mismo clic (sin await antes) para que el navegador no lo bloquee.
-    const link = buildWhatsAppLink(mensaje);
-    if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-      window.location.href = link;
-    } else {
-      window.open(link, "_blank", "noopener,noreferrer");
-    }
+    abrirWhatsApp(mensaje);
+    setIsEnviado(true);
 
     // Copia para la bandeja del admin, sin bloquear la apertura de WhatsApp.
+    // El mismo mensaje exacto no se registra dos veces seguidas.
+    if (ultimoMensajeRegistrado.current === mensaje) return;
+    ultimoMensajeRegistrado.current = mensaje;
+    const telefono = datos.telefono.trim();
     const payload = JSON.stringify({
       nombre: datos.nombre.trim().slice(0, 120),
-      telefono: "Por WhatsApp",
+      telefono: telefono.length >= 6 ? telefono.slice(0, 30) : "Por WhatsApp",
       mensaje: mensaje.slice(0, 2000),
       fechaDeseada: datos.fecha,
     });
@@ -137,8 +148,11 @@ export function MiFiestaProvider({ children }: { children: ReactNode }) {
         keepalive: true,
       }).catch(() => {});
     }
+  }, []);
 
-    setIsEnviado(true);
+  const reabrirWhatsApp = useCallback(() => {
+    const { items: actuales, form: datos } = miFiestaStore.getSnapshot();
+    abrirWhatsApp(buildMensajeCotizacion(actuales, datos));
   }, []);
 
   const value = useMemo<MiFiestaContextValue>(
@@ -158,9 +172,10 @@ export function MiFiestaProvider({ children }: { children: ReactNode }) {
       formData: form,
       updateFormData,
       sendWhatsAppCotizacion,
+      reabrirWhatsApp,
       isEnviado,
     }),
-    [items, addItem, removeItem, toggleItem, isInFiesta, getItem, clearFiesta, isPanelOpen, openPanel, closePanel, step, form, updateFormData, sendWhatsAppCotizacion, isEnviado]
+    [items, addItem, removeItem, toggleItem, isInFiesta, getItem, clearFiesta, isPanelOpen, openPanel, closePanel, step, form, updateFormData, sendWhatsAppCotizacion, reabrirWhatsApp, isEnviado]
   );
 
   return <MiFiestaContext.Provider value={value}>{children}</MiFiestaContext.Provider>;

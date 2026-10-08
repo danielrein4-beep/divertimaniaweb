@@ -61,6 +61,21 @@ export default function EventoFormFields() {
         />
       </label>
 
+      <label className="flex flex-col gap-1.5 text-sm font-medium">
+        <span>
+          Tu teléfono <span className="font-normal text-muted">(opcional, por si no nos llega tu mensaje)</span>
+        </span>
+        <input
+          type="tel"
+          inputMode="tel"
+          autoComplete="tel"
+          value={formData.telefono}
+          onChange={(e) => updateFormData({ telefono: e.target.value })}
+          placeholder="Ej. 0414 123 4567"
+          className={inputClass}
+        />
+      </label>
+
       <fieldset className="flex flex-col gap-2">
         <legend className="mb-2 text-sm font-medium">
           ¿Qué celebras?
@@ -214,7 +229,7 @@ export default function EventoFormFields() {
 /** Botón final: dice qué falta hasta que el formulario está completo. */
 export function EnviarCotizacionButton({ className = "" }: { className?: string }) {
   const { formData, sendWhatsAppCotizacion } = useMiFiesta();
-  const falta = primerCampoFaltante(formData);
+  const falta = primerCampoFaltante(formData, todayStr());
 
   return (
     <button

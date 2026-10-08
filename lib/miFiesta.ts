@@ -14,6 +14,7 @@ export interface MiFiestaItem {
 
 export interface EventoFormData {
   nombre: string;
+  telefono: string;
   tipoEvento: string;
   fecha: string;
   horaInicio: string;
@@ -32,6 +33,7 @@ export interface MiFiestaState {
 
 export const FORM_VACIO: EventoFormData = {
   nombre: "",
+  telefono: "",
   tipoEvento: "",
   fecha: "",
   horaInicio: "",
@@ -50,13 +52,41 @@ const SERVER_STATE: MiFiestaState = { items: [], form: FORM_VACIO };
 let state: MiFiestaState | null = null;
 const listeners = new Set<() => void>();
 
+function texto(v: unknown): string {
+  return typeof v === "string" ? v : "";
+}
+
+// Lo guardado puede venir de una versión anterior o estar dañado: se limpia campo por campo.
+function limpiarItems(raw: unknown): MiFiestaItem[] {
+  if (!Array.isArray(raw)) return [];
+  return raw.flatMap((i): MiFiestaItem[] => {
+    if (!i || typeof i !== "object") return [];
+    const o = i as Record<string, unknown>;
+    if (typeof o.servicioId !== "string" || typeof o.nombre !== "string") return [];
+    const item: Omit<MiFiestaItem, "id"> = {
+      servicioId: o.servicioId,
+      nombre: o.nombre,
+      categoria: texto(o.categoria),
+      fotoUrl: typeof o.fotoUrl === "string" ? o.fotoUrl : null,
+      variante: typeof o.variante === "string" ? o.variante : null,
+      dinamicas: Array.isArray(o.dinamicas) ? o.dinamicas.filter((d): d is string => typeof d === "string") : undefined,
+    };
+    return [{ ...item, id: itemId(item) }];
+  });
+}
+
+function limpiarForm(raw: unknown): EventoFormData {
+  const o = raw && typeof raw === "object" ? (raw as Record<string, unknown>) : {};
+  const form = { ...FORM_VACIO };
+  for (const key of Object.keys(FORM_VACIO) as (keyof EventoFormData)[]) form[key] = texto(o[key]);
+  return form;
+}
+
 function load(): MiFiestaState {
   try {
-    const items = JSON.parse(localStorage.getItem(STORAGE_KEY_ITEMS) ?? "[]");
-    const form = JSON.parse(localStorage.getItem(STORAGE_KEY_FORM) ?? "{}");
     return {
-      items: Array.isArray(items) ? items : [],
-      form: { ...FORM_VACIO, ...(form && typeof form === "object" ? form : {}) },
+      items: limpiarItems(JSON.parse(localStorage.getItem(STORAGE_KEY_ITEMS) ?? "[]")),
+      form: limpiarForm(JSON.parse(localStorage.getItem(STORAGE_KEY_FORM) ?? "{}")),
     };
   } catch {
     return SERVER_STATE;
@@ -115,9 +145,12 @@ export const CAMPOS_OBLIGATORIOS: { campo: keyof EventoFormData; falta: string }
   { campo: "invitados", falta: "Elige cuántos invitados" },
 ];
 
-export function primerCampoFaltante(form: EventoFormData): string | null {
+export function primerCampoFaltante(form: EventoFormData, hoy: string): string | null {
   const faltante = CAMPOS_OBLIGATORIOS.find(({ campo }) => !form[campo].trim());
-  return faltante ? faltante.falta : null;
+  if (faltante) return faltante.falta;
+  // La fecha se recuerda entre visitas: puede haber quedado en el pasado.
+  if (form.fecha < hoy) return "La fecha ya pasó, elige otra";
+  return null;
 }
 
 const DIAS = ["domingo", "lunes", "martes", "miércoles", "jueves", "viernes", "sábado"];

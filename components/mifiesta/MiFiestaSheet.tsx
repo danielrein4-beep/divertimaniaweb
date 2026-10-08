@@ -8,7 +8,7 @@ import Sheet from "@/components/ui/Sheet";
 import EventoFormFields, { EnviarCotizacionButton } from "@/components/mifiesta/EventoFormFields";
 
 export default function MiFiestaSheet() {
-  const { items, removeItem, clearFiesta, isPanelOpen, closePanel, step, setStep, sendWhatsAppCotizacion, isEnviado } =
+  const { items, removeItem, clearFiesta, isPanelOpen, closePanel, step, setStep, reabrirWhatsApp, isEnviado } =
     useMiFiesta();
 
   const titulo = isEnviado ? "¡Listo!" : step === 1 ? "Tu fiesta" : "Tu evento";
@@ -62,7 +62,7 @@ export default function MiFiestaSheet() {
           <div className="flex w-full max-w-xs flex-col gap-3">
             <button
               type="button"
-              onClick={sendWhatsAppCotizacion}
+              onClick={reabrirWhatsApp}
               className="touch-target w-full rounded-full bg-neon-green px-5 py-3 text-sm font-bold text-background transition-colors hover:bg-neon-green-dark"
             >
               Abrir WhatsApp otra vez
