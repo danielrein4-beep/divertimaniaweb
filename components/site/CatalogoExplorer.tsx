@@ -191,6 +191,8 @@ export default function CatalogoExplorer({
             </p>
             <a
               href={whatsapp.link(buscando ? MENSAJES_WHATSAPP.noEncontrado(busqueda.trim()) : MENSAJES_WHATSAPP.asesoria())}
+              data-origen={buscando ? "catalogo-busqueda" : "catalogo-asesoria"}
+              data-detalle={buscando ? busqueda.trim() : undefined}
               target="_blank"
               rel="noopener noreferrer"
               className="touch-target rounded-full bg-neon-green px-6 text-sm font-bold text-background"
@@ -235,6 +237,7 @@ export default function CatalogoExplorer({
           <p className="max-w-md text-muted">Cuéntanos de tu evento y te recomendamos el combo ideal.</p>
           <a
             href={whatsapp.link(MENSAJES_WHATSAPP.asesoria())}
+            data-origen="catalogo-asesoria"
             target="_blank"
             rel="noopener noreferrer"
             className="touch-target rounded-full border border-neon-green/60 px-6 text-sm font-bold text-neon-green transition-colors hover:bg-neon-green/10"

@@ -17,6 +17,7 @@ export default function WhatsAppButton() {
   return (
     <a
       href={whatsapp.link(MENSAJES_WHATSAPP.general())}
+      data-origen="boton-flotante"
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Escríbenos por WhatsApp para consultar"

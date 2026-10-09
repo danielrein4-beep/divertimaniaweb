@@ -26,6 +26,7 @@ export default async function ContactoPage() {
           <li>
             <a
               href={buildWhatsAppLink(whatsapp, MENSAJES_WHATSAPP.general())}
+              data-origen="contacto"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-3 font-semibold hover:text-neon-green"

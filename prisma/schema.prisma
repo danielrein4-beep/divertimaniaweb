@@ -162,3 +162,19 @@ model ConfiguracionSitio {
   whatsapp  String // solo dígitos con código de país, ej. 584147286881
   updatedAt DateTime @updatedAt
 }
+
+// Medición propia del sitio (sin servicios externos ni cookies de terceros).
+// tipo: VISITA | WHATSAPP | COTIZACION | INSTAGRAM
+// visitante: id anónimo aleatorio guardado en el navegador, para contar personas y no recargas.
+model Metrica {
+  id        String   @id @default(cuid())
+  tipo      String
+  origen    String? // dónde se tocó: ficha, boton-flotante, pie, catalogo, consulta-fecha...
+  detalle   String? // servicio o servicios relacionados
+  pagina    String?
+  visitante String?
+  createdAt DateTime @default(now())
+
+  @@index([tipo, createdAt])
+  @@index([createdAt])
+}

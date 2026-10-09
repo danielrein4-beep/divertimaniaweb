@@ -49,6 +49,7 @@ export default async function Footer() {
 
           <a
             href={buildWhatsAppLink(whatsapp, MENSAJES_WHATSAPP.general())}
+            data-origen="pie"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 text-foreground/90 hover:text-neon-green transition-colors group"

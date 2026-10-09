@@ -10,6 +10,7 @@ import {
   type EventoFormData,
   type MiFiestaItem,
 } from "@/lib/miFiesta";
+import { registrarMetrica } from "@/lib/metricas";
 
 export type { EventoFormData, MiFiestaItem } from "@/lib/miFiesta";
 
@@ -130,6 +131,10 @@ export function MiFiestaProvider({ children }: { children: ReactNode }) {
     // El mismo mensaje exacto no se registra dos veces seguidas.
     if (ultimoMensajeRegistrado.current === mensaje) return;
     ultimoMensajeRegistrado.current = mensaje;
+    registrarMetrica("COTIZACION", {
+      origen: "mi-fiesta",
+      detalle: actuales.map((i) => i.nombre).join(", "),
+    });
     const telefono = datos.telefono.trim();
     const payload = JSON.stringify({
       nombre: datos.nombre.trim().slice(0, 120),

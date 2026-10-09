@@ -70,6 +70,8 @@ export default function FichaBar({
         ) : (
           <a
             href={whatsapp.link(MENSAJES_WHATSAPP.servicio(nombre))}
+            data-origen="ficha"
+            data-detalle={nombre}
             target="_blank"
             rel="noopener noreferrer"
             className="touch-target shrink-0 rounded-full border border-white/20 px-4 text-sm font-semibold transition-colors hover:border-neon-green hover:text-neon-green"

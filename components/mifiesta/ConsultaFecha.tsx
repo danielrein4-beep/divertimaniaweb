@@ -36,6 +36,7 @@ export default function ConsultaFecha() {
       {fecha && (
         <a
           href={whatsapp.link(MENSAJES_WHATSAPP.fecha(formatFechaAmigable(fecha)))}
+          data-origen="consulta-fecha"
           target="_blank"
           rel="noopener noreferrer"
           className="text-sm text-muted underline-offset-4 hover:text-foreground hover:underline"

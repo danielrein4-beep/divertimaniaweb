@@ -63,6 +63,7 @@ export default async function EquipoPage() {
         <h2 className="text-2xl font-bold">¿Quieres a este equipo en tu evento?</h2>
         <a
           href={buildWhatsAppLink(whatsapp, MENSAJES_WHATSAPP.equipo())}
+          data-origen="equipo"
           target="_blank"
           rel="noopener noreferrer"
           className="rounded-full bg-neon-green px-6 py-3 font-semibold text-background transition-transform hover:scale-105"

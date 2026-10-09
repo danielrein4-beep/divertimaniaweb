@@ -7,6 +7,7 @@ import { ToastProvider } from "@/components/ui/Toast";
 import { MiFiestaProvider } from "@/context/MiFiestaContext";
 import MiFiestaBar from "@/components/mifiesta/MiFiestaBar";
 import MiFiestaSheet from "@/components/mifiesta/MiFiestaSheet";
+import Medidor from "@/components/site/Medidor";
 
 export default function PublicProviders({ config, children }: { config: ConfigSitio; children: ReactNode }) {
   return (
@@ -16,6 +17,7 @@ export default function PublicProviders({ config, children }: { config: ConfigSi
           {children}
           <MiFiestaBar />
           <MiFiestaSheet />
+          <Medidor />
         </MiFiestaProvider>
       </ToastProvider>
     </SitioConfigProvider>
