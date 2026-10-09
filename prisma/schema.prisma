@@ -40,9 +40,18 @@ model Evento {
   updatedAt   DateTime     @updatedAt
 }
 
+// Secciones del catálogo. Servicio.categoria guarda el nombre (al renombrar se actualizan los servicios).
+model Categoria {
+  id     String @id @default(cuid())
+  nombre String @unique
+  color  String @default("#a8ff30")
+  orden  Int    @default(0)
+}
+
 model Servicio {
   id          String   @id @default(cuid())
   categoria   String
+  activo      Boolean  @default(true) // false = oculto en el sitio, sin borrarlo
   nombre      String
   descripcion String
   fotoUrl     String?

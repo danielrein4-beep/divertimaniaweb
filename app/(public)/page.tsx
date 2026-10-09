@@ -8,12 +8,13 @@ import GaleriaViva from "@/components/site/GaleriaViva";
 import MomentosReales from "@/components/site/MomentosReales";
 import CotizarButtons from "@/components/site/CotizarButtons";
 import { prisma } from "@/lib/db";
+import { getCategorias } from "@/lib/categorias";
 
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
   const now = new Date();
-  const [novedad, personajes, destacados, totalPersonajes] = await Promise.all([
+  const [novedad, personajes, destacados, totalPersonajes, categorias, conServicios] = await Promise.all([
     prisma.novedad.findFirst({
       where: {
         activo: true,
@@ -26,12 +27,12 @@ export default async function Home() {
       select: { id: true, titulo: true, badge: true, ctaUrl: true },
     }),
     prisma.servicio.findMany({
-      where: { categoria: "Personajes", soloAdultos: false, fotoUrl: { not: null } },
+      where: { activo: true, categoria: "Personajes", soloAdultos: false, fotoUrl: { not: null } },
       select: { id: true, nombre: true, fotoUrl: true },
       orderBy: { orden: "asc" },
     }),
     prisma.servicio.findMany({
-      where: { destacado: true, soloAdultos: false, fotoUrl: { not: null } },
+      where: { activo: true, destacado: true, soloAdultos: false, fotoUrl: { not: null } },
       include: {
         media: { where: { tipo: "VIDEO" }, orderBy: { orden: "asc" }, take: 1 },
         _count: { select: { opciones: true } },
@@ -39,12 +40,14 @@ export default async function Home() {
       orderBy: { orden: "asc" },
       take: 4,
     }),
-    prisma.servicio.count({ where: { categoria: "Personajes", soloAdultos: false } }),
+    prisma.servicio.count({ where: { activo: true, categoria: "Personajes", soloAdultos: false } }),
+    getCategorias(),
+    prisma.servicio.findMany({ where: { activo: true }, distinct: ["categoria"], select: { categoria: true } }),
   ]);
 
   return (
     <div>
-      <Hero novedad={novedad} />
+      <Hero novedad={novedad} categorias={categorias.map((c) => c.nombre).filter((n) => conServicios.some((s) => s.categoria === n))} />
       <QueCelebras />
       <ShowsEstrella
         shows={destacados.map((s) => ({

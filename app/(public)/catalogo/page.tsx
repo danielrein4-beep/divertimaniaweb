@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { prisma } from "@/lib/db";
+import { getCategorias } from "@/lib/categorias";
 import CatalogoExplorer, { type ServicioCatalogo } from "@/components/site/CatalogoExplorer";
 
 export const dynamic = "force-dynamic";
@@ -16,13 +17,17 @@ export default async function CatalogoPage({
   searchParams: Promise<{ categoria?: string; ocasion?: string; q?: string }>;
 }) {
   const { categoria, ocasion, q } = await searchParams;
-  const servicios = await prisma.servicio.findMany({
-    orderBy: { orden: "asc" },
-    include: {
-      media: { where: { tipo: "VIDEO" }, orderBy: { orden: "asc" }, take: 1 },
-      _count: { select: { opciones: true } },
-    },
-  });
+  const [servicios, categorias] = await Promise.all([
+    prisma.servicio.findMany({
+      where: { activo: true },
+      orderBy: { orden: "asc" },
+      include: {
+        media: { where: { tipo: "VIDEO" }, orderBy: { orden: "asc" }, take: 1 },
+        _count: { select: { opciones: true } },
+      },
+    }),
+    getCategorias(),
+  ]);
 
   const data: ServicioCatalogo[] = servicios.map((s) => ({
     id: s.id,
@@ -43,6 +48,7 @@ export default async function CatalogoPage({
   return (
     <CatalogoExplorer
       servicios={data}
+      categorias={categorias}
       categoriaInicial={categoria ?? null}
       ocasionInicial={ocasion ?? null}
       busquedaInicial={q ?? ""}

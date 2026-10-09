@@ -1,62 +1,56 @@
 import { notFound } from "next/navigation";
-import Link from "next/link";
 import { prisma } from "@/lib/db";
+import { getCategorias } from "@/lib/categorias";
 import OpcionesManager from "@/components/admin/OpcionesManager";
-import MediaManager from "@/components/admin/MediaManager";
-import ServicioCamposEditor from "@/components/admin/ServicioCamposEditor";
+import ServicioEditor from "@/components/admin/ServicioEditor";
 import { type TipoOpcion, type TipoServicioMedia } from "@/lib/validation";
 
 export const dynamic = "force-dynamic";
 
-export default async function AdminServicioOpcionesPage({ params }: { params: Promise<{ id: string }> }) {
+export default async function AdminServicioPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const servicio = await prisma.servicio.findUnique({
-    where: { id },
-    include: {
-      opciones: { orderBy: { orden: "asc" } },
-      media: { orderBy: { orden: "asc" } },
-    },
-  });
+  const [servicio, categorias, otros] = await Promise.all([
+    prisma.servicio.findUnique({
+      where: { id },
+      include: {
+        opciones: { orderBy: { orden: "asc" } },
+        media: { orderBy: { orden: "asc" } },
+      },
+    }),
+    getCategorias(),
+    prisma.servicio.findMany({
+      where: { id: { not: id } },
+      orderBy: [{ categoria: "asc" }, { orden: "asc" }],
+      select: { id: true, nombre: true, categoria: true },
+    }),
+  ]);
 
   if (!servicio) notFound();
+  const { opciones, media, ...campos } = servicio;
 
   return (
-    <div className="flex flex-col gap-8 pb-16">
-      <div>
-        <Link href="/admin/catalogo" className="text-sm text-muted hover:text-neon-green">
-          ← Volver al Catálogo
-        </Link>
-        <h1 className="mb-1 mt-2 text-3xl font-extrabold">{servicio.nombre}</h1>
-        <p className="text-sm text-muted">
-          Categoría: <span className="font-semibold text-foreground">{servicio.categoria}</span>
-        </p>
-      </div>
-
-      {/* Editor de campos y metadatos */}
-      <ServicioCamposEditor initialServicio={servicio} />
-
-      {/* Gestor de Fotos secundarias y Reels */}
-      <MediaManager
-        servicioId={servicio.id}
-        initialMedia={servicio.media.map((m) => ({
-          ...m,
-          tipo: m.tipo as TipoServicioMedia,
-        }))}
+    <div className="mx-auto max-w-6xl">
+      <ServicioEditor
+        servicio={campos}
+        categorias={categorias.map((c) => c.nombre)}
+        otros={otros}
+        media={media.map((m) => ({ ...m, tipo: m.tipo as TipoServicioMedia }))}
+        extra={
+          <section className="card-glass flex flex-col gap-4 rounded-2xl p-5">
+            <div>
+              <h2 className="text-lg font-bold">Variantes y dinámicas</h2>
+              <p className="mt-0.5 text-sm text-muted">
+                Opciones que el cliente elige al cotizar: por ejemplo “Rapunzel sola” o “con el príncipe”, o los juegos de
+                un baby shower. Se guardan al momento.
+              </p>
+            </div>
+            <OpcionesManager
+              servicioId={servicio.id}
+              initialOpciones={opciones.map((o) => ({ ...o, tipo: o.tipo as TipoOpcion }))}
+            />
+          </section>
+        }
       />
-
-      {/* Gestor de Variantes y Dinámicas */}
-      <div>
-        <div className="mb-4">
-          <h2 className="text-lg font-semibold text-foreground">Variantes de Personaje o Dinámicas de Juego</h2>
-          <p className="text-xs text-muted">
-            Configura opciones específicas para cotizaciones (ej: princesa sola o con príncipe, dinámicas de baby shower).
-          </p>
-        </div>
-        <OpcionesManager
-          servicioId={servicio.id}
-          initialOpciones={servicio.opciones.map((o) => ({ ...o, tipo: o.tipo as TipoOpcion }))}
-        />
-      </div>
     </div>
   );
 }

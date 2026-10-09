@@ -30,6 +30,7 @@ const updateServicioSchema = z.object({
   masPedido: z.boolean().optional(),
   destacado: z.boolean().optional(),
   soloAdultos: z.boolean().optional(),
+  activo: z.boolean().optional(),
   ocasiones: z.string().trim().nullable().optional(),
   combinaCon: z.string().trim().nullable().optional(),
   orden: z.number().int().optional(),
@@ -57,4 +58,25 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
 
   const servicio = await prisma.servicio.update({ where: { id }, data });
   return NextResponse.json({ servicio });
+}
+
+/** Borra un servicio con sus fotos y opciones. Si ya está en eventos, se pide ocultarlo en vez de borrarlo. */
+export async function DELETE(_request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  const denied = await requireAdmin();
+  if (denied) return denied;
+
+  const { id } = await params;
+  const enEventos = await prisma.eventoServicio.count({ where: { servicioId: id } });
+  if (enEventos > 0) {
+    return NextResponse.json(
+      {
+        error: `Este servicio está en ${enEventos} evento${enEventos === 1 ? "" : "s"} del calendario. Ocúltalo en vez de borrarlo para no perder ese historial.`,
+      },
+      { status: 409 }
+    );
+  }
+
+  const borrado = await prisma.servicio.deleteMany({ where: { id } });
+  if (!borrado.count) return NextResponse.json({ error: "Servicio no encontrado" }, { status: 404 });
+  return NextResponse.json({ ok: true });
 }

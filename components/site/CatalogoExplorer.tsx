@@ -5,7 +5,8 @@ import { ChevronDown, Search, X } from "lucide-react";
 import ServicioCard from "@/components/ui/ServicioCard";
 import HandDrawnUnderline from "@/components/ui/HandDrawnUnderline";
 import CatalogoPortada from "@/components/site/CatalogoPortada";
-import { CATEGORIAS, PERFIL_IG } from "@/lib/site";
+import { PERFIL_IG } from "@/lib/site";
+import type { CategoriaInfo } from "@/lib/categorias-comun";
 import { MENSAJES_WHATSAPP } from "@/lib/whatsapp";
 import { useWhatsApp } from "@/components/site/SitioConfigProvider";
 import { OCASIONES, getOcasion } from "@/lib/ocasiones";
@@ -27,18 +28,8 @@ export type ServicioCatalogo = {
 };
 
 const MAX_POR_CATEGORIA = 4;
-const CATEGORIA_ADULTOS = "Show para Adultos";
 /** Alto del menú fijo de arriba (la barra de categorías se pega en top-[60px]). */
 const ALTO_MENU = 60;
-
-const COLOR_CATEGORIA: Record<string, string> = {
-  "Fiestas Infantiles": "var(--cat-infantil)",
-  "Baby Shower": "var(--cat-babyshower)",
-  Personajes: "var(--cat-personajes)",
-  "Show para Adultos": "var(--cat-adultos)",
-  "Estación Creativa": "var(--cat-creativa)",
-  Atracciones: "var(--cat-atracciones)",
-};
 
 function normalizar(texto: string) {
   return texto.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
@@ -56,17 +47,24 @@ function syncUrl(params: { categoria: string | null; ocasion: string | null }) {
 
 export default function CatalogoExplorer({
   servicios,
+  categorias: todasLasCategorias,
   categoriaInicial,
   ocasionInicial,
   busquedaInicial,
 }: {
   servicios: ServicioCatalogo[];
+  categorias: CategoriaInfo[];
   categoriaInicial: string | null;
   ocasionInicial: string | null;
   busquedaInicial: string;
 }) {
+  // Solo las secciones que tienen algo visible (una sección nueva y vacía no aparece).
+  const categorias = todasLasCategorias.filter((c) => servicios.some((s) => s.categoria === c.nombre));
+  const nombres = categorias.map((c) => c.nombre);
+  const colorDe = (nombre: string) => categorias.find((c) => c.nombre === nombre)?.color ?? "var(--neon-green)";
+
   const [categoria, setCategoria] = useState<string | null>(
-    CATEGORIAS.includes(categoriaInicial as (typeof CATEGORIAS)[number]) ? categoriaInicial : null
+    categoriaInicial && nombres.includes(categoriaInicial) ? categoriaInicial : null
   );
   const [ocasion, setOcasion] = useState<string | null>(getOcasion(ocasionInicial)?.slug ?? null);
   const [busqueda, setBusqueda] = useState(busquedaInicial);
@@ -100,7 +98,7 @@ export default function CatalogoExplorer({
     () =>
       servicios.filter((s) => {
         // El contenido +18 solo aparece dentro de su categoría, nunca en "Todas" ni en la búsqueda.
-        if (s.soloAdultos && (categoria !== CATEGORIA_ADULTOS || buscando)) return false;
+        if (s.soloAdultos && (categoria !== s.categoria || buscando)) return false;
         if (!buscando && categoria && s.categoria !== categoria) return false;
         if (ocasion && !s.ocasiones.includes(ocasion)) return false;
         if (buscando) return normalizar(`${s.nombre} ${s.descripcion} ${s.categoria}`).includes(termino);
@@ -109,13 +107,9 @@ export default function CatalogoExplorer({
     [servicios, categoria, ocasion, buscando, termino]
   );
 
-  const porCategoria = useMemo(
-    () =>
-      CATEGORIAS.map((c) => ({ categoria: c, items: filtrados.filter((s) => s.categoria === c) })).filter(
-        (g) => g.items.length > 0
-      ),
-    [filtrados]
-  );
+  const porCategoria = nombres
+    .map((c) => ({ categoria: c, items: filtrados.filter((s) => s.categoria === c) }))
+    .filter((g) => g.items.length > 0);
 
   // "Todo" no cuenta lo +18, igual que el listado.
   const totalVisible = servicios.filter((s) => !s.soloAdultos).length;
@@ -221,7 +215,7 @@ export default function CatalogoExplorer({
       {/* Pestañas de categoría: fijas bajo el menú, una sola línea con scroll horizontal */}
       <div className="sticky top-[60px] z-30 border-b border-border bg-background/90 backdrop-blur-md">
         <div className="scrollbar-none mx-auto flex max-w-6xl gap-7 overflow-x-auto px-4 sm:px-6" role="tablist" aria-label="Categorías">
-          {[null, ...CATEGORIAS].map((c) => {
+          {[null, ...nombres].map((c) => {
             const activa = !buscando && categoria === c;
             const total = c ? servicios.filter((s) => s.categoria === c).length : totalVisible;
             return (
@@ -287,7 +281,7 @@ export default function CatalogoExplorer({
                   <div>
                     <span
                       className="mb-2 block h-1 w-10 rounded-full"
-                      style={{ background: COLOR_CATEGORIA[c] ?? "var(--neon-green)" }}
+                      style={{ background: colorDe(c) }}
                       aria-hidden
                     />
                     <h2 id={`cat-${c}`} className="type-h2 font-display font-extrabold">

@@ -43,3 +43,22 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
 
   return NextResponse.json({ media }, { status: 201 });
 }
+
+const ordenSchema = z.object({ ids: z.array(z.string().min(1)).min(1).max(200) });
+
+/** Guarda el orden de la galería: el índice en la lista pasa a ser su `orden`. */
+export async function PUT(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  const denied = await requireAdmin();
+  if (denied) return denied;
+
+  const { id } = await params;
+  const parsed = ordenSchema.safeParse(await request.json().catch(() => null));
+  if (!parsed.success) return NextResponse.json({ error: "Datos inválidos" }, { status: 400 });
+
+  await prisma.$transaction(
+    parsed.data.ids.map((mediaId, orden) =>
+      prisma.servicioMedia.updateMany({ where: { id: mediaId, servicioId: id }, data: { orden } })
+    )
+  );
+  return NextResponse.json({ ok: true });
+}

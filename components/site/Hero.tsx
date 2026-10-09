@@ -6,7 +6,7 @@ import { ArrowRight, Sparkles } from "lucide-react";
 import IntroMontage, { posterDeReel } from "@/components/site/IntroMontage";
 import MaskedHeading from "@/components/site/MaskedHeading";
 import { useMiFiesta } from "@/context/MiFiestaContext";
-import { CATEGORIAS, INSTAGRAM_URL, PERFIL_IG } from "@/lib/site";
+import { INSTAGRAM_URL, PERFIL_IG } from "@/lib/site";
 
 // Clips cortos (6 s, sin audio) generados por scripts/comprimir-videos.mjs.
 const REELS_INTRO = Array.from({ length: 12 }, (_, i) => `/reels/intro/reel-${i + 1}.mp4`);
@@ -33,7 +33,7 @@ function useIntroVista() {
 
 export type NovedadHero = { id: string; titulo: string; badge: string; ctaUrl: string | null };
 
-export default function Hero({ novedad }: { novedad: NovedadHero | null }) {
+export default function Hero({ novedad, categorias }: { novedad: NovedadHero | null; categorias: string[] }) {
   const introVista = useIntroVista();
   const [introTerminada, setIntroTerminada] = useState(false);
   const mostrarIntro = !introVista && !introTerminada;
@@ -138,7 +138,7 @@ export default function Hero({ novedad }: { novedad: NovedadHero | null }) {
         {/* Accesos directos a cada sección del catálogo */}
         <nav aria-label="Ir directo al catálogo" className="w-full max-w-3xl">
           <ul className="scrollbar-none -mx-4 flex gap-2 overflow-x-auto px-4 sm:mx-0 sm:flex-wrap sm:justify-center sm:px-0">
-            {CATEGORIAS.map((c) => (
+            {categorias.map((c) => (
               <li key={c} className="shrink-0">
                 <Link
                   href={`/catalogo?categoria=${encodeURIComponent(c)}`}

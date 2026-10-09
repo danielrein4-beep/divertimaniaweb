@@ -26,7 +26,7 @@ const getServicio = cache((id: string) =>
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
   const { id } = await params;
   const servicio = await getServicio(id);
-  if (!servicio) return {};
+  if (!servicio?.activo) return {};
   const title = `${servicio.nombre} | Divertimania`;
   const description = servicio.descripcion.slice(0, 160);
   const images = servicio.fotoUrl ? [{ url: servicio.fotoUrl, alt: servicio.nombre }] : undefined;
@@ -36,12 +36,12 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
 export default async function ServicioPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const servicio = await getServicio(id);
-  if (!servicio) notFound();
+  if (!servicio || !servicio.activo) notFound();
 
   const relacionadosIds = (servicio.combinaCon ?? "").split(",").map((s) => s.trim()).filter(Boolean);
   const relacionados = relacionadosIds.length
     ? await prisma.servicio.findMany({
-        where: { id: { in: relacionadosIds }, soloAdultos: false },
+        where: { id: { in: relacionadosIds }, soloAdultos: false, activo: true },
         include: { _count: { select: { opciones: true } } },
         take: 3,
       })
