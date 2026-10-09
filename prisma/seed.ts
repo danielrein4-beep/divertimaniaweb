@@ -114,6 +114,7 @@ const servicios: ServicioSeed[] = [
     categoria: "Personajes",
     nombre: "Toy Story",
     descripcion: "Buzz Lightyear, Woody y Jesse.",
+    fotoUrl: "/images/toy-story-buzz.jpg",
     incluye: "Aparición de personajes temáticos\nBaile espacial con Woody y Buzz\nSesión fotográfica con invitados\nMomento especial para cantarle el cumpleaños",
     edadIdeal: "2 a 8 años",
     duracion: "1 hora",
@@ -151,6 +152,7 @@ const servicios: ServicioSeed[] = [
     categoria: "Personajes",
     nombre: "Show de Paw Patrol",
     descripcion: "Ryder, Chase, Marshall, Rubble, Skye, Rodky y Zuma.",
+    fotoUrl: "/images/paw-patrol-grupo.jpg",
     incluye: "Patrulla canina en vivo\nMisión interactiva con los niños invitados\nFotos grupales y momento de la torta",
     edadIdeal: "2 a 6 años",
     duracion: "1 hora",
@@ -163,6 +165,7 @@ const servicios: ServicioSeed[] = [
     categoria: "Personajes",
     nombre: "Show Granja de Zenón",
     descripcion: "Vaca Loca, Batolito (Gallo) y León.",
+    fotoUrl: "/images/granja-zenon.jpg",
     incluye: "Personajes musicales de la granja\nRonda infantil con canciones tradicionales\nAnimación tierna para los más pequeñitos",
     edadIdeal: "1 a 4 años",
     duracion: "1 hora",
@@ -237,6 +240,7 @@ const servicios: ServicioSeed[] = [
     categoria: "Personajes",
     nombre: "LOL Surprise",
     descripcion: "LOL Diva, LOL Unicornio y LOL Abeja.",
+    fotoUrl: "/images/lol-surprise.jpg",
     incluye: "Muñecas gigantes con vestidos brillantes\nPasarela de moda infantil interactiva\nFotos y baile glam",
     edadIdeal: "3 a 8 años",
     duracion: "1 hora",
@@ -261,6 +265,7 @@ const servicios: ServicioSeed[] = [
     categoria: "Personajes",
     nombre: "Peppa y George",
     descripcion: "Peppa Pig y su hermano George.",
+    fotoUrl: "/images/peppa-george.jpg",
     incluye: "Presencia de los dos cerditos favoritos\nCanciones infantiles y saltos en charcos de barro (juego)\nFotos familiares",
     edadIdeal: "1 a 4 años",
     duracion: "1 hora",
@@ -273,6 +278,7 @@ const servicios: ServicioSeed[] = [
     categoria: "Personajes",
     nombre: "Blippi",
     descripcion: "Aprendizaje y diversión con Blippi.",
+    fotoUrl: "/images/blippi.jpg",
     incluye: "Animador caracterizado como Blippi\nJuegos de curiosidad y aprendizaje activo\nCanciones icónicas y baile de la excavadora",
     edadIdeal: "2 a 6 años",
     duracion: "1 hora",
@@ -298,7 +304,7 @@ const servicios: ServicioSeed[] = [
     nombre: "Princesas Disney",
     descripcion:
       "Sirenita (Ariel, Sebastián, Úrsula), Aladdín (Jazmín, Genio, Jafar), Frozen (Elsa, Ana, Olaf), Aurora, Maléfica, Cenicienta, Blanca Nieves y Moana.",
-    fotoUrl: "/images/frozen-olaf-elsa.jpg",
+    fotoUrl: "/images/princesas-disney-grupo.jpg",
     incluye: "Princesas en trajes de gala de alta costura teatral\nVals de la princesa con la cumpleañera\nMomento mágico de coronación\nSesión de fotos de ensueño",
     edadIdeal: "2 a 9 años",
     duracion: "1 hora",
@@ -409,6 +415,7 @@ const servicios: ServicioSeed[] = [
     categoria: "Atracciones",
     nombre: "Castillos Inflables",
     descripcion: "Castillo inflable 4x5 y castillo inflable 3x3.",
+    fotoUrl: "/images/castillo-inflable.jpg",
     incluye: "Inflable limpio y sanitizado en óptimas condiciones\nMotor soplador de aire continuo y extensiones eléctricas\nOperador de seguridad y control de turnos durante todo el evento",
     edadIdeal: "2 a 10 años",
     duracion: "3 a 4 horas",
@@ -608,6 +615,10 @@ async function main() {
   // -------------------------------------------------------------
   // ServicioMedia: Fotos adicionales de Galería y Videos (Reels)
   // -------------------------------------------------------------
+  // Fotos extra de un servicio, después de las que ya tenía (orden desde 10).
+  const galeria = (servicioNombre: string, fotos: string[]) =>
+    fotos.map((f, i) => ({ servicioNombre, url: `/images/${f}.jpg`, tipo: "FOTO" as const, orden: 10 + i }));
+
   const mediaList: Array<{
     servicioNombre: string;
     url: string;
@@ -659,6 +670,17 @@ async function main() {
 
     // Video Reel Carritos de Comida / Diverti Candy
     { servicioNombre: "Carritos de Comida", url: "/reels/reel-12.mp4", tipo: "VIDEO", poster: "/reels/posters/reel-12-poster.jpg", orden: 0 },
+
+    // Fotos de eventos reales (WhatsApp, octubre 2026)
+    ...galeria("Casa de Mickey Mouse", ["mickey-amigos", "mickey-minnie", "minnie-evento", "mickey-minnie-cumple", "pluto-evento"]),
+    ...galeria("Princesas Disney", ["bella-bestia-evento", "sirenita-ursula-sebastian", "aladdin-genio-jazmin", "moana", "frozen-olaf-elsa-2", "rapunzel-salon", "villanos-disney"]),
+    ...galeria("Superhéroes", ["superheroes-equipo", "spiderman", "mujer-maravilla", "capitan-america"]),
+    ...galeria("Show de Paw Patrol", ["paw-patrol-equipo", "paw-patrol-marshall", "paw-patrol-rubble"]),
+    ...galeria("Show Granja de Zenón", ["granja-zenon-leon"]),
+    ...galeria("Súper Mario", ["princesa-peach"]),
+    ...galeria("Plim Plim", ["plim-plim-evento"]),
+    ...galeria("Show según temática", ["show-tematico-robots", "show-tematico-retro", "show-tematico-casa-papel", "show-tematico-terror", "show-tematico-neon"]),
+    ...galeria("Show LED", ["show-led-astronautas", "show-led-bailarina"]),
   ];
 
   for (const m of mediaList) {
