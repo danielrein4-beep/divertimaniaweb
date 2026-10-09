@@ -4,11 +4,17 @@ import Link from "next/link";
 import { useMiFiesta } from "@/context/MiFiestaContext";
 
 /** Par de llamados principales: armar la fiesta en el catálogo o pedir cotización directo. */
-export default function CotizarButtons({ className = "" }: { className?: string }) {
+export default function CotizarButtons({ align = "center" }: { align?: "center" | "start" }) {
   const { items, openPanel } = useMiFiesta();
 
   return (
-    <div className={`flex flex-wrap items-center justify-center gap-3 ${className}`}>
+    <div
+      className={
+        align === "start"
+          ? "grid grid-cols-2 gap-2.5 sm:flex sm:justify-start sm:gap-3 [&>*]:px-4 sm:[&>*]:px-7"
+          : "flex flex-wrap items-center justify-center gap-3"
+      }
+    >
       <Link
         href="/catalogo"
         className="touch-target rounded-full bg-neon-green px-7 text-base font-bold text-background transition-transform hover:scale-105"

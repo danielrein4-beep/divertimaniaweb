@@ -2,8 +2,7 @@
 // Uso: node scripts/comprimir-videos.mjs
 //
 // - public/reels/reel-N.mp4        → 540p, H.264, audio mono 64k (se ven en las fichas, con sonido opcional)
-// - public/reels/intro/reel-N.mp4  → primeros 6 s, 360p, sin audio (mosaico de la intro del Inicio)
-// - public/hero.mp4                → 540p, sin audio (relleno de las letras del Hero) + public/hero-poster.jpg
+// - public/reels/intro/reel-N.mp4  → primeros 6 s, 360p, sin audio (feed de reels del Inicio)
 //
 // Si un video ya está comprimido (bitrate bajo) no se vuelve a procesar, para no perder calidad.
 import { execFileSync } from "node:child_process";
@@ -58,11 +57,3 @@ for (const nombre of reels) {
 
   comprimir(origen, ["-vf", "scale=540:-2", "-c:v", "libx264", "-preset", "slow", "-crf", "32", "-pix_fmt", "yuv420p", "-c:a", "aac", "-b:a", "64k", "-ac", "1"], 1200);
 }
-
-const hero = path.join(PUBLIC, "hero.mp4");
-const poster = path.join(PUBLIC, "hero-poster.jpg");
-if (!existsSync(poster)) {
-  run(["-ss", "1", "-i", hero, "-frames:v", "1", "-vf", "scale=540:-2", "-q:v", "4", poster]);
-  console.log("✓ hero-poster.jpg");
-}
-comprimir(hero, ["-an", "-vf", "scale=540:-2", "-c:v", "libx264", "-preset", "slow", "-crf", "30", "-pix_fmt", "yuv420p"], 1200);

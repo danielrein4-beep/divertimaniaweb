@@ -123,7 +123,7 @@ export default function ServicioCard({
         )}
 
         <div className="pointer-events-none absolute inset-x-3 bottom-3 pr-12">
-          <h3 className="line-clamp-2 font-display text-base font-extrabold leading-tight text-white sm:text-lg">
+          <h3 className="ig-caption line-clamp-2 text-base leading-tight sm:text-lg">
             {nombre}
           </h3>
           {(edadIdeal || duracion) && (
