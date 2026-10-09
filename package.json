@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "db:seed": "tsx prisma/seed.ts",
-    "videos": "node scripts/comprimir-videos.mjs"
+    "videos": "node scripts/comprimir-videos.mjs",
+    "setup": "node scripts/setup-local.mjs"
   },
   "dependencies": {
     "@prisma/client": "5.22.0",
