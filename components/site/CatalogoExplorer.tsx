@@ -1,9 +1,11 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { Search, X } from "lucide-react";
+import { ChevronDown, Search, X } from "lucide-react";
 import ServicioCard from "@/components/ui/ServicioCard";
-import { CATEGORIAS } from "@/lib/site";
+import HandDrawnUnderline from "@/components/ui/HandDrawnUnderline";
+import CatalogoPortada from "@/components/site/CatalogoPortada";
+import { CATEGORIAS, PERFIL_IG } from "@/lib/site";
 import { MENSAJES_WHATSAPP } from "@/lib/whatsapp";
 import { useWhatsApp } from "@/components/site/SitioConfigProvider";
 import { OCASIONES, getOcasion } from "@/lib/ocasiones";
@@ -26,6 +28,15 @@ export type ServicioCatalogo = {
 
 const MAX_POR_CATEGORIA = 4;
 const CATEGORIA_ADULTOS = "Show para Adultos";
+
+const COLOR_CATEGORIA: Record<string, string> = {
+  "Fiestas Infantiles": "var(--cat-infantil)",
+  "Baby Shower": "var(--cat-babyshower)",
+  Personajes: "var(--cat-personajes)",
+  "Show para Adultos": "var(--cat-adultos)",
+  "Estación Creativa": "var(--cat-creativa)",
+  Atracciones: "var(--cat-atracciones)",
+};
 
 function normalizar(texto: string) {
   return texto.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
@@ -93,48 +104,112 @@ export default function CatalogoExplorer({
     [filtrados]
   );
 
+  // "Todo" no cuenta lo +18, igual que el listado.
+  const totalVisible = servicios.filter((s) => !s.soloAdultos).length;
+  const portada = useMemo(
+    () =>
+      servicios
+        .filter((s) => s.fotoUrl && !s.soloAdultos)
+        .sort((a, b) => Number(b.masPedido) - Number(a.masPedido))
+        .slice(0, 3),
+    [servicios]
+  );
+
   const ocasionActual = getOcasion(ocasion);
   const vistaAgrupada = !buscando && !categoria;
 
   return (
     <div className="pb-24">
-      <div className="mx-auto max-w-6xl px-4 pt-10 sm:px-6 sm:pt-14">
-        <h1 className="type-h1 font-display font-extrabold">
-          {ocasionActual ? `Para ${ocasionActual.nombre.toLowerCase()}` : "Catálogo"}
-        </h1>
-        <p className="mt-2 max-w-xl text-muted">
-          Toca el <strong className="text-foreground">+</strong> en lo que te guste y arma tu fiesta. Al final te
-          cotizamos todo junto por WhatsApp.
-        </p>
+      <header className="mx-auto grid max-w-6xl items-center gap-10 px-4 pt-10 sm:px-6 sm:pt-14 lg:grid-cols-[1.15fr_0.85fr] lg:pt-16">
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-neon-green">Catálogo · Táchira</p>
+          <h1 className="type-display mt-3 font-display font-extrabold">
+            {ocasionActual ? (
+              `Para ${ocasionActual.nombre.toLowerCase()}`
+            ) : (
+              <>
+                Arma tu{" "}
+                <span className="relative inline-block">
+                  fiesta
+                  <HandDrawnUnderline className="absolute -bottom-2 left-0 w-full text-neon-green" width={220} />
+                </span>
+              </>
+            )}
+          </h1>
+          <p className="mt-5 max-w-lg text-lg leading-relaxed text-foreground/80">
+            Personajes, shows y atracciones con el equipo de Divertimania. Elige lo que te guste y te cotizamos todo
+            junto por WhatsApp.
+          </p>
 
-        <label className="relative mt-6 block max-w-xl">
-          <span className="sr-only">Buscar en el catálogo</span>
-          <Search className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-muted" aria-hidden />
-          <input
-            type="search"
-            value={busqueda}
-            onChange={(e) => setBusqueda(e.target.value)}
-            placeholder="Busca un personaje o show: Mario, Frozen, espuma…"
-            className="w-full rounded-full border border-border bg-background-card py-3.5 pl-12 pr-12 text-base outline-none transition-colors placeholder:text-muted/70 focus:border-neon-green"
-          />
-          {busqueda && (
-            <button
-              type="button"
-              onClick={() => setBusqueda("")}
-              aria-label="Borrar búsqueda"
-              className="touch-target absolute right-1 top-1/2 -translate-y-1/2 rounded-full text-muted hover:text-foreground"
-            >
-              <X className="h-5 w-5" />
-            </button>
-          )}
-        </label>
-      </div>
+          <ol className="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-sm text-foreground/85">
+            {["Elige", "Toca Agregar", "Te cotizamos por WhatsApp"].map((paso, i) => (
+              <li key={paso} className="flex items-center gap-2">
+                <span className="flex h-6 w-6 items-center justify-center rounded-full bg-neon-green text-xs font-bold text-background">
+                  {i + 1}
+                </span>
+                {paso}
+              </li>
+            ))}
+          </ol>
+
+          <div className="mt-8 flex max-w-xl flex-col gap-3 sm:flex-row">
+            <label className="relative block flex-1">
+              <span className="sr-only">Buscar en el catálogo</span>
+              <Search className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-muted" aria-hidden />
+              <input
+                type="search"
+                value={busqueda}
+                onChange={(e) => setBusqueda(e.target.value)}
+                placeholder="Princesas, espuma, hora loca…"
+                className="h-[52px] w-full rounded-xl border border-white/15 bg-background-card pl-12 pr-12 text-base outline-none transition-colors placeholder:text-muted focus:border-neon-green"
+              />
+              {busqueda && (
+                <button
+                  type="button"
+                  onClick={() => setBusqueda("")}
+                  aria-label="Borrar búsqueda"
+                  className="touch-target absolute right-1 top-1/2 -translate-y-1/2 rounded-full text-muted hover:text-foreground"
+                >
+                  <X className="h-5 w-5" />
+                </button>
+              )}
+            </label>
+            <label className="relative block sm:w-52">
+              <span className="sr-only">Ocasión</span>
+              <select
+                value={ocasion ?? ""}
+                onChange={(e) => elegirOcasion(e.target.value || null)}
+                className={`h-[52px] w-full appearance-none rounded-xl border bg-background-card pl-4 pr-10 text-base outline-none transition-colors focus:border-neon-green ${
+                  ocasion ? "border-neon-green text-neon-green" : "border-white/15 text-foreground"
+                }`}
+              >
+                <option value="">Cualquier ocasión</option>
+                {OCASIONES.map((o) => (
+                  <option key={o.slug} value={o.slug}>
+                    Para {o.nombre.toLowerCase()}
+                  </option>
+                ))}
+              </select>
+              <ChevronDown className="pointer-events-none absolute right-3.5 top-1/2 h-5 w-5 -translate-y-1/2 text-muted" aria-hidden />
+            </label>
+          </div>
+
+          <p className="mt-5 text-sm text-muted">
+            <strong className="font-semibold text-foreground">{PERFIL_IG.seguidores}</strong> nos siguen en Instagram
+            <span className="mx-2 text-white/25">·</span>
+            <strong className="font-semibold text-foreground">{totalVisible}</strong> opciones para tu evento
+          </p>
+        </div>
+
+        <CatalogoPortada fotos={portada} />
+      </header>
 
       {/* Pestañas de categoría: fijas bajo el menú, una sola línea con scroll horizontal */}
-      <div className="sticky top-[60px] z-30 mt-6 border-b border-border bg-background/90 backdrop-blur-md">
-        <div className="scrollbar-none mx-auto flex max-w-6xl gap-2 overflow-x-auto px-4 py-3 sm:px-6" role="tablist" aria-label="Categorías">
+      <div className="sticky top-[60px] z-30 mt-10 border-b border-border bg-background/90 backdrop-blur-md">
+        <div className="scrollbar-none mx-auto flex max-w-6xl gap-7 overflow-x-auto px-4 sm:px-6" role="tablist" aria-label="Categorías">
           {[null, ...CATEGORIAS].map((c) => {
             const activa = !buscando && categoria === c;
+            const total = c ? servicios.filter((s) => s.categoria === c).length : totalVisible;
             return (
               <button
                 key={c ?? "todas"}
@@ -145,13 +220,13 @@ export default function CatalogoExplorer({
                   setBusqueda("");
                   elegirCategoria(c);
                 }}
-                className={`touch-target shrink-0 rounded-full border px-4 text-sm font-semibold transition-colors ${
-                  activa
-                    ? "border-neon-green bg-neon-green text-background"
-                    : "border-border text-foreground/80 hover:border-white/25 hover:text-foreground"
+                className={`relative flex min-h-[52px] shrink-0 items-center gap-1.5 text-[15px] font-semibold transition-colors ${
+                  activa ? "text-foreground" : "text-muted hover:text-foreground"
                 }`}
               >
                 {c ?? "Todo"}
+                <span className={`text-xs tabular-nums ${activa ? "text-neon-green" : "text-muted/80"}`}>{total}</span>
+                {activa && <span className="absolute inset-x-0 bottom-0 h-[3px] rounded-t-full bg-neon-green" aria-hidden />}
               </button>
             );
           })}
@@ -159,27 +234,17 @@ export default function CatalogoExplorer({
       </div>
 
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
-        {/* Ocasión */}
-        <div className="scrollbar-none -mx-4 mt-4 flex items-center gap-2 overflow-x-auto px-4 sm:mx-0 sm:flex-wrap sm:px-0">
-          <span className="shrink-0 text-xs font-semibold uppercase tracking-wider text-muted">Ocasión:</span>
-          {OCASIONES.map((o) => {
-            const activa = ocasion === o.slug;
-            return (
-              <button
-                key={o.slug}
-                type="button"
-                aria-pressed={activa}
-                onClick={() => elegirOcasion(activa ? null : o.slug)}
-                className={`shrink-0 rounded-full border px-3 py-1.5 text-xs font-medium transition-colors ${
-                  activa ? "border-neon-green text-neon-green" : "border-border text-muted hover:text-foreground"
-                }`}
-              >
-                {o.nombre}
-                {activa && <X className="ml-1 inline h-3 w-3" aria-hidden />}
-              </button>
-            );
-          })}
-        </div>
+        {ocasionActual && (
+          <button
+            type="button"
+            onClick={() => elegirOcasion(null)}
+            className="mt-5 inline-flex items-center gap-1.5 rounded-lg border border-neon-green/50 px-3 py-1.5 text-sm font-medium text-neon-green hover:bg-neon-green/10"
+          >
+            Para {ocasionActual.nombre.toLowerCase()}
+            <X className="h-4 w-4" aria-hidden />
+            <span className="sr-only">Quitar filtro de ocasión</span>
+          </button>
+        )}
 
         {filtrados.length === 0 ? (
           <div className="mx-auto mt-16 flex max-w-md flex-col items-center gap-4 text-center">
@@ -201,18 +266,25 @@ export default function CatalogoExplorer({
             </a>
           </div>
         ) : vistaAgrupada ? (
-          <div className="mt-8 flex flex-col gap-14">
+          <div className="mt-10 flex flex-col gap-16">
             {porCategoria.map(({ categoria: c, items }, gi) => (
               <section key={c} aria-labelledby={`cat-${c}`}>
-                <div className="mb-4 flex items-end justify-between gap-4">
-                  <h2 id={`cat-${c}`} className="type-h2 font-display font-extrabold">
-                    {c}
-                  </h2>
+                <div className="mb-5 flex items-end justify-between gap-4 border-b border-border pb-3">
+                  <div>
+                    <span
+                      className="mb-2 block h-1 w-10 rounded-full"
+                      style={{ background: COLOR_CATEGORIA[c] ?? "var(--neon-green)" }}
+                      aria-hidden
+                    />
+                    <h2 id={`cat-${c}`} className="type-h2 font-display font-extrabold">
+                      {c}
+                    </h2>
+                  </div>
                   {items.length > MAX_POR_CATEGORIA && (
                     <button
                       type="button"
                       onClick={() => elegirCategoria(c)}
-                      className="shrink-0 text-sm font-semibold text-neon-green hover:underline"
+                      className="touch-target shrink-0 text-sm font-semibold text-neon-green hover:underline"
                     >
                       Ver los {items.length} →
                     </button>
@@ -232,15 +304,19 @@ export default function CatalogoExplorer({
           </div>
         )}
 
-        <div className="mt-20 flex flex-col items-center gap-4 rounded-3xl border border-border bg-background-elevated px-6 py-10 text-center">
-          <h2 className="type-h3 font-bold">¿No sabes qué elegir?</h2>
-          <p className="max-w-md text-muted">Cuéntanos de tu evento y te recomendamos el combo ideal.</p>
+        <div className="mt-20 flex flex-col items-start gap-6 rounded-2xl bg-plum px-6 py-9 sm:flex-row sm:items-center sm:justify-between sm:px-10">
+          <div>
+            <h2 className="type-h3 font-display font-extrabold text-white">¿No sabes qué elegir?</h2>
+            <p className="mt-1 max-w-md text-white/85">
+              Cuéntanos la fecha, la edad del cumpleañero y cuántos invitados. Te armamos el combo.
+            </p>
+          </div>
           <a
             href={whatsapp.link(MENSAJES_WHATSAPP.asesoria())}
             data-origen="catalogo-asesoria"
             target="_blank"
             rel="noopener noreferrer"
-            className="touch-target rounded-full border border-neon-green/60 px-6 text-sm font-bold text-neon-green transition-colors hover:bg-neon-green/10"
+            className="touch-target shrink-0 rounded-full bg-neon-green px-6 text-sm font-bold text-background transition-colors hover:bg-neon-green-dark"
           >
             Pedir recomendación por WhatsApp
           </a>
@@ -251,11 +327,16 @@ export default function CatalogoExplorer({
 }
 
 function Grid({ items, priority = false }: { items: ServicioCatalogo[]; priority?: boolean }) {
+  // Como mucho un "Más pedido" por fila: si todo es lo más pedido, nada lo es.
+  const filasConEtiqueta = new Set<number>();
   return (
     <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-5 lg:grid-cols-4">
-      {items.map((s, i) => (
-        <ServicioCard key={s.id} {...s} priority={priority && i < 2} />
-      ))}
+      {items.map((s, i) => {
+        const fila = Math.floor(i / 4);
+        const etiqueta = s.masPedido && !filasConEtiqueta.has(fila);
+        if (etiqueta) filasConEtiqueta.add(fila);
+        return <ServicioCard key={s.id} {...s} masPedido={etiqueta} priority={priority && i < 2} />;
+      })}
     </div>
   );
 }

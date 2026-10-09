@@ -4,7 +4,7 @@ import { useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { Check, Clock, Flame, Plus, Users } from "lucide-react";
+import { Check, ChevronRight, Clock, Plus, Users } from "lucide-react";
 import { useMiFiesta } from "@/context/MiFiestaContext";
 import PlaceholderImage from "@/components/site/PlaceholderImage";
 
@@ -72,8 +72,8 @@ export default function ServicioCard({
     <div
       onMouseEnter={videoUrl ? startVideo : undefined}
       onMouseLeave={videoUrl ? stopVideo : undefined}
-      className={`group relative overflow-hidden rounded-2xl border bg-background-card transition-colors ${
-        added ? "border-neon-green/70" : "border-border hover:border-white/25"
+      className={`group relative flex flex-col overflow-hidden rounded-xl border bg-background-card transition-colors ${
+        added ? "border-neon-green/70" : "border-white/10 hover:border-white/25"
       }`}
     >
       <Link href={`/catalogo/${id}`} className="relative block aspect-[4/5] w-full overflow-hidden">
@@ -106,64 +106,77 @@ export default function ServicioCard({
           />
         )}
 
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/90 via-black/25 to-transparent" />
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/85 via-black/10 to-transparent" />
 
         {(masPedido || soloAdultos) && (
           <div className="pointer-events-none absolute left-2.5 top-2.5 flex flex-wrap gap-1.5">
             {soloAdultos && (
-              <span className="rounded-full bg-red-500/90 px-2 py-0.5 text-[11px] font-bold text-white">+18</span>
+              <span className="rounded-md bg-red-600 px-2 py-1 text-[11px] font-bold leading-none text-white">+18</span>
             )}
             {masPedido && (
-              <span className="inline-flex items-center gap-1 rounded-full bg-black/60 px-2 py-0.5 text-[11px] font-semibold text-gold backdrop-blur-sm">
-                <Flame className="h-3 w-3" aria-hidden />
+              <span className="-rotate-2 rounded-md bg-neon-green px-2 py-1 text-[11px] font-bold uppercase leading-none tracking-wide text-background shadow-md">
                 Más pedido
               </span>
             )}
           </div>
         )}
 
-        <div className="pointer-events-none absolute inset-x-3 bottom-3 pr-12">
-          <h3 className="ig-caption line-clamp-2 text-base leading-tight sm:text-lg">
-            {nombre}
-          </h3>
-          {(edadIdeal || duracion) && (
-            <p className="mt-1 hidden items-center gap-3 text-xs text-white/70 sm:flex">
-              {edadIdeal && (
-                <span className="inline-flex items-center gap-1">
-                  <Users className="h-3 w-3" aria-hidden />
-                  {edadIdeal}
-                </span>
-              )}
-              {duracion && (
-                <span className="inline-flex items-center gap-1">
-                  <Clock className="h-3 w-3" aria-hidden />
-                  {duracion}
-                </span>
-              )}
-            </p>
-          )}
-        </div>
+        <h3 className="ig-caption pointer-events-none absolute inset-x-3 bottom-3 line-clamp-2 text-base leading-tight sm:text-lg">
+          {nombre}
+        </h3>
       </Link>
 
-      <button
-        type="button"
-        onClick={handleAdd}
-        aria-label={
-          tieneOpciones
-            ? `Elegir opciones de ${nombre}`
-            : added
-              ? `Quitar ${nombre} de mi fiesta`
-              : `Agregar ${nombre} a mi fiesta`
-        }
-        aria-pressed={tieneOpciones ? undefined : added}
-        className={`absolute bottom-2.5 right-2.5 z-10 flex h-11 w-11 items-center justify-center rounded-full shadow-lg transition-all active:scale-90 ${
-          added
-            ? "anim-pop bg-neon-green text-background"
-            : "border border-white/20 bg-black/60 text-white backdrop-blur-sm hover:border-neon-green hover:bg-neon-green hover:text-background"
-        }`}
-      >
-        {added ? <Check className="h-5 w-5 stroke-[2.5]" /> : <Plus className="h-5 w-5 stroke-[2.5]" />}
-      </button>
+      <div className="flex flex-1 flex-col gap-2.5 p-2.5 sm:p-3">
+        {(edadIdeal || duracion) && (
+          <p className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-foreground/75">
+            {edadIdeal && (
+              <span className="inline-flex items-center gap-1">
+                <Users className="h-3.5 w-3.5 text-muted" aria-hidden />
+                {edadIdeal}
+              </span>
+            )}
+            {duracion && (
+              <span className="inline-flex items-center gap-1">
+                <Clock className="h-3.5 w-3.5 text-muted" aria-hidden />
+                {duracion}
+              </span>
+            )}
+          </p>
+        )}
+        <button
+          type="button"
+          onClick={handleAdd}
+          aria-label={
+            tieneOpciones
+              ? `Elegir opciones de ${nombre}`
+              : added
+                ? `Quitar ${nombre} de mi fiesta`
+                : `Agregar ${nombre} a mi fiesta`
+          }
+          aria-pressed={tieneOpciones ? undefined : added}
+          className={`mt-auto flex h-11 w-full items-center justify-center gap-1.5 rounded-lg text-sm font-bold transition-colors active:scale-[0.98] ${
+            added
+              ? "anim-pop bg-neon-green text-background"
+              : tieneOpciones
+                ? "border border-white/15 text-foreground hover:border-white/35"
+                : "border border-neon-green/55 text-neon-green hover:bg-neon-green hover:text-background"
+          }`}
+        >
+          {added ? (
+            <>
+              <Check className="h-4 w-4 stroke-[3]" aria-hidden /> En tu fiesta
+            </>
+          ) : tieneOpciones ? (
+            <>
+              Ver opciones <ChevronRight className="h-4 w-4" aria-hidden />
+            </>
+          ) : (
+            <>
+              <Plus className="h-4 w-4 stroke-[3]" aria-hidden /> Agregar
+            </>
+          )}
+        </button>
+      </div>
     </div>
   );
 }
