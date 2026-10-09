@@ -40,7 +40,7 @@ export default function PersonajesCarousel({ personajes, total }: { personajes: 
             className="group flex flex-col items-center gap-3 shrink-0 snap-start select-none w-28 sm:w-36 text-center cursor-pointer transition-transform hover:-translate-y-1"
           >
             {/* Avatar redondo tipo sticker con borde blanco / neon */}
-            <div className="relative w-24 h-24 sm:w-32 sm:h-32 rounded-full overflow-hidden p-1 bg-gradient-to-tr from-neon-green/60 via-white/20 to-magenta/60 shadow-xl group-hover:scale-105 transition-transform duration-300">
+            <div className="relative w-24 h-24 sm:w-32 sm:h-32 rounded-full overflow-hidden p-1 bg-neon-green shadow-xl group-hover:scale-105 transition-transform duration-300">
               <div className="relative w-full h-full rounded-full overflow-hidden bg-black/50">
                 {personaje.fotoUrl ? (
                   <Image

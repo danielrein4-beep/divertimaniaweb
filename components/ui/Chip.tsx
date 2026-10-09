@@ -17,8 +17,8 @@ export default function Chip({
       type="button"
       className={`inline-flex items-center gap-2 px-3.5 py-2 min-h-[44px] rounded-full text-xs sm:text-sm font-medium transition-all duration-150 select-none cursor-pointer border ${
         selected
-          ? "bg-neon-green/15 text-neon-green border-neon-green font-semibold shadow-[0_0_12px_rgba(157,255,60,0.2)]"
-          : "bg-[#181824] text-foreground/80 border-white/10 hover:border-white/20 hover:text-foreground active:scale-95"
+          ? "bg-neon-green/15 text-neon-green border-neon-green font-semibold shadow-[0_0_12px_rgba(168,255,48,0.2)]"
+          : "bg-[#1a1a1a] text-foreground/80 border-white/10 hover:border-white/20 hover:text-foreground active:scale-95"
       } ${className}`}
       {...props}
     >

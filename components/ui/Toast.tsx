@@ -43,7 +43,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
           <div
             key={toast.id}
             role="status"
-            className="pointer-events-auto flex items-center justify-between gap-3 px-4 py-3 rounded-2xl bg-[#161622]/95 border border-white/15 text-foreground shadow-2xl backdrop-blur-md anim-rise"
+            className="pointer-events-auto flex items-center justify-between gap-3 px-4 py-3 rounded-2xl bg-[#141414]/95 border border-white/15 text-foreground shadow-2xl backdrop-blur-md anim-rise"
           >
             <div className="flex items-center gap-2.5">
               {toast.type === "success" && (

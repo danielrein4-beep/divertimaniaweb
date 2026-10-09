@@ -9,7 +9,7 @@ import { MessageCircle, MapPin, ShieldCheck } from "lucide-react";
 export default async function Footer() {
   const { whatsapp } = await getConfigSitio();
   return (
-    <footer className="border-t border-white/10 bg-[#0d0d14] relative z-10">
+    <footer className="border-t border-white/10 bg-[#0e0e0e] relative z-10">
       <div className="mx-auto flex max-w-6xl flex-col gap-8 px-4 py-12 sm:px-6 md:flex-row md:items-start md:justify-between">
         {/* Columna Marca & Identidad */}
         <div className="flex flex-col gap-3 max-w-sm">
@@ -61,11 +61,11 @@ export default async function Footer() {
             href={INSTAGRAM_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 text-foreground/80 hover:text-magenta transition-colors group"
+            className="inline-flex items-center gap-2 text-foreground/80 hover:text-neon-green transition-colors group"
           >
             <svg
               viewBox="0 0 24 24"
-              className="w-4 h-4 text-magenta group-hover:scale-110 transition-transform fill-none stroke-currentColor stroke-[1.8] stroke-linecap-round stroke-linejoin-round"
+              className="w-4 h-4 text-neon-green group-hover:scale-110 transition-transform fill-none stroke-currentColor stroke-[1.8] stroke-linecap-round stroke-linejoin-round"
             >
               <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
               <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />

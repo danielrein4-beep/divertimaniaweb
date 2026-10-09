@@ -62,7 +62,7 @@ export default function GaleriaPage() {
           lift={70}
           fade={0.2}
           dim={0.3}
-          overlayColor="#0a0a0f"
+          overlayColor="#0b0b0b"
           radius={16}
           roll={0}
           pauseOnHover={false}

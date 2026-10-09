@@ -88,7 +88,7 @@ export default function DriftWall({
   fade = 0.6,
   dim = 0.55,
   grayscale = false,
-  overlayColor = "#0a0a0f",
+  overlayColor = "#0b0b0b",
   className = "",
   style,
 }: DriftWallProps) {

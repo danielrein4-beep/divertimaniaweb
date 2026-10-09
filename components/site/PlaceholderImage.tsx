@@ -20,7 +20,7 @@ export default function PlaceholderImage({
     const cat = categoria.toLowerCase();
     if (cat.includes("infantil")) {
       return {
-        gradient: "from-neon-green/20 via-[#181824] to-[#12121a]",
+        gradient: "from-neon-green/20 via-[#1a1a1a] to-[#141414]",
         border: "border-neon-green/30",
         iconColor: "text-neon-green",
         Icon: Sparkles,
@@ -28,7 +28,7 @@ export default function PlaceholderImage({
     }
     if (cat.includes("baby")) {
       return {
-        gradient: "from-magenta/25 via-[#181824] to-[#12121a]",
+        gradient: "from-magenta/25 via-[#1a1a1a] to-[#141414]",
         border: "border-magenta/30",
         iconColor: "text-magenta",
         Icon: Heart,
@@ -36,7 +36,7 @@ export default function PlaceholderImage({
     }
     if (cat.includes("personaje")) {
       return {
-        gradient: "from-[#00e5ff]/20 via-[#181824] to-[#12121a]",
+        gradient: "from-[#00e5ff]/20 via-[#1a1a1a] to-[#141414]",
         border: "border-[#00e5ff]/30",
         iconColor: "text-[#00e5ff]",
         Icon: Smile,
@@ -44,7 +44,7 @@ export default function PlaceholderImage({
     }
     if (cat.includes("adulto")) {
       return {
-        gradient: "from-gold/25 via-[#181824] to-[#12121a]",
+        gradient: "from-gold/25 via-[#1a1a1a] to-[#141414]",
         border: "border-gold/30",
         iconColor: "text-gold",
         Icon: Music,
@@ -52,7 +52,7 @@ export default function PlaceholderImage({
     }
     if (cat.includes("creativa")) {
       return {
-        gradient: "from-orange-500/25 via-[#181824] to-[#12121a]",
+        gradient: "from-orange-500/25 via-[#1a1a1a] to-[#141414]",
         border: "border-orange-500/30",
         iconColor: "text-orange-400",
         Icon: Palette,
@@ -60,14 +60,14 @@ export default function PlaceholderImage({
     }
     if (cat.includes("atraccion")) {
       return {
-        gradient: "from-purple-500/25 via-[#181824] to-[#12121a]",
+        gradient: "from-purple-500/25 via-[#1a1a1a] to-[#141414]",
         border: "border-purple-500/30",
         iconColor: "text-purple-400",
         Icon: Tent,
       };
     }
     return {
-      gradient: "from-white/10 via-[#181824] to-[#12121a]",
+      gradient: "from-white/10 via-[#1a1a1a] to-[#141414]",
       border: "border-white/15",
       iconColor: "text-white/60",
       Icon: Camera,
