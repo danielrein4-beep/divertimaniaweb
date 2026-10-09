@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { ChevronDown, Search, X } from "lucide-react";
 import ServicioCard from "@/components/ui/ServicioCard";
 import HandDrawnUnderline from "@/components/ui/HandDrawnUnderline";
@@ -28,6 +28,8 @@ export type ServicioCatalogo = {
 
 const MAX_POR_CATEGORIA = 4;
 const CATEGORIA_ADULTOS = "Show para Adultos";
+/** Alto del menú fijo de arriba (la barra de categorías se pega en top-[60px]). */
+const ALTO_MENU = 60;
 
 const COLOR_CATEGORIA: Record<string, string> = {
   "Fiestas Infantiles": "var(--cat-infantil)",
@@ -70,10 +72,21 @@ export default function CatalogoExplorer({
   const [busqueda, setBusqueda] = useState(busquedaInicial);
   const whatsapp = useWhatsApp();
 
+  // Marca dónde empieza la barra de categorías (la barra misma es sticky y no sirve de referencia).
+  const inicioListado = useRef<HTMLDivElement>(null);
+
   const elegirCategoria = (c: string | null) => {
     setCategoria(c);
     syncUrl({ categoria: c, ocasion });
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    // Si ya bajó más allá de la barra, se vuelve justo a ella (no hasta la cabecera);
+    // si todavía está en la cabecera, no se mueve.
+    const marca = inicioListado.current;
+    if (!marca) return;
+    const destino = marca.getBoundingClientRect().top + window.scrollY - ALTO_MENU;
+    if (window.scrollY > destino) {
+      const suave = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      window.scrollTo({ top: destino, behavior: suave ? "smooth" : "auto" });
+    }
   };
   const elegirOcasion = (o: string | null) => {
     setOcasion(o);
@@ -204,8 +217,9 @@ export default function CatalogoExplorer({
         <CatalogoPortada fotos={portada} />
       </header>
 
+      <div ref={inicioListado} className="mt-10" aria-hidden />
       {/* Pestañas de categoría: fijas bajo el menú, una sola línea con scroll horizontal */}
-      <div className="sticky top-[60px] z-30 mt-10 border-b border-border bg-background/90 backdrop-blur-md">
+      <div className="sticky top-[60px] z-30 border-b border-border bg-background/90 backdrop-blur-md">
         <div className="scrollbar-none mx-auto flex max-w-6xl gap-7 overflow-x-auto px-4 sm:px-6" role="tablist" aria-label="Categorías">
           {[null, ...CATEGORIAS].map((c) => {
             const activa = !buscando && categoria === c;
