@@ -7,18 +7,18 @@ import NovedadesPanel, { type NovedadDTO } from "@/components/site/NovedadesPane
 import CotizarButtons from "@/components/site/CotizarButtons";
 
 const REEL_VIDEOS: string[] = [
-  "/reels/reel-1.mp4",
-  "/reels/reel-2.mp4",
-  "/reels/reel-3.mp4",
-  "/reels/reel-4.mp4",
-  "/reels/reel-5.mp4",
-  "/reels/reel-6.mp4",
-  "/reels/reel-7.mp4",
-  "/reels/reel-8.mp4",
-  "/reels/reel-9.mp4",
-  "/reels/reel-10.mp4",
-  "/reels/reel-11.mp4",
-  "/reels/reel-12.mp4",
+  "/reels/intro/reel-1.mp4",
+  "/reels/intro/reel-2.mp4",
+  "/reels/intro/reel-3.mp4",
+  "/reels/intro/reel-4.mp4",
+  "/reels/intro/reel-5.mp4",
+  "/reels/intro/reel-6.mp4",
+  "/reels/intro/reel-7.mp4",
+  "/reels/intro/reel-8.mp4",
+  "/reels/intro/reel-9.mp4",
+  "/reels/intro/reel-10.mp4",
+  "/reels/intro/reel-11.mp4",
+  "/reels/intro/reel-12.mp4",
 ];
 
 const REVEAL_DURATION_MS = 50000;
@@ -66,6 +66,7 @@ export default function Hero({ novedades = [] }: { novedades?: NovedadDTO[] }) {
             tag="h1"
             mediaType="video"
             src="/hero.mp4"
+            poster="/hero-poster.jpg"
             fillScale={1.25}
             parallax={26}
             reveal="rise"
