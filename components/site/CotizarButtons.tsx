@@ -19,7 +19,7 @@ export default function CotizarButtons({ align = "center" }: { align?: "center" 
         href="/catalogo"
         className="touch-target rounded-full bg-neon-green px-7 text-base font-bold text-background transition-transform hover:scale-105"
       >
-        Arma tu fiesta
+        Ver catálogo
       </Link>
       <button
         type="button"
