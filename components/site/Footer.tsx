@@ -81,10 +81,10 @@ export default async function Footer() {
 
           <Link
             href="/admin/login"
-            className="inline-flex items-center gap-1.5 text-xs text-muted/50 hover:text-muted transition-colors mt-2"
+            className="touch-target -ml-1 mt-1 inline-flex items-center gap-1.5 rounded-md px-1 text-sm text-muted transition-colors hover:text-neon-green"
           >
-            <ShieldCheck className="w-3.5 h-3.5" />
-            <span>Acceso administrativo</span>
+            <ShieldCheck className="w-4 h-4" />
+            <span>Acceso del equipo</span>
           </Link>
         </div>
       </div>
