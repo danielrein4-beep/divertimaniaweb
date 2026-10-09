@@ -615,9 +615,9 @@ async function main() {
   // -------------------------------------------------------------
   // ServicioMedia: Fotos adicionales de Galería y Videos (Reels)
   // -------------------------------------------------------------
-  // Fotos extra de un servicio, después de las que ya tenía (orden desde 10).
-  const galeria = (servicioNombre: string, fotos: string[]) =>
-    fotos.map((f, i) => ({ servicioNombre, url: `/images/${f}.jpg`, tipo: "FOTO" as const, orden: 10 + i }));
+  // Fotos extra de un servicio, después de las que ya tenía.
+  const galeria = (servicioNombre: string, fotos: string[], desde = 10) =>
+    fotos.map((f, i) => ({ servicioNombre, url: `/images/${f}.jpg`, tipo: "FOTO" as const, orden: desde + i }));
 
   const mediaList: Array<{
     servicioNombre: string;
@@ -681,6 +681,13 @@ async function main() {
     ...galeria("Plim Plim", ["plim-plim-evento"]),
     ...galeria("Show según temática", ["show-tematico-robots", "show-tematico-retro", "show-tematico-casa-papel", "show-tematico-terror", "show-tematico-neon"]),
     ...galeria("Show LED", ["show-led-astronautas", "show-led-bailarina"]),
+    ...galeria("Casa de Mickey Mouse", ["mickey-hechicero"], 20),
+    ...galeria("Princesas Disney", ["cenicienta", "rapunzel-cumpleanera", "rapunzel-flynn", "rapunzel-flynn-gothel"], 20),
+    ...galeria("Show según temática", ["show-tematico-bailarinas", "show-tematico-piano", "show-tematico-retro-rojo", "show-tematico-magos"], 20),
+    ...galeria("Show LED", ["show-led-pareja", "show-led-astronautas-2"], 20),
+    { servicioNombre: "Show según temática", url: "/reels/reel-13.mp4", tipo: "VIDEO", poster: "/reels/posters/reel-13-poster.jpg", orden: 30 },
+    { servicioNombre: "Show LED", url: "/reels/reel-14.mp4", tipo: "VIDEO", poster: "/reels/posters/reel-14-poster.jpg", orden: 30 },
+    { servicioNombre: "Carritos de Comida", url: "/reels/reel-15.mp4", tipo: "VIDEO", poster: "/reels/posters/reel-15-poster.jpg", orden: 30 },
   ];
 
   for (const m of mediaList) {
