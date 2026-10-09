@@ -1,5 +1,7 @@
 import { prisma } from "@/lib/db";
-import { WHATSAPP_LINK } from "@/lib/site";
+import { MENSAJES_WHATSAPP } from "@/lib/whatsapp";
+import { buildWhatsAppLink } from "@/lib/telefono";
+import { getConfigSitio } from "@/lib/configSitio";
 import ChromaGrid from "@/components/site/ChromaGrid";
 
 export const dynamic = "force-dynamic";
@@ -16,6 +18,7 @@ const ACCENT_PALETTE = [
 ];
 
 export default async function EquipoPage() {
+  const { whatsapp } = await getConfigSitio();
   const recreadores = await prisma.recreador.findMany({
     where: { activo: true },
     orderBy: { orden: "asc" },
@@ -59,7 +62,7 @@ export default async function EquipoPage() {
       <div className="mt-16 flex flex-col items-center gap-4 rounded-2xl border border-border bg-background-elevated p-10 text-center">
         <h2 className="text-2xl font-bold">¿Quieres a este equipo en tu evento?</h2>
         <a
-          href={WHATSAPP_LINK}
+          href={buildWhatsAppLink(whatsapp, MENSAJES_WHATSAPP.equipo())}
           target="_blank"
           rel="noopener noreferrer"
           className="rounded-full bg-neon-green px-6 py-3 font-semibold text-background transition-transform hover:scale-105"

@@ -4,7 +4,8 @@ import { useMemo, useState } from "react";
 import { Search, X } from "lucide-react";
 import ServicioCard from "@/components/ui/ServicioCard";
 import { CATEGORIAS } from "@/lib/site";
-import { getNoEncontradoWhatsAppLink, getAsesoriaWhatsAppLink } from "@/lib/whatsapp";
+import { MENSAJES_WHATSAPP } from "@/lib/whatsapp";
+import { useWhatsApp } from "@/components/site/SitioConfigProvider";
 import { OCASIONES, getOcasion } from "@/lib/ocasiones";
 
 export type ServicioCatalogo = {
@@ -56,6 +57,7 @@ export default function CatalogoExplorer({
   );
   const [ocasion, setOcasion] = useState<string | null>(getOcasion(ocasionInicial)?.slug ?? null);
   const [busqueda, setBusqueda] = useState(busquedaInicial);
+  const whatsapp = useWhatsApp();
 
   const elegirCategoria = (c: string | null) => {
     setCategoria(c);
@@ -188,7 +190,7 @@ export default function CatalogoExplorer({
               Igual pregúntanos: muchas veces lo armamos a la medida aunque no esté en el catálogo.
             </p>
             <a
-              href={buscando ? getNoEncontradoWhatsAppLink(busqueda.trim()) : getAsesoriaWhatsAppLink()}
+              href={whatsapp.link(buscando ? MENSAJES_WHATSAPP.noEncontrado(busqueda.trim()) : MENSAJES_WHATSAPP.asesoria())}
               target="_blank"
               rel="noopener noreferrer"
               className="touch-target rounded-full bg-neon-green px-6 text-sm font-bold text-background"
@@ -232,7 +234,7 @@ export default function CatalogoExplorer({
           <h2 className="type-h3 font-bold">¿No sabes qué elegir?</h2>
           <p className="max-w-md text-muted">Cuéntanos de tu evento y te recomendamos el combo ideal.</p>
           <a
-            href={getAsesoriaWhatsAppLink()}
+            href={whatsapp.link(MENSAJES_WHATSAPP.asesoria())}
             target="_blank"
             rel="noopener noreferrer"
             className="touch-target rounded-full border border-neon-green/60 px-6 text-sm font-bold text-neon-green transition-colors hover:bg-neon-green/10"

@@ -680,6 +680,12 @@ async function main() {
     await prisma.recurso.create({ data: r });
   }
 
+  await prisma.configuracionSitio.upsert({
+    where: { id: "principal" },
+    update: {},
+    create: { id: "principal", whatsapp: "584147286881" },
+  });
+
   const passwordHash = await bcrypt.hash("divertimania2024", 10);
   await prisma.adminUser.create({
     data: { usuario: "admin", passwordHash },

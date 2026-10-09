@@ -2,12 +2,14 @@
 
 import { useMiFiesta } from "@/context/MiFiestaContext";
 import { formatFechaAmigable } from "@/lib/miFiesta";
-import { getFechaWhatsAppLink } from "@/lib/whatsapp";
+import { MENSAJES_WHATSAPP } from "@/lib/whatsapp";
+import { useWhatsApp } from "@/components/site/SitioConfigProvider";
 import { todayStr } from "@/lib/date";
 
 export default function ConsultaFecha() {
   const { formData, updateFormData, openPanel } = useMiFiesta();
   const fecha = formData.fecha;
+  const whatsapp = useWhatsApp();
 
   return (
     <div className="flex w-full flex-col items-stretch gap-4">
@@ -33,7 +35,7 @@ export default function ConsultaFecha() {
 
       {fecha && (
         <a
-          href={getFechaWhatsAppLink(formatFechaAmigable(fecha))}
+          href={whatsapp.link(MENSAJES_WHATSAPP.fecha(formatFechaAmigable(fecha)))}
           target="_blank"
           rel="noopener noreferrer"
           className="text-sm text-muted underline-offset-4 hover:text-foreground hover:underline"

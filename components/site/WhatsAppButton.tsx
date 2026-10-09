@@ -3,18 +3,20 @@
 import { usePathname } from "next/navigation";
 import { useMiFiesta } from "@/context/MiFiestaContext";
 import { esFichaDeServicio } from "@/lib/site";
-import { getGeneralWhatsAppLink } from "@/lib/whatsapp";
+import { MENSAJES_WHATSAPP } from "@/lib/whatsapp";
+import { useWhatsApp } from "@/components/site/SitioConfigProvider";
 
 export default function WhatsAppButton() {
   const { items, isPanelOpen } = useMiFiesta();
   const pathname = usePathname();
+  const whatsapp = useWhatsApp();
 
   // Cede el lugar a la barra de Mi fiesta, al panel y a la barra fija de la ficha.
   if (items.length > 0 || isPanelOpen || esFichaDeServicio(pathname)) return null;
 
   return (
     <a
-      href={getGeneralWhatsAppLink()}
+      href={whatsapp.link(MENSAJES_WHATSAPP.general())}
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Escríbenos por WhatsApp para consultar"

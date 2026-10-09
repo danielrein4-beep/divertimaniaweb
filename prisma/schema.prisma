@@ -155,3 +155,10 @@ model AdminUser {
   usuario      String @unique
   passwordHash String
 }
+
+// Ajustes generales del sitio, editables desde /admin/ajustes (una sola fila).
+model ConfiguracionSitio {
+  id        String   @id @default("principal")
+  whatsapp  String // solo dígitos con código de país, ej. 584147286881
+  updatedAt DateTime @updatedAt
+}

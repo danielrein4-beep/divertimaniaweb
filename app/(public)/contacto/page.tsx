@@ -1,15 +1,18 @@
 import type { Metadata } from "next";
 import { AtSign, MapPin, MessageCircle } from "lucide-react";
 import ContactoCotizacion from "@/components/mifiesta/ContactoCotizacion";
-import { getGeneralWhatsAppLink } from "@/lib/whatsapp";
-import { INSTAGRAM_HANDLE, INSTAGRAM_URL, WHATSAPP_DISPLAY } from "@/lib/site";
+import { MENSAJES_WHATSAPP } from "@/lib/whatsapp";
+import { INSTAGRAM_HANDLE, INSTAGRAM_URL } from "@/lib/site";
+import { buildWhatsAppLink, formatTelefono } from "@/lib/telefono";
+import { getConfigSitio } from "@/lib/configSitio";
 
 export const metadata: Metadata = {
   title: "Contacto y cotización | Divertimania",
   description: "Cuéntanos de tu evento y te mandamos la cotización por WhatsApp. Atendemos todo el Estado Táchira.",
 };
 
-export default function ContactoPage() {
+export default async function ContactoPage() {
+  const { whatsapp } = await getConfigSitio();
   return (
     <div className="mx-auto grid max-w-6xl gap-10 px-4 py-12 sm:px-6 sm:py-16 lg:grid-cols-[1fr_1.2fr] lg:gap-16">
       <div className="flex flex-col gap-6 lg:sticky lg:top-24 lg:self-start">
@@ -22,13 +25,13 @@ export default function ContactoPage() {
         <ul className="flex flex-col gap-3 text-sm">
           <li>
             <a
-              href={getGeneralWhatsAppLink()}
+              href={buildWhatsAppLink(whatsapp, MENSAJES_WHATSAPP.general())}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-3 font-semibold hover:text-neon-green"
             >
               <MessageCircle className="h-5 w-5 text-neon-green" aria-hidden />
-              {WHATSAPP_DISPLAY}
+              {formatTelefono(whatsapp)}
             </a>
           </li>
           <li>

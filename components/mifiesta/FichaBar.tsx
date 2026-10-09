@@ -2,7 +2,8 @@
 
 import { Check, Plus } from "lucide-react";
 import { useMiFiesta } from "@/context/MiFiestaContext";
-import { getServiceWhatsAppLink } from "@/lib/whatsapp";
+import { MENSAJES_WHATSAPP } from "@/lib/whatsapp";
+import { useWhatsApp } from "@/components/site/SitioConfigProvider";
 import { useBottomBarSpace } from "@/lib/useBottomBarSpace";
 
 /** Barra fija de la ficha: agregar el servicio, ver la fiesta o cotizar solo este. */
@@ -20,6 +21,7 @@ export default function FichaBar({
   tieneOpciones: boolean;
 }) {
   const { items, isInFiesta, toggleItem, openPanel, isPanelOpen } = useMiFiesta();
+  const whatsapp = useWhatsApp();
   useBottomBarSpace(true);
   if (isPanelOpen) return null;
 
@@ -67,7 +69,7 @@ export default function FichaBar({
           </button>
         ) : (
           <a
-            href={getServiceWhatsAppLink(nombre)}
+            href={whatsapp.link(MENSAJES_WHATSAPP.servicio(nombre))}
             target="_blank"
             rel="noopener noreferrer"
             className="touch-target shrink-0 rounded-full border border-white/20 px-4 text-sm font-semibold transition-colors hover:border-neon-green hover:text-neon-green"

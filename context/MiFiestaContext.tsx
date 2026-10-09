@@ -1,7 +1,7 @@
 "use client";
 
 import { createContext, useCallback, useContext, useMemo, useRef, useState, useSyncExternalStore, type ReactNode } from "react";
-import { buildWhatsAppLink } from "@/lib/site";
+import { useWhatsApp } from "@/components/site/SitioConfigProvider";
 import { useToast } from "@/components/ui/Toast";
 import {
   buildMensajeCotizacion,
@@ -40,8 +40,7 @@ interface MiFiestaContextValue {
 const MiFiestaContext = createContext<MiFiestaContextValue | null>(null);
 
 // Se abre en el mismo clic (sin await antes) para que el navegador no lo bloquee.
-function abrirWhatsApp(mensaje: string) {
-  const link = buildWhatsAppLink(mensaje);
+function abrirWhatsApp(link: string) {
   if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
     window.location.href = link;
   } else {
@@ -60,6 +59,7 @@ export function MiFiestaProvider({ children }: { children: ReactNode }) {
   const [isEnviado, setIsEnviado] = useState(false);
   const ultimoMensajeRegistrado = useRef<string | null>(null);
   const { showToast } = useToast();
+  const whatsapp = useWhatsApp();
 
   const getItem = useCallback(
     (servicioId: string, variante?: string | null) =>
@@ -123,7 +123,7 @@ export function MiFiestaProvider({ children }: { children: ReactNode }) {
   const sendWhatsAppCotizacion = useCallback(() => {
     const { items: actuales, form: datos } = miFiestaStore.getSnapshot();
     const mensaje = buildMensajeCotizacion(actuales, datos);
-    abrirWhatsApp(mensaje);
+    abrirWhatsApp(whatsapp.link(mensaje));
     setIsEnviado(true);
 
     // Copia para la bandeja del admin, sin bloquear la apertura de WhatsApp.
@@ -148,12 +148,12 @@ export function MiFiestaProvider({ children }: { children: ReactNode }) {
         keepalive: true,
       }).catch(() => {});
     }
-  }, []);
+  }, [whatsapp]);
 
   const reabrirWhatsApp = useCallback(() => {
     const { items: actuales, form: datos } = miFiestaStore.getSnapshot();
-    abrirWhatsApp(buildMensajeCotizacion(actuales, datos));
-  }, []);
+    abrirWhatsApp(whatsapp.link(buildMensajeCotizacion(actuales, datos)));
+  }, [whatsapp]);
 
   const value = useMemo<MiFiestaContextValue>(
     () => ({

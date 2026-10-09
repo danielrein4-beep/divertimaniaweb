@@ -3,7 +3,8 @@
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import Image from "next/image";
-import { buildWhatsAppLink } from "@/lib/site";
+import { MENSAJES_WHATSAPP } from "@/lib/whatsapp";
+import { useWhatsApp } from "@/components/site/SitioConfigProvider";
 import { useIsClient } from "@/lib/useIsClient";
 
 export type NovedadDTO = {
@@ -28,6 +29,7 @@ export default function NovedadesPanel({
   onComplete: () => void;
 }) {
   const canPortal = useIsClient();
+  const whatsapp = useWhatsApp();
   const [visible, setVisible] = useState(false);
   const [fading, setFading] = useState(false);
 
@@ -45,11 +47,7 @@ export default function NovedadesPanel({
 
   if (!canPortal) return null;
 
-  const href =
-    novedad.ctaUrl ||
-    buildWhatsAppLink(
-      `Hola Divertimania 👋 Vengo de la página web y quiero consultar la novedad: ${novedad.titulo}.`
-    );
+  const href = novedad.ctaUrl || whatsapp.link(MENSAJES_WHATSAPP.novedad(novedad.titulo));
 
   return createPortal(
     <div

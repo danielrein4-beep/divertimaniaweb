@@ -1,10 +1,13 @@
 import Link from "next/link";
-import { NAV_LINKS } from "@/lib/site";
-import { getGeneralWhatsAppLink } from "@/lib/whatsapp";
+import { INSTAGRAM_URL, NAV_LINKS } from "@/lib/site";
+import { MENSAJES_WHATSAPP } from "@/lib/whatsapp";
+import { buildWhatsAppLink, formatTelefono } from "@/lib/telefono";
+import { getConfigSitio } from "@/lib/configSitio";
 import Logo from "@/components/site/Logo";
 import { MessageCircle, MapPin, ShieldCheck } from "lucide-react";
 
-export default function Footer() {
+export default async function Footer() {
+  const { whatsapp } = await getConfigSitio();
   return (
     <footer className="border-t border-white/10 bg-[#0d0d14] relative z-10">
       <div className="mx-auto flex max-w-6xl flex-col gap-8 px-4 py-12 sm:px-6 md:flex-row md:items-start md:justify-between">
@@ -45,17 +48,17 @@ export default function Footer() {
           </span>
 
           <a
-            href={getGeneralWhatsAppLink()}
+            href={buildWhatsAppLink(whatsapp, MENSAJES_WHATSAPP.general())}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 text-foreground/90 hover:text-neon-green transition-colors group"
           >
             <MessageCircle className="w-4 h-4 text-neon-green group-hover:scale-110 transition-transform" />
-            <span className="font-semibold">+58 414-728-6881</span>
+            <span className="font-semibold">{formatTelefono(whatsapp)}</span>
           </a>
 
           <a
-            href="https://www.instagram.com/divertimania2"
+            href={INSTAGRAM_URL}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 text-foreground/80 hover:text-magenta transition-colors group"

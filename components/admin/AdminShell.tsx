@@ -12,6 +12,7 @@ const LINKS = [
   { href: "/admin/equipo", label: "Equipo" },
   { href: "/admin/novedades", label: "Novedades" },
   { href: "/admin/solicitudes", label: "Solicitudes" },
+  { href: "/admin/ajustes", label: "Ajustes" },
 ];
 
 export default function AdminShell({ children }: { children: React.ReactNode }) {
