@@ -1,137 +1,85 @@
 import Link from "next/link";
-import Image from "next/image";
-import PlaceholderImage from "@/components/site/PlaceholderImage";
+import { ArrowRight } from "lucide-react";
 import Hero from "@/components/site/Hero";
-import AccordionGallery, { type AccordionGalleryItem } from "@/components/site/AccordionGallery";
-import { CATEGORIAS } from "@/lib/site";
+import QueCelebras from "@/components/site/QueCelebras";
+import ShowsEstrella from "@/components/site/ShowsEstrella";
+import PersonajesCarousel from "@/components/site/PersonajesCarousel";
+import GaleriaViva from "@/components/site/GaleriaViva";
+import MomentosReales from "@/components/site/MomentosReales";
+import CotizarButtons from "@/components/site/CotizarButtons";
 import { prisma } from "@/lib/db";
+import { getCategorias } from "@/lib/categorias";
 
-const DESTACADOS = [
-  { nombre: "Espumanía", fotoUrl: "/images/espumania-foam.png" },
-  { nombre: "El Chacal de la Trompeta", fotoUrl: null },
-  { nombre: "Bolas Disco", fotoUrl: "/images/bolas-disco-equipo.jpg" },
-  { nombre: "Show según temática", fotoUrl: "/images/show-tematico-catrina.jpg" },
-];
-
-const CATEGORIA_FOTO: Partial<Record<(typeof CATEGORIAS)[number], string>> = {
-  "Fiestas Infantiles": "/images/fiestas-infantiles-mario.jpg",
-  "Baby Shower": "/images/baby-shower.png",
-  Personajes: "/images/mickey-racer.jpg",
-  "Show para Adultos": "/images/bolas-disco-duo.jpg",
-  "Estación Creativa": "/images/diverti-artistas.png",
-  Atracciones: "/images/pelotas-boom-rooftop.png",
-};
-
-const CATEGORIA_ITEMS: AccordionGalleryItem[] = CATEGORIAS.map((categoria) => ({
-  image: CATEGORIA_FOTO[categoria] ?? "/images/fiestas-infantiles-mario.jpg",
-  label: categoria,
-  link: `/catalogo?categoria=${encodeURIComponent(categoria)}`,
-}));
+export const dynamic = "force-dynamic";
 
 export default async function Home() {
   const now = new Date();
-  const novedadesActivas = await prisma.novedad.findMany({
-    where: {
-      activo: true,
-      AND: [
-        { OR: [{ fechaInicio: null }, { fechaInicio: { lte: now } }] },
-        { OR: [{ fechaFin: null }, { fechaFin: { gte: now } }] },
-      ],
-    },
-    orderBy: { orden: "asc" },
-  });
+  const [novedad, personajes, destacados, totalPersonajes, categorias, conServicios] = await Promise.all([
+    prisma.novedad.findFirst({
+      where: {
+        activo: true,
+        AND: [
+          { OR: [{ fechaInicio: null }, { fechaInicio: { lte: now } }] },
+          { OR: [{ fechaFin: null }, { fechaFin: { gte: now } }] },
+        ],
+      },
+      orderBy: { orden: "asc" },
+      select: { id: true, titulo: true, badge: true, ctaUrl: true },
+    }),
+    prisma.servicio.findMany({
+      where: { activo: true, categoria: "Personajes", soloAdultos: false, fotoUrl: { not: null } },
+      select: { id: true, nombre: true, fotoUrl: true },
+      orderBy: { orden: "asc" },
+    }),
+    prisma.servicio.findMany({
+      where: { activo: true, destacado: true, soloAdultos: false, fotoUrl: { not: null } },
+      include: {
+        media: { where: { tipo: "VIDEO" }, orderBy: { orden: "asc" }, take: 1 },
+        _count: { select: { opciones: true } },
+      },
+      orderBy: { orden: "asc" },
+      take: 4,
+    }),
+    prisma.servicio.count({ where: { activo: true, categoria: "Personajes", soloAdultos: false } }),
+    getCategorias(),
+    prisma.servicio.findMany({ where: { activo: true }, distinct: ["categoria"], select: { categoria: true } }),
+  ]);
 
   return (
     <div>
-      <Hero novedades={novedadesActivas} />
+      <Hero novedad={novedad} categorias={categorias.map((c) => c.nombre).filter((n) => conServicios.some((s) => s.categoria === n))} />
+      <QueCelebras />
+      <ShowsEstrella
+        shows={destacados.map((s) => ({
+          ...s,
+          videoUrl: s.media[0]?.url ?? null,
+          posterUrl: s.media[0]?.poster ?? null,
+          tieneOpciones: s._count.opciones > 0,
+        }))}
+      />
+      <PersonajesCarousel personajes={personajes} total={totalPersonajes} />
 
-      <section className="mx-auto max-w-6xl px-4 pb-16 sm:px-6">
-        <h2 className="mb-6 text-center text-2xl font-bold sm:text-3xl">¿Qué estás celebrando?</h2>
-        <div className="hidden sm:block">
-          <AccordionGallery
-            items={CATEGORIA_ITEMS}
-            defaultIndex={2}
-            expandRatio={0.52}
-            trigger="hover"
-            accentColor="#9dff3c"
-            overlayColor="#0a0a0f"
-            textColor="#ffffff"
-            grayscale
-            showLabels
-            duration={0.6}
-            ease="power3.out"
-            parallax={0.5}
-            tilt={8}
-            stagger={0.06}
-            height={420}
-            gap={10}
-            radius={16}
-            orientation="horizontal"
-          />
-        </div>
-        <div className="grid grid-cols-2 gap-3 sm:hidden">
-          {CATEGORIA_ITEMS.map((item) => (
-            <Link
-              key={item.label}
-              href={item.link!}
-              className="group relative aspect-[3/2] w-full overflow-hidden rounded-2xl border border-border bg-background-card"
-            >
-              <Image src={item.image} alt={item.label} fill className="object-cover" sizes="50vw" />
-              <span className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 to-transparent px-3 py-3 text-sm font-semibold text-white">
-                {item.label}
-              </span>
-            </Link>
-          ))}
-        </div>
-      </section>
+      <div className="mx-auto mb-16 flex max-w-6xl justify-center px-4 sm:px-6">
+        <Link
+          href="/catalogo"
+          className="touch-target group gap-2 rounded-full border border-neon-green/60 px-7 text-base font-bold text-neon-green transition-colors hover:bg-neon-green hover:text-background"
+        >
+          Ver todo el catálogo
+          <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-0.5" aria-hidden />
+        </Link>
+      </div>
 
-      <section className="border-y border-border bg-background-elevated py-16">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6">
-          <h2 className="mb-2 text-center text-2xl font-bold sm:text-3xl">Shows destacados</h2>
-          <p className="mb-8 text-center text-muted">
-            La energía que hace que tu evento se hable por semanas.
-          </p>
-          <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-            {DESTACADOS.map((show) =>
-              show.fotoUrl ? (
-                <div
-                  className="relative aspect-[4/5] w-full overflow-hidden rounded-2xl border border-border bg-background-card"
-                  key={show.nombre}
-                >
-                  <Image src={show.fotoUrl} alt={show.nombre} fill className="object-cover" sizes="(max-width: 768px) 50vw, 25vw" />
-                  <span className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 to-transparent px-3 py-4 text-sm font-semibold text-white">
-                    {show.nombre}
-                  </span>
-                </div>
-              ) : (
-                <PlaceholderImage key={show.nombre} label={show.nombre} className="aspect-[4/5] w-full" />
-              )
-            )}
-          </div>
-        </div>
-      </section>
+      <GaleriaViva />
+      <MomentosReales />
 
-      <section className="mx-auto flex max-w-4xl flex-col items-center gap-6 px-4 py-20 text-center sm:px-6">
-        <h2 className="font-display text-3xl font-bold sm:text-4xl">
-          ¿Listo para <span className="text-neon-green">planear tu evento</span>?
+      <section className="mx-auto flex max-w-3xl flex-col items-center gap-6 px-4 py-20 text-center sm:px-6 sm:py-28">
+        <h2 className="type-h1 font-display font-extrabold">
+          ¿Ya tienes la fecha? <span className="text-neon-green">Armemos la fiesta.</span>
         </h2>
-        <p className="max-w-xl text-muted">
-          Consulta disponibilidad para tu fecha y arma el paquete perfecto para tu celebración.
+        <p className="max-w-lg text-muted">
+          Elige lo que te gusta, cuéntanos de tu evento y te mandamos la cotización por WhatsApp.
         </p>
-        <div className="flex flex-wrap items-center justify-center gap-4">
-          <Link
-            href="/disponibilidad"
-            className="rounded-full bg-neon-green px-6 py-3 font-semibold text-background transition-transform hover:scale-105"
-          >
-            Consultar disponibilidad
-          </Link>
-          <Link
-            href="/contacto"
-            className="rounded-full border border-border px-6 py-3 font-semibold hover:border-neon-green hover:text-neon-green"
-          >
-            Contáctanos
-          </Link>
-        </div>
+        <CotizarButtons />
       </section>
     </div>
   );

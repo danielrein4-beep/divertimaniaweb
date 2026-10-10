@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
+import { useIsClient } from "@/lib/useIsClient";
 
 type IntroMontageProps = {
   videos: string[];
@@ -10,6 +11,12 @@ type IntroMontageProps = {
   fadeMs?: number;
   onComplete: () => void;
 };
+
+/** "/reels/intro/reel-3.mp4" → "/reels/posters/reel-3-poster.jpg" (portada mientras carga el video). */
+export function posterDeReel(src: string): string | undefined {
+  const m = src.match(/reel-(\d+)\.mp4$/);
+  return m ? `/reels/posters/reel-${m[1]}-poster.jpg` : undefined;
+}
 
 function shuffle<T>(arr: T[]): T[] {
   const a = [...arr];
@@ -66,11 +73,7 @@ export default function IntroMontage({
   const [grid, setGrid] = useState({ rows: 1, cols: 1 });
   const [fading, setFading] = useState(false);
   const [mounted, setMounted] = useState(false);
-  const [canPortal, setCanPortal] = useState(false);
-
-  useEffect(() => {
-    setCanPortal(true);
-  }, []);
+  const canPortal = useIsClient();
 
   const shuffledVideos = useMemo(() => shuffle(videos), [videos]);
 
@@ -112,12 +115,19 @@ export default function IntroMontage({
 
   const tileCount = grid.rows * grid.cols;
 
+  const saltar = () => {
+    if (fading) return;
+    setFading(true);
+    setTimeout(onComplete, Math.min(fadeMs, 400));
+  };
+
   if (!canPortal) return null;
 
   return createPortal(
     <div
       ref={containerRef}
-      className="fixed inset-0 z-[60] grid overflow-hidden transition-[opacity,filter] ease-out"
+      onClick={saltar}
+      className="fixed inset-0 z-[60] grid cursor-pointer overflow-hidden transition-[opacity,filter] ease-out"
       style={{
         gridTemplateColumns: `repeat(${grid.cols}, 1fr)`,
         gridTemplateRows: `repeat(${grid.rows}, 1fr)`,
@@ -126,7 +136,6 @@ export default function IntroMontage({
         filter: fading ? "blur(28px)" : "blur(0px)",
         transitionDuration: `${fadeMs}ms`,
       }}
-      aria-hidden="true"
     >
       {/* Cada tile usa un video distinto; nunca hay más tiles que videos, así que ninguno se repite. */}
       {Array.from({ length: tileCount }).map((_, i) => {
@@ -143,9 +152,11 @@ export default function IntroMontage({
           >
             {src && (
               <video
+                aria-hidden
                 className="absolute h-[calc(100%+2px)] w-[calc(100%+2px)] object-cover"
                 style={{ top: -1, left: -1 }}
                 src={src}
+                poster={posterDeReel(src)}
                 muted
                 autoPlay
                 loop
@@ -157,9 +168,20 @@ export default function IntroMontage({
       })}
 
       <div
+        aria-hidden
         className="pointer-events-none absolute inset-0"
-        style={{ background: "radial-gradient(ellipse at center, transparent 35%, rgba(10,10,15,0.6) 100%)" }}
+        style={{ background: "radial-gradient(ellipse at center, transparent 35%, rgba(11,11,11,0.6) 100%)" }}
       />
+      <button
+        type="button"
+        onClick={(e) => {
+          e.stopPropagation();
+          saltar();
+        }}
+        className="absolute bottom-6 left-1/2 -translate-x-1/2 rounded-full border border-white/30 bg-black/50 px-5 py-2.5 text-sm font-semibold text-white backdrop-blur-sm transition-colors hover:bg-black/70"
+      >
+        Entrar
+      </button>
     </div>,
     document.body
   );

@@ -1,3 +1,5 @@
+import { z } from "zod";
+
 export const ESTADOS_EVENTO = ["COTIZACION", "CONFIRMADO", "CANCELADO"] as const;
 export type EstadoEvento = (typeof ESTADOS_EVENTO)[number];
 
@@ -33,3 +35,23 @@ export const TIPO_OPCION_LABEL: Record<TipoOpcion, string> = {
   VARIANTE: "Variante de personaje",
   DINAMICA: "Dinámica / juego",
 };
+
+export const TIPOS_SERVICIO_MEDIA = ["FOTO", "VIDEO"] as const;
+export type TipoServicioMedia = (typeof TIPOS_SERVICIO_MEDIA)[number];
+
+export const TIPO_SERVICIO_MEDIA_LABEL: Record<TipoServicioMedia, string> = {
+  FOTO: "Foto de galería",
+  VIDEO: "Video (Reel)",
+};
+
+/** Ruta de un archivo dentro de /public (ej. "/images/foto.jpg"). next/image no acepta dominios externos sin configurarlos. */
+export const rutaLocalSchema = z
+  .string()
+  .trim()
+  .regex(/^\/(?!\/)[^\s]*$/, 'Usa una ruta del sitio que empiece con "/", por ejemplo /images/foto.jpg');
+
+/** "a, b ,c" -> "a,b,c" (sin vacíos). */
+export function normalizarLista(valor: string | null | undefined): string | null {
+  const partes = (valor ?? "").split(",").map((p) => p.trim()).filter(Boolean);
+  return partes.length ? partes.join(",") : null;
+}

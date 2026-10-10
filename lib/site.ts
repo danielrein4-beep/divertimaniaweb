@@ -1,11 +1,21 @@
-export const WHATSAPP_LINK = "https://wa.me/message/ELT6QN7TWA5HK1";
+export const INSTAGRAM_HANDLE = "divertimania2";
+export const INSTAGRAM_URL = `https://www.instagram.com/${INSTAGRAM_HANDLE}/`;
 
-// Número real de Divertimania (del catálogo oficial) para enlaces con mensaje
-// pre-llenado — el link corto de arriba no admite texto personalizado.
-export const WHATSAPP_PHONE = "584147286881";
+// Datos del perfil de Instagram (@divertimania2), tomados del perfil en octubre 2026.
+// Actualizarlos a mano cuando cambien.
+export const PERFIL_IG = {
+  publicaciones: "1.060",
+  seguidores: "16,8 mil",
+  bio: [
+    { icono: "🤩", texto: "Creamos momentos inolvidables" },
+    { icono: "🪅", texto: "Bodas · 15 años · corporativos y fiestas infantiles" },
+    { icono: "🎤", texto: "Animación · Shows · Personajes · Hora Loca" },
+  ],
+};
 
-export function buildWhatsAppLink(mensaje: string): string {
-  return `https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent(mensaje)}`;
+/** true en /catalogo/[id] (la ficha tiene su propia barra fija). */
+export function esFichaDeServicio(pathname: string | null): boolean {
+  return Boolean(pathname && /^\/catalogo\/[^/]+$/.test(pathname));
 }
 
 export const NAV_LINKS = [
@@ -13,7 +23,7 @@ export const NAV_LINKS = [
   { href: "/catalogo", label: "Catálogo" },
   { href: "/equipo", label: "Equipo" },
   { href: "/galeria", label: "Galería" },
-  { href: "/disponibilidad", label: "Disponibilidad" },
+  { href: "/disponibilidad", label: "Consulta tu fecha" },
   { href: "/contacto", label: "Contacto" },
 ];
 

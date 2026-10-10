@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, useState } from "react";
+import SubirFoto from "@/components/admin/SubirFoto";
 
 type Novedad = {
   id: string;
@@ -88,15 +89,10 @@ export default function NovedadesManager({ initialNovedades }: { initialNovedade
           />
         </label>
         <div className="grid gap-3 sm:grid-cols-3">
-          <label className="flex flex-col gap-1 text-sm">
+          <div className="flex flex-col gap-1 text-sm">
             Foto (opcional)
-            <input
-              placeholder="/images/nombre.jpg"
-              value={form.fotoUrl}
-              onChange={(e) => setForm({ ...form, fotoUrl: e.target.value })}
-              className="rounded-lg border border-border bg-background px-3 py-2 outline-none focus:border-neon-green"
-            />
-          </label>
+            <SubirFoto valor={form.fotoUrl || null} onCambio={(url) => setForm({ ...form, fotoUrl: url ?? "" })} aspecto="aspect-video" />
+          </div>
           <label className="flex flex-col gap-1 text-sm">
             Texto del botón
             <input

@@ -1,0 +1,193 @@
+"use client";
+
+import { createContext, useCallback, useContext, useMemo, useRef, useState, useSyncExternalStore, type ReactNode } from "react";
+import { useWhatsApp } from "@/components/site/SitioConfigProvider";
+import { useToast } from "@/components/ui/Toast";
+import {
+  buildMensajeCotizacion,
+  itemId,
+  miFiestaStore,
+  type EventoFormData,
+  type MiFiestaItem,
+} from "@/lib/miFiesta";
+import { registrarMetrica } from "@/lib/metricas";
+
+export type { EventoFormData, MiFiestaItem } from "@/lib/miFiesta";
+
+type NuevoItem = Omit<MiFiestaItem, "id">;
+
+interface MiFiestaContextValue {
+  items: MiFiestaItem[];
+  /** Agrega el ítem, o lo reemplaza si ya existe (por ejemplo, para actualizar las dinámicas). */
+  addItem: (item: NuevoItem) => void;
+  removeItem: (id: string) => void;
+  toggleItem: (item: NuevoItem) => void;
+  isInFiesta: (servicioId: string, variante?: string | null) => boolean;
+  getItem: (servicioId: string, variante?: string | null) => MiFiestaItem | undefined;
+  clearFiesta: () => void;
+  isPanelOpen: boolean;
+  openPanel: (step?: 1 | 2) => void;
+  closePanel: () => void;
+  step: 1 | 2;
+  setStep: (step: 1 | 2) => void;
+  formData: EventoFormData;
+  updateFormData: (data: Partial<EventoFormData>) => void;
+  sendWhatsAppCotizacion: () => void;
+  /** Vuelve a abrir WhatsApp con el mismo mensaje, sin registrar otra solicitud. */
+  reabrirWhatsApp: () => void;
+  isEnviado: boolean;
+}
+
+const MiFiestaContext = createContext<MiFiestaContextValue | null>(null);
+
+// Se abre en el mismo clic (sin await antes) para que el navegador no lo bloquee.
+function abrirWhatsApp(link: string) {
+  if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+    window.location.href = link;
+  } else {
+    window.open(link, "_blank", "noopener,noreferrer");
+  }
+}
+
+export function MiFiestaProvider({ children }: { children: ReactNode }) {
+  const { items, form } = useSyncExternalStore(
+    miFiestaStore.subscribe,
+    miFiestaStore.getSnapshot,
+    miFiestaStore.getServerSnapshot
+  );
+  const [isPanelOpen, setIsPanelOpen] = useState(false);
+  const [step, setStep] = useState<1 | 2>(1);
+  const [isEnviado, setIsEnviado] = useState(false);
+  const ultimoMensajeRegistrado = useRef<string | null>(null);
+  const { showToast } = useToast();
+  const whatsapp = useWhatsApp();
+
+  const getItem = useCallback(
+    (servicioId: string, variante?: string | null) =>
+      variante === undefined
+        ? items.find((i) => i.servicioId === servicioId)
+        : items.find((i) => i.servicioId === servicioId && (i.variante ?? null) === variante),
+    [items]
+  );
+
+  const isInFiesta = useCallback(
+    (servicioId: string, variante?: string | null) => Boolean(getItem(servicioId, variante)),
+    [getItem]
+  );
+
+  const addItem = useCallback(
+    (item: NuevoItem) => {
+      const id = itemId(item);
+      const existia = miFiestaStore.getSnapshot().items.some((i) => i.id === id);
+      miFiestaStore.update((s) => ({
+        ...s,
+        items: existia
+          ? s.items.map((i) => (i.id === id ? { ...item, id } : i))
+          : [...s.items, { ...item, id }],
+      }));
+      showToast(existia ? `${item.nombre} actualizado en tu fiesta` : `${item.nombre} agregado a tu fiesta`);
+    },
+    [showToast]
+  );
+
+  const removeItem = useCallback((id: string) => {
+    miFiestaStore.update((s) => ({ ...s, items: s.items.filter((i) => i.id !== id) }));
+  }, []);
+
+  const toggleItem = useCallback(
+    (item: NuevoItem) => {
+      const id = itemId(item);
+      if (miFiestaStore.getSnapshot().items.some((i) => i.id === id)) removeItem(id);
+      else addItem(item);
+    },
+    [addItem, removeItem]
+  );
+
+  const clearFiesta = useCallback(() => {
+    miFiestaStore.update((s) => ({ ...s, items: [] }));
+    setIsEnviado(false);
+    setStep(1);
+  }, []);
+
+  const openPanel = useCallback((initialStep: 1 | 2 = 1) => {
+    setStep(initialStep);
+    setIsEnviado(false);
+    setIsPanelOpen(true);
+  }, []);
+
+  const closePanel = useCallback(() => setIsPanelOpen(false), []);
+
+  const updateFormData = useCallback((data: Partial<EventoFormData>) => {
+    miFiestaStore.update((s) => ({ ...s, form: { ...s.form, ...data } }));
+  }, []);
+
+  const sendWhatsAppCotizacion = useCallback(() => {
+    const { items: actuales, form: datos } = miFiestaStore.getSnapshot();
+    const mensaje = buildMensajeCotizacion(actuales, datos);
+    abrirWhatsApp(whatsapp.link(mensaje));
+    setIsEnviado(true);
+
+    // Copia para la bandeja del admin, sin bloquear la apertura de WhatsApp.
+    // El mismo mensaje exacto no se registra dos veces seguidas.
+    if (ultimoMensajeRegistrado.current === mensaje) return;
+    ultimoMensajeRegistrado.current = mensaje;
+    registrarMetrica("COTIZACION", {
+      origen: "mi-fiesta",
+      detalle: actuales.map((i) => i.nombre).join(", "),
+    });
+    const telefono = datos.telefono.trim();
+    const payload = JSON.stringify({
+      nombre: datos.nombre.trim().slice(0, 120),
+      telefono: telefono.length >= 6 ? telefono.slice(0, 30) : "Por WhatsApp",
+      mensaje: mensaje.slice(0, 2000),
+      fechaDeseada: datos.fecha,
+    });
+    const enviado =
+      typeof navigator.sendBeacon === "function" &&
+      navigator.sendBeacon("/api/contacto", new Blob([payload], { type: "application/json" }));
+    if (!enviado) {
+      fetch("/api/contacto", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: payload,
+        keepalive: true,
+      }).catch(() => {});
+    }
+  }, [whatsapp]);
+
+  const reabrirWhatsApp = useCallback(() => {
+    const { items: actuales, form: datos } = miFiestaStore.getSnapshot();
+    abrirWhatsApp(whatsapp.link(buildMensajeCotizacion(actuales, datos)));
+  }, [whatsapp]);
+
+  const value = useMemo<MiFiestaContextValue>(
+    () => ({
+      items,
+      addItem,
+      removeItem,
+      toggleItem,
+      isInFiesta,
+      getItem,
+      clearFiesta,
+      isPanelOpen,
+      openPanel,
+      closePanel,
+      step,
+      setStep,
+      formData: form,
+      updateFormData,
+      sendWhatsAppCotizacion,
+      reabrirWhatsApp,
+      isEnviado,
+    }),
+    [items, addItem, removeItem, toggleItem, isInFiesta, getItem, clearFiesta, isPanelOpen, openPanel, closePanel, step, form, updateFormData, sendWhatsAppCotizacion, reabrirWhatsApp, isEnviado]
+  );
+
+  return <MiFiestaContext.Provider value={value}>{children}</MiFiestaContext.Provider>;
+}
+
+export function useMiFiesta() {
+  const ctx = useContext(MiFiestaContext);
+  if (!ctx) throw new Error("useMiFiesta debe usarse dentro de MiFiestaProvider");
+  return ctx;
+}

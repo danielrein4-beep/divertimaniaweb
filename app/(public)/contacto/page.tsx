@@ -1,29 +1,58 @@
-import ContactForm from "@/components/site/ContactForm";
-import { WHATSAPP_LINK } from "@/lib/site";
+import type { Metadata } from "next";
+import { AtSign, MapPin, MessageCircle } from "lucide-react";
+import ContactoCotizacion from "@/components/mifiesta/ContactoCotizacion";
+import { MENSAJES_WHATSAPP } from "@/lib/whatsapp";
+import { INSTAGRAM_HANDLE, INSTAGRAM_URL } from "@/lib/site";
+import { buildWhatsAppLink, formatTelefono } from "@/lib/telefono";
+import { getConfigSitio } from "@/lib/configSitio";
 
-export default function ContactoPage() {
+export const metadata: Metadata = {
+  title: "Contacto y cotización | Divertimania",
+  description: "Cuéntanos de tu evento y te mandamos la cotización por WhatsApp. Atendemos todo el Estado Táchira.",
+};
+
+export default async function ContactoPage() {
+  const { whatsapp } = await getConfigSitio();
   return (
-    <div className="mx-auto max-w-4xl px-4 py-14 sm:px-6">
-      <div className="mb-10 text-center">
-        <h1 className="font-display text-3xl font-extrabold sm:text-4xl">Contáctanos</h1>
-        <p className="mt-2 text-muted">
-          Cuéntanos sobre tu evento y te ayudamos a armar la celebración perfecta.
+    <div className="mx-auto grid max-w-6xl gap-10 px-4 py-12 sm:px-6 sm:py-16 lg:grid-cols-[1fr_1.2fr] lg:gap-16">
+      <div className="flex flex-col gap-6 lg:sticky lg:top-24 lg:self-start">
+        <h1 className="type-h1 font-display font-extrabold">Cuéntanos de tu fiesta</h1>
+        <p className="text-muted">
+          Llena los datos y se abre WhatsApp con tu mensaje listo. Te respondemos con la cotización según fecha, zona y
+          servicios.
         </p>
+
+        <ul className="flex flex-col gap-3 text-sm">
+          <li>
+            <a
+              href={buildWhatsAppLink(whatsapp, MENSAJES_WHATSAPP.general())}
+              data-origen="contacto"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-3 font-semibold hover:text-neon-green"
+            >
+              <MessageCircle className="h-5 w-5 text-neon-green" aria-hidden />
+              {formatTelefono(whatsapp)}
+            </a>
+          </li>
+          <li>
+            <a
+              href={INSTAGRAM_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-3 font-semibold hover:text-neon-green"
+            >
+              <AtSign className="h-5 w-5 text-neon-green" aria-hidden />@{INSTAGRAM_HANDLE}
+            </a>
+          </li>
+          <li className="inline-flex items-center gap-3 text-muted">
+            <MapPin className="h-5 w-5 text-neon-green" aria-hidden />
+            Atendemos todo el Estado Táchira
+          </li>
+        </ul>
       </div>
 
-      <div className="mb-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
-        <a
-          href={WHATSAPP_LINK}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="rounded-full bg-neon-green px-6 py-3 font-semibold text-background transition-transform hover:scale-105"
-        >
-          Escríbenos directo por WhatsApp
-        </a>
-        <span className="text-sm text-muted">o completa el formulario</span>
-      </div>
-
-      <ContactForm />
+      <ContactoCotizacion />
     </div>
   );
 }

@@ -5,13 +5,16 @@ import { usePathname, useRouter } from "next/navigation";
 import Logo from "@/components/site/Logo";
 
 const LINKS = [
+  { href: "/admin/resultados", label: "Resultados" },
   { href: "/admin/dashboard", label: "Calendario" },
   { href: "/admin/eventos", label: "Eventos" },
   { href: "/admin/recursos", label: "Recursos" },
   { href: "/admin/catalogo", label: "Catálogo" },
+  { href: "/admin/categorias", label: "Secciones" },
   { href: "/admin/equipo", label: "Equipo" },
   { href: "/admin/novedades", label: "Novedades" },
   { href: "/admin/solicitudes", label: "Solicitudes" },
+  { href: "/admin/ajustes", label: "Ajustes" },
 ];
 
 export default function AdminShell({ children }: { children: React.ReactNode }) {
