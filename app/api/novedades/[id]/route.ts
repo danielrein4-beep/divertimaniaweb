@@ -7,7 +7,7 @@ const schema = z.object({
   badge: z.string().trim().min(1),
   titulo: z.string().trim().min(2),
   descripcion: z.string().trim().min(2),
-  fotoUrl: z.string().trim().optional().or(z.literal("")),
+  fotoUrl: z.string().trim().nullable().optional().or(z.literal("")),
   ctaTexto: z.string().trim().min(1),
   ctaUrl: z.string().trim().optional().or(z.literal("")),
   activo: z.boolean(),

@@ -1,4 +1,5 @@
 import AjustesForm from "@/components/admin/AjustesForm";
+import CambiarClave from "@/components/admin/CambiarClave";
 import { getConfigSitio } from "@/lib/configSitio";
 
 export const dynamic = "force-dynamic";
@@ -13,6 +14,7 @@ export default async function AjustesPage() {
         <p className="mt-1 text-sm text-muted">Los cambios se ven en el sitio público apenas guardas.</p>
       </div>
       <AjustesForm initialWhatsapp={config.whatsapp} />
+      <CambiarClave />
     </div>
   );
 }

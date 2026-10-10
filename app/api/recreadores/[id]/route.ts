@@ -7,7 +7,7 @@ const schema = z.object({
   nombre: z.string().trim().min(2),
   cargo: z.string().trim().min(2),
   descripcion: z.string().trim().min(2),
-  fotoUrl: z.string().trim().optional().or(z.literal("")),
+  fotoUrl: z.string().trim().nullable().optional().or(z.literal("")),
   orden: z.number().int().default(0),
   activo: z.boolean().default(true),
 });

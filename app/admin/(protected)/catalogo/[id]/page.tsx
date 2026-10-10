@@ -1,7 +1,6 @@
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/db";
 import { getCategorias } from "@/lib/categorias";
-import OpcionesManager from "@/components/admin/OpcionesManager";
 import ServicioEditor from "@/components/admin/ServicioEditor";
 import { type TipoOpcion, type TipoServicioMedia } from "@/lib/validation";
 
@@ -35,21 +34,7 @@ export default async function AdminServicioPage({ params }: { params: Promise<{ 
         categorias={categorias.map((c) => c.nombre)}
         otros={otros}
         media={media.map((m) => ({ ...m, tipo: m.tipo as TipoServicioMedia }))}
-        extra={
-          <section className="card-glass flex flex-col gap-4 rounded-2xl p-5">
-            <div>
-              <h2 className="text-lg font-bold">Variantes y dinámicas</h2>
-              <p className="mt-0.5 text-sm text-muted">
-                Opciones que el cliente elige al cotizar: por ejemplo “Rapunzel sola” o “con el príncipe”, o los juegos de
-                un baby shower. Se guardan al momento.
-              </p>
-            </div>
-            <OpcionesManager
-              servicioId={servicio.id}
-              initialOpciones={opciones.map((o) => ({ ...o, tipo: o.tipo as TipoOpcion }))}
-            />
-          </section>
-        }
+        opciones={opciones.map((o) => ({ ...o, tipo: o.tipo as TipoOpcion }))}
       />
     </div>
   );

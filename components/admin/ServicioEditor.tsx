@@ -9,6 +9,7 @@ import { OCASIONES } from "@/lib/ocasiones";
 import { type TipoServicioMedia } from "@/lib/validation";
 import SubirFoto from "@/components/admin/SubirFoto";
 import MediaManager from "@/components/admin/MediaManager";
+import OpcionesManager from "@/components/admin/OpcionesManager";
 import { pedir } from "@/components/admin/subir";
 import { Aviso, Campo, Interruptor, Tarjeta, inputClase } from "@/components/admin/ui";
 
@@ -39,14 +40,13 @@ export default function ServicioEditor({
   categorias,
   otros,
   media,
-  extra,
+  opciones,
 }: {
   servicio: ServicioEditable;
   categorias: string[];
   otros: Otro[];
   media: Media[];
-  /** Secciones que se guardan por su cuenta (variantes y dinámicas), debajo de la galería. */
-  extra?: React.ReactNode;
+  opciones: React.ComponentProps<typeof OpcionesManager>["initialOpciones"];
 }) {
   const router = useRouter();
   const [guardado, setGuardado] = useState(inicial);
@@ -288,7 +288,12 @@ export default function ServicioEditor({
             }}
           />
 
-          {extra}
+          <Tarjeta
+            titulo="Variantes y dinámicas"
+            ayuda="Opciones que el cliente elige al cotizar: “Rapunzel sola” o “con el príncipe”, o los juegos de un baby shower. Se guardan al momento."
+          >
+            <OpcionesManager servicioId={form.id} initialOpciones={opciones} />
+          </Tarjeta>
 
           <section className="rounded-2xl border border-red-500/25 p-5">
             <h2 className="font-bold text-red-300">Borrar servicio</h2>
