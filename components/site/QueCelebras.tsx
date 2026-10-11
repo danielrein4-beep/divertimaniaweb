@@ -1,10 +1,59 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useMiFiesta } from "@/context/MiFiestaContext";
 import SectionHeader from "@/components/ui/SectionHeader";
 import { OCASIONES } from "@/lib/ocasiones";
+
+/** Escritorio: se reproduce al pasar el mouse. Celulares (sin hover): en bucle mientras la tarjeta se ve. */
+function VideoOcasion({ src }: { src: string }) {
+  const ref = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    const video = ref.current;
+    const card = video?.parentElement;
+    if (!video || !card) return;
+    const play = () => void video.play().catch(() => {});
+    const stop = () => {
+      video.pause();
+      video.currentTime = 0;
+    };
+
+    if (window.matchMedia("(hover: none)").matches) {
+      const mostrar = () => video.classList.replace("opacity-0", "opacity-100");
+      video.addEventListener("playing", mostrar, { once: true });
+      const io = new IntersectionObserver(([e]) => (e.isIntersecting ? play() : video.pause()), { threshold: 0.6 });
+      io.observe(card);
+      return () => io.disconnect();
+    }
+
+    card.addEventListener("pointerenter", play);
+    card.addEventListener("pointerleave", stop);
+    card.addEventListener("focus", play);
+    card.addEventListener("blur", stop);
+    return () => {
+      card.removeEventListener("pointerenter", play);
+      card.removeEventListener("pointerleave", stop);
+      card.removeEventListener("focus", play);
+      card.removeEventListener("blur", stop);
+    };
+  }, []);
+
+  return (
+    <video
+      ref={ref}
+      src={src}
+      muted
+      loop
+      playsInline
+      preload="none"
+      aria-hidden
+      className="absolute inset-0 h-full w-full object-cover opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-focus-visible:opacity-100"
+    />
+  );
+}
 
 export default function QueCelebras() {
   const { updateFormData } = useMiFiesta();
@@ -36,6 +85,7 @@ export default function QueCelebras() {
               sizes="(max-width: 640px) 42vw, (max-width: 1024px) 25vw, 15vw"
               className="object-cover transition-transform duration-500 group-hover:scale-105"
             />
+            {"video" in ocasion && <VideoOcasion src={ocasion.video} />}
             <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent" />
             <span className="ig-caption absolute inset-x-3 bottom-3 text-lg leading-tight">
               {ocasion.nombre}
