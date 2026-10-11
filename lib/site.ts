@@ -30,7 +30,7 @@ export const NAV_LINKS = [
 export const CATEGORIAS = [
   "Fiestas Infantiles",
   "Baby Shower",
-  "Personajes",
+  "Personajes Infantiles",
   "Show para Adultos",
   "Estación Creativa",
   "Atracciones",

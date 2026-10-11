@@ -27,7 +27,7 @@ export default async function Home() {
       select: { id: true, titulo: true, badge: true, ctaUrl: true },
     }),
     prisma.servicio.findMany({
-      where: { activo: true, categoria: "Personajes", soloAdultos: false, fotoUrl: { not: null } },
+      where: { activo: true, categoria: "Personajes Infantiles", soloAdultos: false, fotoUrl: { not: null } },
       select: { id: true, nombre: true, fotoUrl: true },
       orderBy: { orden: "asc" },
     }),
@@ -40,7 +40,7 @@ export default async function Home() {
       orderBy: { orden: "asc" },
       take: 4,
     }),
-    prisma.servicio.count({ where: { activo: true, categoria: "Personajes", soloAdultos: false } }),
+    prisma.servicio.count({ where: { activo: true, categoria: "Personajes Infantiles", soloAdultos: false } }),
     getCategorias(),
     prisma.servicio.findMany({ where: { activo: true }, distinct: ["categoria"], select: { categoria: true } }),
   ]);

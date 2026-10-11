@@ -1,5 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcryptjs";
+import { aplicarPersonajesInfantiles } from "./personajes-infantiles";
 
 const prisma = new PrismaClient();
 
@@ -98,7 +99,7 @@ const servicios: ServicioSeed[] = [
 
   // Personajes
   {
-    categoria: "Personajes",
+    categoria: "Personajes Infantiles",
     nombre: "Casa de Mickey Mouse",
     descripcion: "Mickey, Minnie, Pluto, Goofy, Donald y Daisy en tu fiesta.",
     fotoUrl: "/images/mickey-racer.jpg",
@@ -111,7 +112,7 @@ const servicios: ServicioSeed[] = [
     ocasiones: "cumpleanos,navidad",
   },
   {
-    categoria: "Personajes",
+    categoria: "Personajes Infantiles",
     nombre: "Toy Story",
     descripcion: "Buzz Lightyear, Woody y Jesse.",
     fotoUrl: "/images/toy-story-buzz.jpg",
@@ -124,7 +125,7 @@ const servicios: ServicioSeed[] = [
     ocasiones: "cumpleanos",
   },
   {
-    categoria: "Personajes",
+    categoria: "Personajes Infantiles",
     nombre: "Encanto",
     descripcion: "Mirabel, Isabella, Bruno, Pepa, Dolores, Luisa, Félix y La Abuela.",
     incluye: "Personajes caracterizados con traje tradicional\nBaile musical con las canciones de la película\nDinámica familiar y momento de fotos",
@@ -136,7 +137,7 @@ const servicios: ServicioSeed[] = [
     ocasiones: "cumpleanos",
   },
   {
-    categoria: "Personajes",
+    categoria: "Personajes Infantiles",
     nombre: "Superhéroes",
     descripcion: "Capitán América, Spider-Man, Iron Man, Wonder Woman, Batman y Flash.",
     fotoUrl: "/images/superheroes.jpg",
@@ -149,7 +150,7 @@ const servicios: ServicioSeed[] = [
     ocasiones: "cumpleanos",
   },
   {
-    categoria: "Personajes",
+    categoria: "Personajes Infantiles",
     nombre: "Show de Paw Patrol",
     descripcion: "Ryder, Chase, Marshall, Rubble, Skye, Rodky y Zuma.",
     fotoUrl: "/images/paw-patrol-grupo.jpg",
@@ -162,7 +163,7 @@ const servicios: ServicioSeed[] = [
     ocasiones: "cumpleanos",
   },
   {
-    categoria: "Personajes",
+    categoria: "Personajes Infantiles",
     nombre: "Show Granja de Zenón",
     descripcion: "Vaca Loca, Batolito (Gallo) y León.",
     fotoUrl: "/images/granja-zenon.jpg",
@@ -175,7 +176,7 @@ const servicios: ServicioSeed[] = [
     ocasiones: "cumpleanos",
   },
   {
-    categoria: "Personajes",
+    categoria: "Personajes Infantiles",
     nombre: "Show de Sonic",
     descripcion: "Sonic y Amy Rose.",
     incluye: "Carrera de velocidad y retos con Sonic\nMúsica temática del videojuego\nSesión de fotos y acompañamiento en pastel",
@@ -187,7 +188,7 @@ const servicios: ServicioSeed[] = [
     ocasiones: "cumpleanos",
   },
   {
-    categoria: "Personajes",
+    categoria: "Personajes Infantiles",
     nombre: "Oso Cariñoso",
     descripcion: "El clásico Oso Cariñoso para tu evento.",
     incluye: "Abrazo gigante y sesión fotográfica\nEntrada sorpresa y acompañamiento infantil",
@@ -199,7 +200,7 @@ const servicios: ServicioSeed[] = [
     ocasiones: "cumpleanos,baby-shower",
   },
   {
-    categoria: "Personajes",
+    categoria: "Personajes Infantiles",
     nombre: "Conejo de Pascua",
     descripcion: "Perfecto para celebraciones de Semana Santa y eventos primaverales.",
     fotoUrl: "/images/pascua-conejos-recreacion.png",
@@ -212,7 +213,7 @@ const servicios: ServicioSeed[] = [
     ocasiones: "cumpleanos,corporativo",
   },
   {
-    categoria: "Personajes",
+    categoria: "Personajes Infantiles",
     nombre: "Súper Mario",
     descripcion: "Mario, Luigi, Peach y Toad.",
     fotoUrl: "/images/fiestas-infantiles-mario.jpg",
@@ -225,7 +226,7 @@ const servicios: ServicioSeed[] = [
     ocasiones: "cumpleanos",
   },
   {
-    categoria: "Personajes",
+    categoria: "Personajes Infantiles",
     nombre: "Minecraft",
     descripcion: "Steve, Alex, Zombie, Esqueleto y Enderman.",
     incluye: "Personajes pixelados gigantes\nConstrucción y retos gamer interactivos\nMomento de fotos gamer",
@@ -237,7 +238,7 @@ const servicios: ServicioSeed[] = [
     ocasiones: "cumpleanos",
   },
   {
-    categoria: "Personajes",
+    categoria: "Personajes Infantiles",
     nombre: "LOL Surprise",
     descripcion: "LOL Diva, LOL Unicornio y LOL Abeja.",
     fotoUrl: "/images/lol-surprise.jpg",
@@ -250,7 +251,7 @@ const servicios: ServicioSeed[] = [
     ocasiones: "cumpleanos",
   },
   {
-    categoria: "Personajes",
+    categoria: "Personajes Infantiles",
     nombre: "Luli Pampin",
     descripcion: "El personaje favorito de los más pequeños.",
     incluye: "Cosplay exacto de superheroína Luli\nCoreografías de sus éxitos musicales más conocidos\nInteracción tierna para la primera infancia",
@@ -262,7 +263,7 @@ const servicios: ServicioSeed[] = [
     ocasiones: "cumpleanos",
   },
   {
-    categoria: "Personajes",
+    categoria: "Personajes Infantiles",
     nombre: "Peppa y George",
     descripcion: "Peppa Pig y su hermano George.",
     fotoUrl: "/images/peppa-george.jpg",
@@ -275,7 +276,7 @@ const servicios: ServicioSeed[] = [
     ocasiones: "cumpleanos",
   },
   {
-    categoria: "Personajes",
+    categoria: "Personajes Infantiles",
     nombre: "Blippi",
     descripcion: "Aprendizaje y diversión con Blippi.",
     fotoUrl: "/images/blippi.jpg",
@@ -288,7 +289,7 @@ const servicios: ServicioSeed[] = [
     ocasiones: "cumpleanos",
   },
   {
-    categoria: "Personajes",
+    categoria: "Personajes Infantiles",
     nombre: "Barbie",
     descripcion: "La muñeca más famosa del mundo, en persona.",
     incluye: "Personificación elegante de Barbie\nCaja de muñeca tamaño real para fotos (consultar disponibilidad)\nDesfile y coreografía con las niñas",
@@ -300,7 +301,7 @@ const servicios: ServicioSeed[] = [
     ocasiones: "cumpleanos",
   },
   {
-    categoria: "Personajes",
+    categoria: "Personajes Infantiles",
     nombre: "Princesas Disney",
     descripcion:
       "Sirenita (Ariel, Sebastián, Úrsula), Aladdín (Jazmín, Genio, Jafar), Frozen (Elsa, Ana, Olaf), Aurora, Maléfica, Cenicienta, Blanca Nieves y Moana.",
@@ -314,7 +315,7 @@ const servicios: ServicioSeed[] = [
     ocasiones: "cumpleanos,quince",
   },
   {
-    categoria: "Personajes",
+    categoria: "Personajes Infantiles",
     nombre: "Plim Plim",
     descripcion: "Show del payaso Plim Plim para los más pequeños de la casa.",
     fotoUrl: "/images/plim-plim-animacion.png",
@@ -595,6 +596,9 @@ async function main() {
       ],
     });
   }
+
+  // Personajes Infantiles: tarjetas nuevas con sus variantes y princesas juntas
+  await aplicarPersonajesInfantiles(prisma);
 
   // Dinámicas de Baby Shower
   const babyShowerId = createdServices["Baby Shower o Revelación de Género"];
