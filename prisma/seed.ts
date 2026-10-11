@@ -17,7 +17,7 @@ interface ServicioSeed {
   masPedido?: boolean;
   destacado?: boolean;
   soloAdultos?: boolean;
-  ocasiones?: string; // cumpleanos, baby-shower, quince, boda, corporativo, graduacion, navidad
+  ocasiones?: string; // cumpleanos, baby-shower, gender-reveal, quince, boda, corporativo, graduacion, navidad
   combinaCon?: string;
 }
 
@@ -93,7 +93,7 @@ const servicios: ServicioSeed[] = [
     masPedido: true,
     destacado: false,
     soloAdultos: false,
-    ocasiones: "baby-shower",
+    ocasiones: "baby-shower,gender-reveal",
   },
 
   // Personajes

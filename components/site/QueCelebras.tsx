@@ -68,7 +68,7 @@ export default function QueCelebras() {
         className="mb-8 px-4 sm:px-6"
       />
 
-      <div className="scrollbar-none flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-2 sm:grid sm:grid-cols-4 sm:gap-4 sm:overflow-visible sm:px-6 lg:grid-cols-7">
+      <div className="scrollbar-none flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-2 sm:grid sm:grid-cols-4 sm:gap-4 sm:overflow-visible sm:px-6">
         {OCASIONES.map((ocasion, i) => (
           <Link
             key={ocasion.slug}
