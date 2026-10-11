@@ -50,7 +50,7 @@ export default function EventoForm({
   const [recursosAsignados, setRecursosAsignados] = useState<Map<string, number>>(
     new Map(evento?.recursos.map((r) => [r.recursoId, r.cantidadUsada]) ?? [])
   );
-  const [conflictos, setConflictos] = useState<ConflictoRecurso[]>([]);
+  const [conflictosApi, setConflictos] = useState<ConflictoRecurso[]>([]);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
 
@@ -59,11 +59,11 @@ export default function EventoForm({
     [recursosAsignados]
   );
 
+  const puedeHaberConflictos = Boolean(fecha && horaInicio && horaFin && recursosPayload.length > 0);
+  const conflictos = puedeHaberConflictos ? conflictosApi : [];
+
   useEffect(() => {
-    if (!fecha || !horaInicio || !horaFin || recursosPayload.length === 0) {
-      setConflictos([]);
-      return;
-    }
+    if (!puedeHaberConflictos) return;
     const controller = new AbortController();
     const timeout = setTimeout(() => {
       fetch("/api/eventos/conflictos", {
@@ -86,7 +86,7 @@ export default function EventoForm({
       clearTimeout(timeout);
       controller.abort();
     };
-  }, [fecha, horaInicio, horaFin, recursosPayload, evento?.id]);
+  }, [puedeHaberConflictos, fecha, horaInicio, horaFin, recursosPayload, evento?.id]);
 
   function toggleServicio(id: string) {
     setServicioIds((prev) => {

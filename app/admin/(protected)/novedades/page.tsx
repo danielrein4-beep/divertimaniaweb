@@ -1,6 +1,8 @@
 import { prisma } from "@/lib/db";
 import NovedadesManager from "@/components/admin/NovedadesManager";
 
+export const dynamic = "force-dynamic";
+
 export default async function AdminNovedadesPage() {
   const novedades = await prisma.novedad.findMany({ orderBy: { orden: "asc" } });
 

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { prisma } from "@/lib/db";
+import { requireAdmin } from "@/lib/auth";
 
 export async function GET() {
   const recreadores = await prisma.recreador.findMany({ orderBy: { orden: "asc" } });
@@ -11,12 +12,15 @@ const schema = z.object({
   nombre: z.string().trim().min(2),
   cargo: z.string().trim().min(2),
   descripcion: z.string().trim().min(2),
-  fotoUrl: z.string().trim().optional().or(z.literal("")),
+  fotoUrl: z.string().trim().nullable().optional().or(z.literal("")),
   orden: z.number().int().default(0),
   activo: z.boolean().default(true),
 });
 
 export async function POST(request: NextRequest) {
+  const denied = await requireAdmin();
+  if (denied) return denied;
+
   const body = await request.json().catch(() => null);
   const parsed = schema.safeParse(body);
   if (!parsed.success) {

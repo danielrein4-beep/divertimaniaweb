@@ -49,7 +49,7 @@
 .drift-wall__tile:focus-visible {
   transform: translateZ(var(--dw-lift, 64px));
   z-index: 10;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), 0 0 0 2px var(--neon-green, #9dff3c);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), 0 0 0 2px var(--neon-green, #a8ff30);
 }
 
 .drift-wall__inner {
@@ -80,7 +80,7 @@
 .drift-wall__overlay {
   position: absolute;
   inset: 0;
-  background: var(--dw-overlay, #0a0a0f);
+  background: var(--dw-overlay, #0b0b0b);
   opacity: var(--dw-dim, 0.55);
   pointer-events: none;
   transition: opacity 0.3s ease;

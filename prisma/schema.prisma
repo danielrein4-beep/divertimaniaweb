@@ -40,15 +40,43 @@ model Evento {
   updatedAt   DateTime     @updatedAt
 }
 
+// Secciones del catálogo. Servicio.categoria guarda el nombre (al renombrar se actualizan los servicios).
+model Categoria {
+  id     String @id @default(cuid())
+  nombre String @unique
+  color  String @default("#a8ff30")
+  orden  Int    @default(0)
+}
+
 model Servicio {
   id          String   @id @default(cuid())
   categoria   String
+  activo      Boolean  @default(true) // false = oculto en el sitio, sin borrarlo
   nombre      String
   descripcion String
   fotoUrl     String?
   orden       Int      @default(0)
+  incluye     String?
+  edadIdeal   String?
+  duracion    String?
+  masPedido   Boolean  @default(false)
+  destacado   Boolean  @default(false)
+  soloAdultos Boolean  @default(false)
+  ocasiones   String?  // cumpleanos, baby-shower, quince, boda, corporativo, graduacion, navidad
+  combinaCon  String?  // IDs separados por comas
   eventos     EventoServicio[]
   opciones    Opcion[]
+  media       ServicioMedia[]
+}
+
+model ServicioMedia {
+  id         String   @id @default(cuid())
+  servicioId String
+  servicio   Servicio @relation(fields: [servicioId], references: [id], onDelete: Cascade)
+  url        String
+  tipo       String   // FOTO | VIDEO
+  poster     String?
+  orden      Int      @default(0)
 }
 
 // Variantes de un personaje (agrupadas por "grupo", ej. "Rapunzel": sola / con
@@ -135,4 +163,27 @@ model AdminUser {
   id           String @id @default(cuid())
   usuario      String @unique
   passwordHash String
+}
+
+// Ajustes generales del sitio, editables desde /admin/ajustes (una sola fila).
+model ConfiguracionSitio {
+  id        String   @id @default("principal")
+  whatsapp  String // solo dígitos con código de país, ej. 584147286881
+  updatedAt DateTime @updatedAt
+}
+
+// Medición propia del sitio (sin servicios externos ni cookies de terceros).
+// tipo: VISITA | WHATSAPP | COTIZACION | INSTAGRAM
+// visitante: id anónimo aleatorio guardado en el navegador, para contar personas y no recargas.
+model Metrica {
+  id        String   @id @default(cuid())
+  tipo      String
+  origen    String? // dónde se tocó: ficha, boton-flotante, pie, catalogo, consulta-fecha...
+  detalle   String? // servicio o servicios relacionados
+  pagina    String?
+  visitante String?
+  createdAt DateTime @default(now())
+
+  @@index([tipo, createdAt])
+  @@index([createdAt])
 }

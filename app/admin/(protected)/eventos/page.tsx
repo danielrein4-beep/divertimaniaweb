@@ -3,6 +3,8 @@ import { prisma } from "@/lib/db";
 import { ESTADO_EVENTO_LABEL, type EstadoEvento } from "@/lib/validation";
 import EliminarEventoButton from "@/components/admin/EliminarEventoButton";
 
+export const dynamic = "force-dynamic";
+
 const ESTADO_BADGE: Record<EstadoEvento, string> = {
   COTIZACION: "bg-gold/15 text-gold",
   CONFIRMADO: "bg-neon-green/15 text-neon-green",

@@ -39,8 +39,8 @@ export const ChromaGrid = ({
 }: ChromaGridProps) => {
   const rootRef = useRef<HTMLDivElement>(null);
   const fadeRef = useRef<HTMLDivElement>(null);
-  const setX = useRef<any>(null);
-  const setY = useRef<any>(null);
+  const setX = useRef<((value: number) => void) | null>(null);
+  const setY = useRef<((value: number) => void) | null>(null);
   const pos = useRef({ x: 0, y: 0 });
 
   const demo: ChromaGridItem[] = [
@@ -49,8 +49,8 @@ export const ChromaGrid = ({
       title: "Juan Sandía",
       subtitle: "DJ, Representante & Organizador",
       handle: "@juansandia",
-      borderColor: "#9dff3c",
-      gradient: "linear-gradient(145deg, #9dff3c, #0a0a0f)",
+      borderColor: "#a8ff30",
+      gradient: "linear-gradient(145deg, #a8ff30, #0b0b0b)",
     },
     {
       image: "/images/eylimar-alviares.png",
@@ -58,7 +58,7 @@ export const ChromaGrid = ({
       subtitle: "Representante, Recreadora & Organizadora",
       handle: "@eylimaralviares",
       borderColor: "#ff4fd8",
-      gradient: "linear-gradient(210deg, #ff4fd8, #0a0a0f)",
+      gradient: "linear-gradient(210deg, #ff4fd8, #0b0b0b)",
     },
     {
       image: "/images/nano-uscategui.png",
@@ -66,7 +66,7 @@ export const ChromaGrid = ({
       subtitle: "Animador & Recreador Infantil / Adultos",
       handle: "@nanouscategui",
       borderColor: "#00f0ff",
-      gradient: "linear-gradient(165deg, #00f0ff, #0a0a0f)",
+      gradient: "linear-gradient(165deg, #00f0ff, #0b0b0b)",
     },
     {
       image: "/images/ricardo-ayala.png",
@@ -74,7 +74,7 @@ export const ChromaGrid = ({
       subtitle: "Animador de Adultos & Bailarín",
       handle: "@ricardoayala",
       borderColor: "#ffd166",
-      gradient: "linear-gradient(195deg, #ffd166, #0a0a0f)",
+      gradient: "linear-gradient(195deg, #ffd166, #0b0b0b)",
     },
     {
       image: "/images/baby-shower.png",
@@ -82,7 +82,7 @@ export const ChromaGrid = ({
       subtitle: "Especialista en Baby Shower",
       handle: "@marianagomez",
       borderColor: "#a78bfa",
-      gradient: "linear-gradient(225deg, #a78bfa, #0a0a0f)",
+      gradient: "linear-gradient(225deg, #a78bfa, #0b0b0b)",
     },
     {
       image: "/images/princesa-rapunzel.jpg",
@@ -90,7 +90,7 @@ export const ChromaGrid = ({
       subtitle: "Coordinadora de Shows Infantiles",
       handle: "@valeriamorales",
       borderColor: "#f43f5e",
-      gradient: "linear-gradient(135deg, #f43f5e, #0a0a0f)",
+      gradient: "linear-gradient(135deg, #f43f5e, #0b0b0b)",
     },
     {
       image: "/images/dia-piscina-espuma.png",
@@ -98,7 +98,7 @@ export const ChromaGrid = ({
       subtitle: "Animador & Dinámicas de Piscina",
       handle: "@carlosmendoza",
       borderColor: "#10b981",
-      gradient: "linear-gradient(145deg, #10b981, #0a0a0f)",
+      gradient: "linear-gradient(145deg, #10b981, #0b0b0b)",
     },
     {
       image: "/images/rapunzel-cumpleanos.png",
@@ -106,7 +106,7 @@ export const ChromaGrid = ({
       subtitle: "Personajes & Animación Temática",
       handle: "@camilarivas",
       borderColor: "#fb923c",
-      gradient: "linear-gradient(210deg, #fb923c, #0a0a0f)",
+      gradient: "linear-gradient(210deg, #fb923c, #0b0b0b)",
     },
   ];
 
@@ -115,8 +115,8 @@ export const ChromaGrid = ({
   useEffect(() => {
     const el = rootRef.current;
     if (!el) return;
-    setX.current = gsap.quickSetter(el, "--x", "px");
-    setY.current = gsap.quickSetter(el, "--y", "px");
+    setX.current = gsap.quickSetter(el, "--x", "px") as (value: number) => void;
+    setY.current = gsap.quickSetter(el, "--y", "px") as (value: number) => void;
     const { width, height } = el.getBoundingClientRect();
     pos.current = { x: width / 2, y: height / 2 };
     if (setX.current) setX.current(pos.current.x);
@@ -190,8 +190,8 @@ export const ChromaGrid = ({
           onMouseMove={handleCardMove}
           onClick={() => handleCardClick(c.url)}
           style={{
-            ["--card-border" as string]: c.borderColor || "#9dff3c",
-            ["--card-gradient" as string]: c.gradient || "linear-gradient(145deg, #9dff3c, #0a0a0f)",
+            ["--card-border" as string]: c.borderColor || "#a8ff30",
+            ["--card-gradient" as string]: c.gradient || "linear-gradient(145deg, #a8ff30, #0b0b0b)",
             cursor: c.url ? "pointer" : "default",
           }}
         >

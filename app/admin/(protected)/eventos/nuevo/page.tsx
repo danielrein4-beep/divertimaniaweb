@@ -1,6 +1,8 @@
 import EventoForm from "@/components/admin/EventoForm";
 import { prisma } from "@/lib/db";
 
+export const dynamic = "force-dynamic";
+
 export default async function NuevoEventoPage() {
   const [servicios, recursos] = await Promise.all([
     prisma.servicio.findMany({ orderBy: { orden: "asc" } }),

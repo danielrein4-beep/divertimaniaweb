@@ -1,7 +1,9 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { buildWhatsAppLink } from "@/lib/site";
+import Image from "next/image";
+import { Check, Plus } from "lucide-react";
+import { useMiFiesta } from "@/context/MiFiestaContext";
 
 type Opcion = {
   id: string;
@@ -10,24 +12,34 @@ type Opcion = {
   nombre: string;
   descripcion: string | null;
   videoUrl: string | null;
+  fotoUrl?: string | null;
 };
 
-export default function ServicioDetalle({
-  servicioNombre,
-  opciones,
-}: {
+type ServicioBase = {
+  servicioId: string;
   servicioNombre: string;
-  opciones: Opcion[];
-}) {
+  servicioCategoria: string;
+  servicioFotoUrl?: string | null;
+};
+
+export default function ServicioDetalle({ opciones, ...servicio }: ServicioBase & { opciones: Opcion[] }) {
   const variantes = opciones.filter((o) => o.tipo === "VARIANTE");
   const dinamicas = opciones.filter((o) => o.tipo === "DINAMICA");
 
-  if (variantes.length > 0) return <SelectorVariantes servicioNombre={servicioNombre} variantes={variantes} />;
-  if (dinamicas.length > 0) return <SelectorDinamicas servicioNombre={servicioNombre} dinamicas={dinamicas} />;
+  if (variantes.length > 0) return <SelectorVariantes {...servicio} variantes={variantes} />;
+  if (dinamicas.length > 0) return <SelectorDinamicas {...servicio} dinamicas={dinamicas} />;
   return null;
 }
 
-function SelectorVariantes({ servicioNombre, variantes }: { servicioNombre: string; variantes: Opcion[] }) {
+function SelectorVariantes({
+  servicioId,
+  servicioNombre,
+  servicioCategoria,
+  servicioFotoUrl,
+  variantes,
+}: ServicioBase & { variantes: Opcion[] }) {
+  const { addItem, removeItem, getItem } = useMiFiesta();
+
   const grupos = useMemo(() => {
     const map = new Map<string, Opcion[]>();
     for (const v of variantes) {
@@ -38,122 +50,169 @@ function SelectorVariantes({ servicioNombre, variantes }: { servicioNombre: stri
   }, [variantes, servicioNombre]);
 
   const [grupoActivo, setGrupoActivo] = useState<string>(grupos[0]?.[0] ?? "");
-
   const opcionesGrupo = grupos.find(([g]) => g === grupoActivo)?.[1] ?? [];
 
   return (
-    <div className="card-glass rounded-2xl p-5 sm:p-6">
-      <h2 className="mb-1 text-lg font-bold">Elige tu personaje</h2>
-      <p className="mb-4 text-sm text-muted">Selecciona primero quién quieres, y luego el show exacto que prefieres.</p>
-
-      <div className="mb-5 flex flex-wrap gap-2">
-        {grupos.map(([grupo]) => (
-          <button
-            key={grupo}
-            type="button"
-            onClick={() => setGrupoActivo(grupo)}
-            className={`rounded-full border px-4 py-1.5 text-sm font-medium transition-colors ${
-              grupoActivo === grupo
-                ? "border-neon-green bg-neon-green/10 text-neon-green"
-                : "border-border text-muted hover:border-neon-green/50"
-            }`}
-          >
-            {grupo}
-          </button>
-        ))}
+    <section aria-labelledby="variantes-titulo" className="flex flex-col gap-5">
+      <div>
+        <h2 id="variantes-titulo" className="type-h3 font-bold">
+          Elige tu personaje
+        </h2>
+        <p className="mt-1 text-sm text-muted">Primero el personaje, después el show exacto. Puedes sumar varios.</p>
       </div>
 
-      <div className="grid gap-3 sm:grid-cols-2">
-        {opcionesGrupo.map((v) => (
-          <div key={v.id} className="rounded-xl border border-border bg-background-elevated p-4">
-            <h3 className="font-semibold">{v.nombre}</h3>
-            {v.descripcion && <p className="mt-1 text-sm text-muted">{v.descripcion}</p>}
-            <a
-              href={buildWhatsAppLink(`Hola Divertimania, me interesa cotizar: ${v.nombre}.`)}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-3 inline-block rounded-full bg-neon-green px-4 py-2 text-sm font-semibold text-background transition-transform hover:scale-105"
+      {grupos.length > 1 && (
+        <div className="scrollbar-none -mx-4 flex gap-2 overflow-x-auto px-4 sm:mx-0 sm:flex-wrap sm:px-0" role="tablist">
+          {grupos.map(([grupo]) => (
+            <button
+              key={grupo}
+              type="button"
+              role="tab"
+              aria-selected={grupoActivo === grupo}
+              onClick={() => setGrupoActivo(grupo)}
+              className={`touch-target shrink-0 rounded-full border px-4 text-sm font-semibold transition-colors ${
+                grupoActivo === grupo
+                  ? "border-neon-green bg-neon-green/15 text-neon-green"
+                  : "border-border text-muted hover:border-white/25 hover:text-foreground"
+              }`}
             >
-              Cotizar por WhatsApp
-            </a>
-          </div>
-        ))}
+              {grupo}
+            </button>
+          ))}
+        </div>
+      )}
+
+      <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3">
+        {opcionesGrupo.map((v) => {
+          const enFiesta = getItem(servicioId, v.nombre);
+          const foto = v.fotoUrl || servicioFotoUrl;
+
+          return (
+            <div
+              key={v.id}
+              className={`flex flex-col overflow-hidden rounded-2xl border transition-colors ${
+                enFiesta ? "border-neon-green/70" : "border-border"
+              } bg-background-card`}
+            >
+              {foto && (
+                <div className="relative aspect-[4/5] w-full bg-background-elevated">
+                  <Image src={foto} alt={v.nombre} fill className="object-cover" sizes="(max-width: 640px) 50vw, 300px" />
+                </div>
+              )}
+              <div className="flex flex-1 flex-col gap-1 p-3 sm:p-4">
+                <h3 className="text-sm font-bold leading-tight sm:text-base">{v.nombre}</h3>
+                {v.descripcion && <p className="line-clamp-3 text-xs text-muted sm:text-sm">{v.descripcion}</p>}
+              </div>
+              <div className="p-3 pt-0 sm:p-4 sm:pt-0">
+                <button
+                  type="button"
+                  aria-pressed={Boolean(enFiesta)}
+                  onClick={() =>
+                    enFiesta
+                      ? removeItem(enFiesta.id)
+                      : addItem({
+                          servicioId,
+                          nombre: servicioNombre,
+                          categoria: servicioCategoria,
+                          fotoUrl: foto,
+                          variante: v.nombre,
+                        })
+                  }
+                  className={`touch-target flex w-full items-center justify-center gap-1.5 rounded-full px-3 text-xs font-bold transition-colors sm:text-sm ${
+                    enFiesta
+                      ? "bg-neon-green text-background"
+                      : "border border-white/15 text-foreground hover:border-neon-green hover:text-neon-green"
+                  }`}
+                >
+                  {enFiesta ? <Check className="h-4 w-4" aria-hidden /> : <Plus className="h-4 w-4" aria-hidden />}
+                  {enFiesta ? "En tu fiesta" : "Agregar"}
+                </button>
+              </div>
+            </div>
+          );
+        })}
       </div>
-    </div>
+    </section>
   );
 }
 
-function SelectorDinamicas({ servicioNombre, dinamicas }: { servicioNombre: string; dinamicas: Opcion[] }) {
-  const [seleccion, setSeleccion] = useState<Set<string>>(new Set());
+function SelectorDinamicas({
+  servicioId,
+  servicioNombre,
+  servicioCategoria,
+  servicioFotoUrl,
+  dinamicas,
+}: ServicioBase & { dinamicas: Opcion[] }) {
+  const { addItem, getItem } = useMiFiesta();
+  const enFiesta = getItem(servicioId, null);
+  // null = el cliente todavía no tocó nada: se muestra lo que ya está guardado en su fiesta.
+  const [editadas, setEditadas] = useState<string[] | null>(null);
+  const seleccion = editadas ?? enFiesta?.dinamicas ?? [];
+  const sinGuardar = editadas !== null;
 
-  function toggle(id: string) {
-    setSeleccion((prev) => {
-      const next = new Set(prev);
-      if (next.has(id)) next.delete(id);
-      else next.add(id);
-      return next;
+  const toggle = (nombre: string) =>
+    setEditadas(seleccion.includes(nombre) ? seleccion.filter((n) => n !== nombre) : [...seleccion, nombre]);
+
+  const guardar = () => {
+    addItem({
+      servicioId,
+      nombre: servicioNombre,
+      categoria: servicioCategoria,
+      fotoUrl: servicioFotoUrl,
+      dinamicas: dinamicas.map((d) => d.nombre).filter((n) => seleccion.includes(n)),
     });
-  }
-
-  const seleccionadas = dinamicas.filter((d) => seleccion.has(d.id));
-  const mensaje =
-    seleccionadas.length > 0
-      ? `Hola Divertimania, estoy cotizando "${servicioNombre}" y quiero incluir estas dinámicas: ${seleccionadas
-          .map((d, i) => `${i + 1}. ${d.nombre}`)
-          .join(", ")}.`
-      : `Hola Divertimania, quiero cotizar "${servicioNombre}".`;
+    setEditadas(null);
+  };
 
   return (
-    <div className="pb-24">
-      <div className="card-glass rounded-2xl p-5 sm:p-6">
-        <h2 className="mb-1 text-lg font-bold">Dinámicas y juegos disponibles</h2>
-        <p className="mb-4 text-sm text-muted">
-          Marca las que quieres para tu evento — puedes elegir todas las que quieras.
+    <section aria-labelledby="dinamicas-titulo" className="flex flex-col gap-5">
+      <div>
+        <h2 id="dinamicas-titulo" className="type-h3 font-bold">
+          Elige las dinámicas
+        </h2>
+        <p className="mt-1 text-sm text-muted">Marca las que quieres en tu evento. Puedes elegir todas.</p>
+      </div>
+
+      <div className="grid gap-3 sm:grid-cols-2">
+        {dinamicas.map((d) => {
+          const activa = seleccion.includes(d.nombre);
+          return (
+            <label
+              key={d.id}
+              className={`flex cursor-pointer select-none items-start gap-3 rounded-2xl border p-4 transition-colors ${
+                activa ? "border-neon-green/70 bg-neon-green/[0.06]" : "border-border bg-background-card hover:border-white/20"
+              }`}
+            >
+              <input
+                type="checkbox"
+                checked={activa}
+                onChange={() => toggle(d.nombre)}
+                className="mt-0.5 h-5 w-5 shrink-0 accent-[var(--neon-green)]"
+              />
+              <span className="flex flex-col gap-1">
+                <span className="font-bold">{d.nombre}</span>
+                {d.descripcion && <span className="text-sm text-muted">{d.descripcion}</span>}
+              </span>
+            </label>
+          );
+        })}
+      </div>
+
+      <div className="flex flex-col gap-3 rounded-2xl border border-border bg-background-card p-4 sm:flex-row sm:items-center sm:justify-between">
+        <p className="text-sm text-muted">
+          {seleccion.length === 0
+            ? "Si no eliges ninguna, te recomendamos las mejores para tu evento."
+            : `${seleccion.length} ${seleccion.length === 1 ? "dinámica elegida" : "dinámicas elegidas"}`}
         </p>
-
-        <div className="grid gap-3 sm:grid-cols-2">
-          {dinamicas.map((d) => {
-            const activa = seleccion.has(d.id);
-            return (
-              <label
-                key={d.id}
-                className={`flex cursor-pointer flex-col gap-2 rounded-xl border p-4 transition-colors ${
-                  activa ? "border-neon-green bg-neon-green/5" : "border-border bg-background-elevated"
-                }`}
-              >
-                <div className="flex items-start gap-2">
-                  <input type="checkbox" checked={activa} onChange={() => toggle(d.id)} className="mt-1" />
-                  <div>
-                    <h3 className="font-semibold">{d.nombre}</h3>
-                    {d.descripcion && <p className="mt-1 text-sm text-muted">{d.descripcion}</p>}
-                  </div>
-                </div>
-                {d.videoUrl && (
-                  <video src={d.videoUrl} muted loop playsInline controls className="w-full rounded-lg" />
-                )}
-              </label>
-            );
-          })}
-        </div>
+        <button
+          type="button"
+          onClick={guardar}
+          disabled={Boolean(enFiesta) && !sinGuardar}
+          className="touch-target shrink-0 rounded-full bg-neon-green px-5 text-sm font-bold text-background transition-colors hover:bg-neon-green-dark disabled:bg-white/10 disabled:text-muted"
+        >
+          {!enFiesta ? "Agregar a mi fiesta" : sinGuardar ? "Guardar cambios" : "Guardado en tu fiesta"}
+        </button>
       </div>
-
-      <div className="fixed inset-x-0 bottom-0 z-40 border-t border-border bg-background-elevated/95 p-4 backdrop-blur">
-        <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 sm:px-6">
-          <p className="text-sm text-muted">
-            {seleccionadas.length === 0
-              ? "No has seleccionado ninguna dinámica todavía."
-              : `${seleccionadas.length} dinámica(s) seleccionada(s).`}
-          </p>
-          <a
-            href={buildWhatsAppLink(mensaje)}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="rounded-full bg-neon-green px-6 py-3 font-semibold text-background transition-transform hover:scale-105"
-          >
-            Cotizar por WhatsApp
-          </a>
-        </div>
-      </div>
-    </div>
+    </section>
   );
 }
