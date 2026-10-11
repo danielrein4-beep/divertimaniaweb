@@ -1,6 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcryptjs";
 import { aplicarPersonajesInfantiles } from "./personajes-infantiles";
+import { aplicarParaNinos } from "./para-ninos";
 
 const prisma = new PrismaClient();
 
@@ -398,7 +399,7 @@ const servicios: ServicioSeed[] = [
 
   // Estación Creativa
   {
-    categoria: "Estación Creativa",
+    categoria: "Para Niños",
     nombre: "Estación Creativa",
     descripcion:
       "Elaboración de pulseras, decoración de galletas y decoración de perfumes. Espacio preparado para 8 puestos.",
@@ -414,7 +415,7 @@ const servicios: ServicioSeed[] = [
 
   // Atracciones
   {
-    categoria: "Atracciones",
+    categoria: "Para Niños",
     nombre: "Castillos Inflables",
     descripcion: "Castillo inflable 4x5 y castillo inflable 3x3.",
     fotoUrl: "/images/castillo-inflable.jpg",
@@ -427,7 +428,7 @@ const servicios: ServicioSeed[] = [
     ocasiones: "cumpleanos,graduacion,corporativo",
   },
   {
-    categoria: "Atracciones",
+    categoria: "Para Niños",
     nombre: "Trampolines",
     descripcion: "Trampolín grande 4x4, mediano 3x3 y pequeño.",
     incluye: "Cama elástica con red perimetral de seguridad\nProtector acolchado en resortes\nOperador responsable del cuidado y acceso por turnos",
@@ -439,7 +440,7 @@ const servicios: ServicioSeed[] = [
     ocasiones: "cumpleanos,corporativo",
   },
   {
-    categoria: "Atracciones",
+    categoria: "Estaciones de Comida",
     nombre: "Carritos de Comida",
     descripcion: "Carrito de cotufas, carrito de perros calientes y carrito de algodones de azúcar.",
     incluye: "Carritos temáticos decorativos vintage\nOperador debidamente uniformado con normas de higiene\nInsumos frescos para porciones acordadas (cotufas, algodón o perros calientes)\nServicio continuo durante el tiempo contratado",
@@ -451,7 +452,7 @@ const servicios: ServicioSeed[] = [
     ocasiones: "cumpleanos,quince,boda,corporativo",
   },
   {
-    categoria: "Atracciones",
+    categoria: "Para Niños",
     nombre: "Pelotas Boom",
     descripcion:
       "¡Vive la experiencia de jugar dentro de pelotas gigantes! Incluye operador y transporte. Se alquilan individualmente.",
@@ -599,6 +600,9 @@ async function main() {
 
   // Personajes Infantiles: tarjetas nuevas con sus variantes y princesas juntas
   await aplicarPersonajesInfantiles(prisma);
+
+  // Para Niños y Estaciones de Comida: estaciones separadas y carritos de comida
+  await aplicarParaNinos(prisma);
 
   // Dinámicas de Baby Shower
   const babyShowerId = createdServices["Baby Shower o Revelación de Género"];

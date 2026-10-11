@@ -29,11 +29,11 @@ export const NAV_LINKS = [
 
 export const CATEGORIAS = [
   "Fiestas Infantiles",
+  "Para Niños",
   "Baby Shower",
   "Personajes Infantiles",
   "Show para Adultos",
-  "Estación Creativa",
-  "Atracciones",
+  "Estaciones de Comida",
 ] as const;
 
 export type Categoria = (typeof CATEGORIAS)[number];
