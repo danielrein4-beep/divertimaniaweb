@@ -333,6 +333,7 @@ const servicios: ServicioSeed[] = [
     nombre: "El Chacal de la Trompeta",
     descripcion:
       "Sonido e iluminación, 1 animador y el Chacal de la Trompeta con karaoke incluido. Ideal para 15 años, matrimonios, grados, despedidas de solter@, último timbre y eventos corporativos.",
+    fotoUrl: "/reels/posters/reel-1-poster.jpg",
     incluye: "Sonido profesional y micrófono inalámbrico\nAnimador presentador de show cómico\nPersonaje del Chacal con trompeta real y hacha cómica\nPista de karaoke interactiva con los invitados\nPremios simbólicos y castigos humorísticos",
     edadIdeal: "Jóvenes y adultos",
     duracion: "1.5 horas",
