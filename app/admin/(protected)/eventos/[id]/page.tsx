@@ -3,6 +3,8 @@ import EventoForm from "@/components/admin/EventoForm";
 import { prisma } from "@/lib/db";
 import { type EstadoEvento } from "@/lib/validation";
 
+export const dynamic = "force-dynamic";
+
 export default async function EditarEventoPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
 

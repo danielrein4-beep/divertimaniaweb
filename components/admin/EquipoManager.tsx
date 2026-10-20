@@ -1,6 +1,8 @@
 "use client";
 
 import { FormEvent, useState } from "react";
+import Image from "next/image";
+import SubirFoto from "@/components/admin/SubirFoto";
 
 type Recreador = {
   id: string;
@@ -46,11 +48,16 @@ export default function EquipoManager({ initialRecreadores }: { initialRecreador
   }
 
   async function handleSaveEdit(r: Recreador) {
-    await fetch(`/api/recreadores/${r.id}`, {
+    const res = await fetch(`/api/recreadores/${r.id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(r),
-    });
+    }).catch(() => null);
+    if (!res?.ok) {
+      const data = await res?.json().catch(() => ({}));
+      alert(data?.error ?? "No se pudo guardar. Revisa la conexión o vuelve a entrar al panel.");
+      return;
+    }
     setEditandoId(null);
   }
 
@@ -94,14 +101,12 @@ export default function EquipoManager({ initialRecreadores }: { initialRecreador
             className="resize-none rounded-lg border border-border bg-background px-3 py-2 outline-none focus:border-neon-green"
           />
         </label>
-        <label className="flex flex-col gap-1 text-sm">
-          Foto (ruta en /public, ej. /images/nombre.jpg)
-          <input
-            value={form.fotoUrl}
-            onChange={(e) => setForm({ ...form, fotoUrl: e.target.value })}
-            className="rounded-lg border border-border bg-background px-3 py-2 outline-none focus:border-neon-green"
-          />
-        </label>
+        <div className="flex flex-col gap-1 text-sm">
+          Foto
+          <div className="w-40">
+            <SubirFoto valor={form.fotoUrl || null} onCambio={(url) => setForm({ ...form, fotoUrl: url ?? "" })} />
+          </div>
+        </div>
         <button
           type="submit"
           disabled={creando}
@@ -131,12 +136,12 @@ export default function EquipoManager({ initialRecreadores }: { initialRecreador
                 onChange={(e) => setRecreadores((prev) => prev.map((x) => (x.id === r.id ? { ...x, descripcion: e.target.value } : x)))}
                 className="resize-none rounded-lg border border-border bg-background px-2 py-1 text-sm outline-none focus:border-neon-green"
               />
-              <input
-                placeholder="/images/nombre.jpg"
-                value={r.fotoUrl ?? ""}
-                onChange={(e) => setRecreadores((prev) => prev.map((x) => (x.id === r.id ? { ...x, fotoUrl: e.target.value } : x)))}
-                className="rounded-lg border border-border bg-background px-2 py-1 text-sm outline-none focus:border-neon-green"
-              />
+              <div className="w-40">
+                <SubirFoto
+                  valor={r.fotoUrl}
+                  onCambio={(url) => setRecreadores((prev) => prev.map((x) => (x.id === r.id ? { ...x, fotoUrl: url } : x)))}
+                />
+              </div>
               <div className="flex gap-2">
                 <button
                   type="button"
@@ -156,7 +161,10 @@ export default function EquipoManager({ initialRecreadores }: { initialRecreador
             </div>
           ) : (
             <div key={r.id} className="card-glass flex items-center justify-between gap-3 rounded-xl p-4">
-              <div>
+              <div className="relative h-16 w-[52px] shrink-0 overflow-hidden rounded-lg bg-black/40">
+                {r.fotoUrl && <Image src={r.fotoUrl} alt="" fill sizes="52px" className="object-cover" />}
+              </div>
+              <div className="min-w-0 flex-1">
                 <p className="font-medium">
                   {r.nombre} {!r.activo && <span className="text-xs text-muted">(oculto)</span>}
                 </p>

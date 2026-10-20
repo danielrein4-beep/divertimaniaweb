@@ -1,6 +1,8 @@
 import { prisma } from "@/lib/db";
 import RecursosManager from "@/components/admin/RecursosManager";
 
+export const dynamic = "force-dynamic";
+
 export default async function RecursosPage() {
   const recursos = await prisma.recurso.findMany({ orderBy: { nombre: "asc" } });
 

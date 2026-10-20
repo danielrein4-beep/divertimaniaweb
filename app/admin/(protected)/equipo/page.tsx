@@ -1,6 +1,8 @@
 import { prisma } from "@/lib/db";
 import EquipoManager from "@/components/admin/EquipoManager";
 
+export const dynamic = "force-dynamic";
+
 export default async function AdminEquipoPage() {
   const recreadores = await prisma.recreador.findMany({ orderBy: { orden: "asc" } });
 

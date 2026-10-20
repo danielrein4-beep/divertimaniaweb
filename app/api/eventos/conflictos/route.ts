@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { detectarConflictos } from "@/lib/conflicts";
+import { requireAdmin } from "@/lib/auth";
 
 const schema = z.object({
   eventoId: z.string().nullable(),
@@ -11,6 +12,9 @@ const schema = z.object({
 });
 
 export async function POST(request: NextRequest) {
+  const denied = await requireAdmin();
+  if (denied) return denied;
+
   const body = await request.json().catch(() => null);
   const parsed = schema.safeParse(body);
   if (!parsed.success) {
