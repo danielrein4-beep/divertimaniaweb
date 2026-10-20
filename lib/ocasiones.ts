@@ -5,7 +5,7 @@ export const OCASIONES = [
   { slug: "baby-shower", nombre: "Baby Shower", tipoEvento: "Baby Shower", foto: "/images/baby-shower.png", video: "/videos/baby-shower.mp4" },
   { slug: "gender-reveal", nombre: "Gender Reveal", tipoEvento: "Revelación de género", foto: "/images/gender-reveal-portada.jpg", video: "/videos/gender-reveal.mp4" },
   { slug: "quince", nombre: "15 años", tipoEvento: "15 años", foto: "/images/quince-portada.jpg", video: "/videos/quince.mp4" },
-  { slug: "boda", nombre: "Bodas", tipoEvento: "Boda", foto: "/images/bolas-disco-duo.jpg" },
+  { slug: "boda", nombre: "Bodas", tipoEvento: "Boda", foto: "/images/boda-portada.jpg", video: "/videos/boda.mp4" },
   { slug: "corporativo", nombre: "Corporativos", tipoEvento: "Corporativo", foto: "/images/corporativo-portada.jpg", video: "/videos/corporativo.mp4" },
   { slug: "graduacion", nombre: "Graduaciones", tipoEvento: "Graduación", foto: "/images/mickey-minnie-graduacion.jpg" },
   { slug: "navidad", nombre: "Navidad", tipoEvento: "Navidad", foto: "/images/mickey-navidad-show.png" },
