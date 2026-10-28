@@ -1,10 +1,11 @@
 import type { NextConfig } from "next";
 
-// Cabeceras de seguridad para todas las páginas: nadie puede meter el sitio (ni el panel) dentro de
-// un iframe ajeno, el navegador no adivina tipos de archivo y no se anuncia la tecnología.
+// Cabeceras de seguridad para todas las páginas: ningún sitio ajeno puede meter este (ni el panel) dentro de
+// un iframe (el propio sí, para la vista previa del PDF), el navegador no adivina tipos de archivo y no
+// se anuncia la tecnología.
 const CABECERAS_SEGURIDAD = [
-  { key: "X-Frame-Options", value: "DENY" },
-  { key: "Content-Security-Policy", value: "frame-ancestors 'none'" },
+  { key: "X-Frame-Options", value: "SAMEORIGIN" },
+  { key: "Content-Security-Policy", value: "frame-ancestors 'self'" },
   { key: "X-Content-Type-Options", value: "nosniff" },
   { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
   { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=()" },
