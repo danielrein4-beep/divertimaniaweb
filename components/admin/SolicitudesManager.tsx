@@ -2,6 +2,9 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { Inbox } from "lucide-react";
+import { listaClase, Vacio } from "@/components/admin/Encabezado";
+import { pedir } from "@/lib/servidor";
 import { ESTADOS_SOLICITUD, ESTADO_SOLICITUD_LABEL, type EstadoSolicitud } from "@/lib/validation";
 
 type Solicitud = {
@@ -16,37 +19,46 @@ type Solicitud = {
 };
 
 const ESTADO_BADGE: Record<EstadoSolicitud, string> = {
-  NUEVA: "bg-neon-green/15 text-neon-green",
-  CONTACTADA: "bg-gold/15 text-gold",
-  CONVERTIDA: "bg-magenta/15 text-magenta",
-  DESCARTADA: "bg-white/10 text-muted",
+  NUEVA: "text-neon-green ring-neon-green/40",
+  CONTACTADA: "text-gold ring-gold/40",
+  CONVERTIDA: "text-magenta ring-magenta/40",
+  DESCARTADA: "text-muted ring-white/20",
 };
 
-export default function SolicitudesManager({ initialSolicitudes }: { initialSolicitudes: Solicitud[] }) {
-  const [solicitudes, setSolicitudes] = useState(initialSolicitudes);
+/** Solicitudes del formulario de Contacto, con su estado (nueva, contactada, convertida, descartada). */
+export default function SolicitudesManager({ iniciales }: { iniciales: Solicitud[] }) {
+  const [solicitudes, setSolicitudes] = useState(iniciales);
 
   async function cambiarEstado(id: string, estado: EstadoSolicitud) {
+    const anterior = solicitudes;
     setSolicitudes((prev) => prev.map((s) => (s.id === id ? { ...s, estado } : s)));
-    await fetch(`/api/solicitudes/${id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ estado }),
-    });
+    try {
+      await pedir(`/api/solicitudes/${id}`, "PUT", { estado });
+    } catch (e) {
+      setSolicitudes(anterior);
+      alert(e instanceof Error ? e.message : "No se pudo cambiar el estado.");
+    }
   }
 
   if (solicitudes.length === 0) {
-    return <p className="text-muted">No hay solicitudes todavía.</p>;
+    return (
+      <Vacio
+        icono={<Inbox className="h-6 w-6" aria-hidden />}
+        titulo="Sin solicitudes por ahora"
+        texto="Cuando alguien llene el formulario de Contacto, aparece aquí con su teléfono, la fecha que busca y su mensaje."
+      />
+    );
   }
 
   return (
-    <div className="flex flex-col gap-3">
+    <ul className={listaClase}>
       {solicitudes.map((s) => (
-        <div key={s.id} className="card-glass rounded-xl p-4">
+        <li key={s.id} className="px-4 py-4">
           <div className="flex flex-wrap items-start justify-between gap-3">
             <div>
               <div className="flex items-center gap-2">
                 <span className="font-semibold">{s.nombre}</span>
-                <span className={`rounded-full px-2 py-0.5 text-xs font-medium ${ESTADO_BADGE[s.estado]}`}>
+                <span className={`rounded px-1.5 py-px text-[10.5px] font-bold uppercase tracking-wide ring-1 ring-inset ${ESTADO_BADGE[s.estado]}`}>
                   {ESTADO_SOLICITUD_LABEL[s.estado]}
                 </span>
               </div>
@@ -55,7 +67,7 @@ export default function SolicitudesManager({ initialSolicitudes }: { initialSoli
                 {s.fechaDeseada ? ` · Fecha deseada: ${s.fechaDeseada}` : ""}
               </p>
               <p className="mt-2 text-sm">{s.mensaje}</p>
-              <p className="mt-1 text-xs text-muted">{new Date(s.createdAt).toLocaleString("es-VE")}</p>
+              <p className="mt-1 font-mono text-xs tabular-nums text-muted">{new Date(s.createdAt).toLocaleString("es-VE")}</p>
             </div>
             <div className="flex flex-col items-end gap-2">
               <select
@@ -77,8 +89,8 @@ export default function SolicitudesManager({ initialSolicitudes }: { initialSoli
               </Link>
             </div>
           </div>
-        </div>
+        </li>
       ))}
-    </div>
+    </ul>
   );
 }

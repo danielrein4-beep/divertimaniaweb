@@ -2,11 +2,16 @@
 
 import { FormEvent, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import { ESTADOS_EVENTO, ESTADO_EVENTO_LABEL, TIPO_RECURSO_LABEL, type EstadoEvento } from "@/lib/validation";
+import { ESTADOS_EVENTO, ESTADO_EVENTO_LABEL, type EstadoEvento } from "@/lib/validation";
 import type { ConflictoRecurso } from "@/lib/conflicts";
+import { pedir } from "@/lib/servidor";
+import { inputClase } from "@/components/admin/ui";
+import { botonPrimario } from "@/components/admin/Encabezado";
+import ServiciosContratados, { type ServicioOpcion } from "@/components/admin/evento/ServiciosContratados";
+import RecursosAsignados, { type RecursoOpcion } from "@/components/admin/evento/RecursosAsignados";
 
-type Servicio = { id: string; nombre: string; categoria: string };
-type Recurso = { id: string; nombre: string; tipo: "PERSONAJE" | "EQUIPO" | "PERSONAL"; cantidadTotal: number };
+type Servicio = ServicioOpcion;
+type Recurso = RecursoOpcion;
 
 type EventoInicial = {
   id: string;
@@ -50,7 +55,7 @@ export default function EventoForm({
   const [recursosAsignados, setRecursosAsignados] = useState<Map<string, number>>(
     new Map(evento?.recursos.map((r) => [r.recursoId, r.cantidadUsada]) ?? [])
   );
-  const [conflictos, setConflictos] = useState<ConflictoRecurso[]>([]);
+  const [conflictosApi, setConflictos] = useState<ConflictoRecurso[]>([]);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
 
@@ -59,26 +64,19 @@ export default function EventoForm({
     [recursosAsignados]
   );
 
+  const puedeHaberConflictos = Boolean(fecha && horaInicio && horaFin && recursosPayload.length > 0);
+  const conflictos = puedeHaberConflictos ? conflictosApi : [];
+
   useEffect(() => {
-    if (!fecha || !horaInicio || !horaFin || recursosPayload.length === 0) {
-      setConflictos([]);
-      return;
-    }
+    if (!puedeHaberConflictos) return;
     const controller = new AbortController();
     const timeout = setTimeout(() => {
-      fetch("/api/eventos/conflictos", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        signal: controller.signal,
-        body: JSON.stringify({
-          eventoId: evento?.id ?? null,
-          fecha,
-          horaInicio,
-          horaFin,
-          recursos: recursosPayload,
-        }),
-      })
-        .then((res) => res.json())
+      pedir<{ conflictos: ConflictoRecurso[] }>(
+        "/api/eventos/conflictos",
+        "POST",
+        { eventoId: evento?.id ?? null, fecha, horaInicio, horaFin, recursos: recursosPayload },
+        { signal: controller.signal }
+      )
         .then((data) => setConflictos(data.conflictos ?? []))
         .catch(() => {});
     }, 350);
@@ -86,7 +84,7 @@ export default function EventoForm({
       clearTimeout(timeout);
       controller.abort();
     };
-  }, [fecha, horaInicio, horaFin, recursosPayload, evento?.id]);
+  }, [puedeHaberConflictos, fecha, horaInicio, horaFin, recursosPayload, evento?.id]);
 
   function toggleServicio(id: string) {
     setServicioIds((prev) => {
@@ -114,7 +112,7 @@ export default function EventoForm({
     });
   }
 
-  async function handleSubmit(e: FormEvent) {
+  async function guardar(e: FormEvent) {
     e.preventDefault();
     setSubmitting(true);
     setError("");
@@ -135,16 +133,7 @@ export default function EventoForm({
     };
 
     try {
-      const res = await fetch(isEdit ? `/api/eventos/${evento!.id}` : "/api/eventos", {
-        method: isEdit ? "PUT" : "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-      if (!res.ok) {
-        const body = await res.json().catch(() => ({}));
-        throw new Error(body.error ?? "No se pudo guardar el evento");
-      }
-      const data = await res.json();
+      const data = await pedir<{ evento: { id: string } }>(isEdit ? `/api/eventos/${evento!.id}` : "/api/eventos", isEdit ? "PUT" : "POST", payload);
       router.push(`/admin/eventos/${data.evento.id}`);
       router.refresh();
     } catch (err) {
@@ -153,17 +142,10 @@ export default function EventoForm({
     }
   }
 
-  const serviciosPorCategoria = new Map<string, Servicio[]>();
-  for (const s of servicios) {
-    const lista = serviciosPorCategoria.get(s.categoria) ?? [];
-    lista.push(s);
-    serviciosPorCategoria.set(s.categoria, lista);
-  }
-
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-6">
-      <section className="card-glass rounded-2xl p-5">
-        <h2 className="mb-4 font-semibold">Cliente</h2>
+    <form onSubmit={guardar} className="flex flex-col gap-6">
+      <section className="border border-white/10 bg-background-card rounded-xl p-5">
+        <h2 className="mb-4 border-b border-white/[0.07] pb-3 text-[15px] font-bold">Cliente</h2>
         <div className="grid gap-4 sm:grid-cols-3">
           <label className="flex flex-col gap-1 text-sm">
             Nombre*
@@ -171,7 +153,7 @@ export default function EventoForm({
               required
               value={clienteNombre}
               onChange={(e) => setClienteNombre(e.target.value)}
-              className="rounded-lg border border-border bg-background px-3 py-2 outline-none focus:border-neon-green"
+              className={inputClase}
             />
           </label>
           <label className="flex flex-col gap-1 text-sm">
@@ -180,7 +162,7 @@ export default function EventoForm({
               required
               value={clienteTelefono}
               onChange={(e) => setClienteTelefono(e.target.value)}
-              className="rounded-lg border border-border bg-background px-3 py-2 outline-none focus:border-neon-green"
+              className={inputClase}
             />
           </label>
           <label className="flex flex-col gap-1 text-sm">
@@ -189,14 +171,14 @@ export default function EventoForm({
               type="email"
               value={clienteEmail}
               onChange={(e) => setClienteEmail(e.target.value)}
-              className="rounded-lg border border-border bg-background px-3 py-2 outline-none focus:border-neon-green"
+              className={inputClase}
             />
           </label>
         </div>
       </section>
 
-      <section className="card-glass rounded-2xl p-5">
-        <h2 className="mb-4 font-semibold">Evento</h2>
+      <section className="border border-white/10 bg-background-card rounded-xl p-5">
+        <h2 className="mb-4 border-b border-white/[0.07] pb-3 text-[15px] font-bold">Evento</h2>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           <label className="flex flex-col gap-1 text-sm">
             Fecha*
@@ -205,7 +187,7 @@ export default function EventoForm({
               required
               value={fecha}
               onChange={(e) => setFecha(e.target.value)}
-              className="rounded-lg border border-border bg-background px-3 py-2 outline-none focus:border-neon-green"
+              className={inputClase}
             />
           </label>
           <label className="flex flex-col gap-1 text-sm">
@@ -215,7 +197,7 @@ export default function EventoForm({
               required
               value={horaInicio}
               onChange={(e) => setHoraInicio(e.target.value)}
-              className="rounded-lg border border-border bg-background px-3 py-2 outline-none focus:border-neon-green"
+              className={inputClase}
             />
           </label>
           <label className="flex flex-col gap-1 text-sm">
@@ -225,7 +207,7 @@ export default function EventoForm({
               required
               value={horaFin}
               onChange={(e) => setHoraFin(e.target.value)}
-              className="rounded-lg border border-border bg-background px-3 py-2 outline-none focus:border-neon-green"
+              className={inputClase}
             />
           </label>
           <label className="flex flex-col gap-1 text-sm">
@@ -233,7 +215,7 @@ export default function EventoForm({
             <select
               value={estado}
               onChange={(e) => setEstado(e.target.value as EstadoEvento)}
-              className="rounded-lg border border-border bg-background px-3 py-2 outline-none focus:border-neon-green"
+              className={inputClase}
             >
               {ESTADOS_EVENTO.map((s) => (
                 <option key={s} value={s}>
@@ -249,7 +231,7 @@ export default function EventoForm({
               placeholder="Ej. 15 años, Boda, Cumpleaños infantil..."
               value={tipo}
               onChange={(e) => setTipo(e.target.value)}
-              className="rounded-lg border border-border bg-background px-3 py-2 outline-none focus:border-neon-green"
+              className={inputClase}
             />
           </label>
           <label className="flex flex-col gap-1 text-sm sm:col-span-2">
@@ -257,7 +239,7 @@ export default function EventoForm({
             <input
               value={ubicacion}
               onChange={(e) => setUbicacion(e.target.value)}
-              className="rounded-lg border border-border bg-background px-3 py-2 outline-none focus:border-neon-green"
+              className={inputClase}
             />
           </label>
           <label className="flex flex-col gap-1 text-sm sm:col-span-4">
@@ -266,90 +248,21 @@ export default function EventoForm({
               rows={3}
               value={notas}
               onChange={(e) => setNotas(e.target.value)}
-              className="resize-none rounded-lg border border-border bg-background px-3 py-2 outline-none focus:border-neon-green"
+              className={`${inputClase} resize-none`}
             />
           </label>
         </div>
       </section>
 
-      <section className="card-glass rounded-2xl p-5">
-        <h2 className="mb-4 font-semibold">Servicios contratados</h2>
-        <div className="flex flex-col gap-4">
-          {Array.from(serviciosPorCategoria.entries()).map(([categoria, items]) => (
-            <div key={categoria}>
-              <p className="mb-1.5 text-xs font-semibold uppercase tracking-wide text-muted">{categoria}</p>
-              <div className="flex flex-wrap gap-2">
-                {items.map((s) => (
-                  <button
-                    type="button"
-                    key={s.id}
-                    onClick={() => toggleServicio(s.id)}
-                    className={`rounded-full border px-3 py-1.5 text-sm transition-colors ${
-                      servicioIds.has(s.id)
-                        ? "border-neon-green bg-neon-green/10 text-neon-green"
-                        : "border-border text-foreground/80 hover:border-neon-green/50"
-                    }`}
-                  >
-                    {s.nombre}
-                  </button>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
+      <ServiciosContratados servicios={servicios} elegidos={servicioIds} onAlternar={toggleServicio} />
 
-      <section className="card-glass rounded-2xl p-5">
-        <h2 className="mb-1 font-semibold">Recursos asignados</h2>
-        <p className="mb-4 text-xs text-muted">
-          Asigna trajes, equipos o personal específico. El sistema avisa (sin bloquear) si un
-          recurso queda comprometido con otro evento que se solape en horario.
-        </p>
-
-        {conflictos.length > 0 && (
-          <div className="mb-4 flex flex-col gap-2 rounded-xl border border-gold/40 bg-gold/10 p-3 text-sm text-gold">
-            {conflictos.map((c) => (
-              <div key={c.recursoId}>
-                <strong>{c.recursoNombre}</strong>: asignado {c.cantidadAsignada} de {c.cantidadTotal}{" "}
-                disponibles en ese horario, junto con{" "}
-                {c.eventosEnConflicto.map((ev) => `${ev.tipo} (${ev.horaInicio}-${ev.horaFin})`).join(", ")}.
-              </div>
-            ))}
-          </div>
-        )}
-
-        <div className="flex flex-col gap-2">
-          {recursos.map((r) => {
-            const asignado = recursosAsignados.has(r.id);
-            const tieneConflicto = conflictos.some((c) => c.recursoId === r.id);
-            return (
-              <div
-                key={r.id}
-                className={`flex items-center justify-between gap-3 rounded-lg border px-3 py-2 ${
-                  tieneConflicto ? "border-gold/50" : "border-border"
-                }`}
-              >
-                <label className="flex flex-1 items-center gap-2 text-sm">
-                  <input type="checkbox" checked={asignado} onChange={() => toggleRecurso(r.id)} />
-                  {r.nombre}
-                  <span className="text-xs text-muted">
-                    ({TIPO_RECURSO_LABEL[r.tipo]} · disponibles: {r.cantidadTotal})
-                  </span>
-                </label>
-                {asignado && (
-                  <input
-                    type="number"
-                    min={1}
-                    value={recursosAsignados.get(r.id)}
-                    onChange={(e) => setCantidadRecurso(r.id, Number(e.target.value))}
-                    className="w-16 rounded-lg border border-border bg-background px-2 py-1 text-sm outline-none focus:border-neon-green"
-                  />
-                )}
-              </div>
-            );
-          })}
-        </div>
-      </section>
+      <RecursosAsignados
+        recursos={recursos}
+        asignados={recursosAsignados}
+        conflictos={conflictos}
+        onAlternar={toggleRecurso}
+        onCantidad={setCantidadRecurso}
+      />
 
       {error && <p className="text-sm text-red-400">{error}</p>}
 
@@ -357,7 +270,7 @@ export default function EventoForm({
         <button
           type="submit"
           disabled={submitting}
-          className="rounded-full bg-neon-green px-6 py-2.5 font-semibold text-background transition-transform hover:scale-105 disabled:opacity-60"
+          className={botonPrimario}
         >
           {submitting ? "Guardando..." : isEdit ? "Guardar cambios" : "Crear evento"}
         </button>

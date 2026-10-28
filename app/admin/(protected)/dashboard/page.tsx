@@ -2,7 +2,10 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { Plus } from "lucide-react";
 import MonthCalendar from "@/components/calendar/MonthCalendar";
+import Encabezado, { botonPrimario } from "@/components/admin/Encabezado";
+import { pedir } from "@/lib/servidor";
 import { todayStr } from "@/lib/date";
 import { ESTADO_EVENTO_LABEL, type EstadoEvento } from "@/lib/validation";
 
@@ -28,9 +31,9 @@ export default function AdminDashboardPage() {
   const today = todayStr();
 
   useEffect(() => {
-    fetch("/api/eventos")
-      .then((res) => res.json())
+    pedir<{ eventos: EventoResumen[] }>("/api/eventos", "GET")
       .then((data) => setEventos(data.eventos ?? []))
+      .catch(() => setEventos([]))
       .finally(() => setLoading(false));
   }, []);
 
@@ -43,15 +46,16 @@ export default function AdminDashboardPage() {
 
   return (
     <div>
-      <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
-        <h1 className="text-2xl font-bold">Calendario de eventos</h1>
-        <Link
-          href="/admin/eventos/nuevo"
-          className="rounded-full bg-neon-green px-5 py-2 text-sm font-semibold text-background hover:scale-105"
-        >
-          + Nuevo evento
-        </Link>
-      </div>
+      <Encabezado
+        grupo="Negocio"
+        titulo="Calendario"
+        descripcion="Las fiestas del mes de un vistazo. Toca un día para ver sus eventos."
+        acciones={
+          <Link href="/admin/eventos/nuevo" className={botonPrimario}>
+            <Plus className="h-4 w-4" aria-hidden /> Nuevo evento
+          </Link>
+        }
+      />
 
       <div className="grid gap-6 lg:grid-cols-[1fr_320px]">
         <MonthCalendar
@@ -80,7 +84,7 @@ export default function AdminDashboardPage() {
           }}
         />
 
-        <div className="card-glass h-fit rounded-2xl p-5">
+        <div className="border border-white/10 bg-background-card h-fit rounded-xl p-5">
           <h2 className="mb-3 font-semibold">Próximos eventos</h2>
           {loading && <p className="text-sm text-muted">Cargando...</p>}
           {!loading && eventos.filter((e) => e.fecha >= today).length === 0 && (

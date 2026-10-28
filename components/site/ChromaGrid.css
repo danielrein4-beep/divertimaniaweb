@@ -31,9 +31,9 @@
 }
 
 .chroma-card:hover {
-  border-color: var(--card-border, #9dff3c);
+  border-color: var(--card-border, #a8ff30);
   transform: translateY(-4px);
-  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.5), 0 0 24px color-mix(in srgb, var(--card-border, #9dff3c) 40%, transparent);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.5), 0 0 24px color-mix(in srgb, var(--card-border, #a8ff30) 40%, transparent);
 }
 
 .chroma-img-wrapper {
@@ -84,7 +84,7 @@
 .chroma-info .role {
   font-size: 0.875rem;
   font-weight: 600;
-  color: var(--card-border, var(--neon-green, #9dff3c));
+  color: var(--card-border, var(--neon-green, #a8ff30));
   margin-top: 0.35rem;
 }
 
@@ -102,7 +102,7 @@
   border-radius: inherit;
   background: radial-gradient(
     circle var(--r, 300px) at var(--x, 50%) var(--y, 50%),
-    rgba(157, 255, 60, 0.16) 0%,
+    rgba(168,255,48, 0.16) 0%,
     rgba(255, 79, 216, 0.1) 35%,
     rgba(0, 240, 255, 0.06) 60%,
     transparent 80%

@@ -1,6 +1,12 @@
 "use client";
 
 import { FormEvent, useState } from "react";
+import Image from "next/image";
+import Desplegable from "@/components/admin/Desplegable";
+import { listaClase } from "@/components/admin/Encabezado";
+import SubirFoto from "@/components/admin/SubirFoto";
+import { Aviso } from "@/components/admin/ui";
+import { useColeccion } from "@/components/admin/useColeccion";
 
 type Recreador = {
   id: string;
@@ -12,57 +18,35 @@ type Recreador = {
   activo: boolean;
 };
 
-const emptyForm = { nombre: "", cargo: "", descripcion: "", fotoUrl: "" };
+const FORMULARIO_VACIO = { nombre: "", cargo: "", descripcion: "", fotoUrl: "" };
 
-export default function EquipoManager({ initialRecreadores }: { initialRecreadores: Recreador[] }) {
-  const [recreadores, setRecreadores] = useState(initialRecreadores);
-  const [form, setForm] = useState(emptyForm);
+/** Tarjetas de la página Equipo: agregar, editar, ocultar y borrar recreadores. */
+export default function EquipoManager({ iniciales }: { iniciales: Recreador[] }) {
+  const { items: recreadores, setItems: setRecreadores, error, crear, actualizar, borrar } = useColeccion(
+    iniciales,
+    "/api/recreadores",
+    "recreador"
+  );
+  const [form, setForm] = useState(FORMULARIO_VACIO);
   const [creando, setCreando] = useState(false);
   const [editandoId, setEditandoId] = useState<string | null>(null);
 
-  async function handleCreate(e: FormEvent) {
+  async function agregar(e: FormEvent) {
     e.preventDefault();
     setCreando(true);
-    const res = await fetch("/api/recreadores", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ...form, orden: recreadores.length, activo: true }),
-    });
-    if (res.ok) {
-      const data = await res.json();
-      setRecreadores((prev) => [...prev, data.recreador]);
-      setForm(emptyForm);
-    }
+    if (await crear({ ...form, orden: recreadores.length, activo: true })) setForm(FORMULARIO_VACIO);
     setCreando(false);
   }
 
-  async function handleToggleActivo(r: Recreador) {
-    setRecreadores((prev) => prev.map((x) => (x.id === r.id ? { ...x, activo: !x.activo } : x)));
-    await fetch(`/api/recreadores/${r.id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ...r, activo: !r.activo }),
-    });
-  }
-
-  async function handleSaveEdit(r: Recreador) {
-    await fetch(`/api/recreadores/${r.id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(r),
-    });
-    setEditandoId(null);
-  }
-
-  async function handleDelete(id: string) {
-    if (!confirm("¿Eliminar este recreador del equipo?")) return;
-    setRecreadores((prev) => prev.filter((r) => r.id !== id));
-    await fetch(`/api/recreadores/${id}`, { method: "DELETE" });
+  async function guardarEdicion(r: Recreador) {
+    if (await actualizar(r, {})) setEditandoId(null);
   }
 
   return (
     <div className="flex flex-col gap-6">
-      <form onSubmit={handleCreate} className="card-glass flex flex-col gap-3 rounded-2xl p-5">
+      {error && <Aviso tipo="error">{error}</Aviso>}
+      <Desplegable etiqueta="Agregar a alguien">
+      <form onSubmit={agregar} className="flex flex-col gap-3">
         <div className="grid gap-3 sm:grid-cols-2">
           <label className="flex flex-col gap-1 text-sm">
             Nombre
@@ -94,14 +78,12 @@ export default function EquipoManager({ initialRecreadores }: { initialRecreador
             className="resize-none rounded-lg border border-border bg-background px-3 py-2 outline-none focus:border-neon-green"
           />
         </label>
-        <label className="flex flex-col gap-1 text-sm">
-          Foto (ruta en /public, ej. /images/nombre.jpg)
-          <input
-            value={form.fotoUrl}
-            onChange={(e) => setForm({ ...form, fotoUrl: e.target.value })}
-            className="rounded-lg border border-border bg-background px-3 py-2 outline-none focus:border-neon-green"
-          />
-        </label>
+        <div className="flex flex-col gap-1 text-sm">
+          Foto
+          <div className="w-40">
+            <SubirFoto valor={form.fotoUrl || null} onCambio={(url) => setForm({ ...form, fotoUrl: url ?? "" })} />
+          </div>
+        </div>
         <button
           type="submit"
           disabled={creando}
@@ -110,11 +92,12 @@ export default function EquipoManager({ initialRecreadores }: { initialRecreador
           Agregar al equipo
         </button>
       </form>
+      </Desplegable>
 
-      <div className="flex flex-col gap-2">
+      <div className={listaClase}>
         {recreadores.map((r) =>
           editandoId === r.id ? (
-            <div key={r.id} className="card-glass flex flex-col gap-2 rounded-xl p-4">
+            <div key={r.id} className="flex flex-col gap-2 px-4 py-3">
               <input
                 value={r.nombre}
                 onChange={(e) => setRecreadores((prev) => prev.map((x) => (x.id === r.id ? { ...x, nombre: e.target.value } : x)))}
@@ -131,16 +114,16 @@ export default function EquipoManager({ initialRecreadores }: { initialRecreador
                 onChange={(e) => setRecreadores((prev) => prev.map((x) => (x.id === r.id ? { ...x, descripcion: e.target.value } : x)))}
                 className="resize-none rounded-lg border border-border bg-background px-2 py-1 text-sm outline-none focus:border-neon-green"
               />
-              <input
-                placeholder="/images/nombre.jpg"
-                value={r.fotoUrl ?? ""}
-                onChange={(e) => setRecreadores((prev) => prev.map((x) => (x.id === r.id ? { ...x, fotoUrl: e.target.value } : x)))}
-                className="rounded-lg border border-border bg-background px-2 py-1 text-sm outline-none focus:border-neon-green"
-              />
+              <div className="w-40">
+                <SubirFoto
+                  valor={r.fotoUrl}
+                  onCambio={(url) => setRecreadores((prev) => prev.map((x) => (x.id === r.id ? { ...x, fotoUrl: url } : x)))}
+                />
+              </div>
               <div className="flex gap-2">
                 <button
                   type="button"
-                  onClick={() => handleSaveEdit(r)}
+                  onClick={() => guardarEdicion(r)}
                   className="rounded-full bg-neon-green px-4 py-1.5 text-xs font-semibold text-background"
                 >
                   Guardar
@@ -155,8 +138,11 @@ export default function EquipoManager({ initialRecreadores }: { initialRecreador
               </div>
             </div>
           ) : (
-            <div key={r.id} className="card-glass flex items-center justify-between gap-3 rounded-xl p-4">
-              <div>
+            <div key={r.id} className="flex items-center justify-between gap-3 px-4 py-3">
+              <div className="relative h-16 w-[52px] shrink-0 overflow-hidden rounded-lg bg-black/40">
+                {r.fotoUrl && <Image src={r.fotoUrl} alt="" fill sizes="52px" className="object-cover" />}
+              </div>
+              <div className="min-w-0 flex-1">
                 <p className="font-medium">
                   {r.nombre} {!r.activo && <span className="text-xs text-muted">(oculto)</span>}
                 </p>
@@ -166,7 +152,7 @@ export default function EquipoManager({ initialRecreadores }: { initialRecreador
               <div className="flex flex-none items-center gap-2">
                 <button
                   type="button"
-                  onClick={() => handleToggleActivo(r)}
+                  onClick={() => actualizar(r, { activo: !r.activo })}
                   className="rounded-full border border-border px-3 py-1.5 text-xs text-muted hover:border-neon-green hover:text-neon-green"
                 >
                   {r.activo ? "Ocultar" : "Mostrar"}
@@ -180,8 +166,8 @@ export default function EquipoManager({ initialRecreadores }: { initialRecreador
                 </button>
                 <button
                   type="button"
-                  onClick={() => handleDelete(r.id)}
-                  className="rounded-full border border-border px-3 py-1.5 text-xs text-muted hover:border-red-400 hover:text-red-400"
+                  onClick={() => borrar(r, "¿Eliminar este recreador del equipo?")}
+                  className="rounded-md px-2.5 py-1.5 text-xs font-semibold text-muted hover:bg-red-500/10 hover:text-red-300"
                 >
                   Eliminar
                 </button>

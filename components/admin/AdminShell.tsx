@@ -1,86 +1,163 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+import {
+  BarChart3,
+  Boxes,
+  CalendarDays,
+  ExternalLink,
+  Inbox,
+  LayoutGrid,
+  ListTree,
+  LogOut,
+  Megaphone,
+  Menu,
+  PartyPopper,
+  Settings,
+  Users,
+  X,
+  type LucideIcon,
+} from "lucide-react";
 import Logo from "@/components/site/Logo";
+import { pedir } from "@/lib/servidor";
 
-const LINKS = [
-  { href: "/admin/dashboard", label: "Calendario" },
-  { href: "/admin/eventos", label: "Eventos" },
-  { href: "/admin/recursos", label: "Recursos" },
-  { href: "/admin/catalogo", label: "Catálogo" },
-  { href: "/admin/equipo", label: "Equipo" },
-  { href: "/admin/novedades", label: "Novedades" },
-  { href: "/admin/solicitudes", label: "Solicitudes" },
+type Enlace = { href: string; label: string; icono: LucideIcon };
+
+const GRUPOS: { titulo: string; enlaces: Enlace[] }[] = [
+  {
+    titulo: "Negocio",
+    enlaces: [
+      { href: "/admin/resultados", label: "Resultados", icono: BarChart3 },
+      { href: "/admin/solicitudes", label: "Solicitudes", icono: Inbox },
+      { href: "/admin/dashboard", label: "Calendario", icono: CalendarDays },
+      { href: "/admin/eventos", label: "Eventos", icono: PartyPopper },
+    ],
+  },
+  {
+    titulo: "Catálogo",
+    enlaces: [
+      { href: "/admin/catalogo", label: "Servicios", icono: LayoutGrid },
+      { href: "/admin/categorias", label: "Secciones", icono: ListTree },
+      { href: "/admin/recursos", label: "Inventario", icono: Boxes },
+    ],
+  },
+  {
+    titulo: "Sitio",
+    enlaces: [
+      { href: "/admin/equipo", label: "Equipo", icono: Users },
+      { href: "/admin/novedades", label: "Novedades", icono: Megaphone },
+      { href: "/admin/ajustes", label: "Ajustes", icono: Settings },
+    ],
+  },
 ];
 
-export default function AdminShell({ children }: { children: React.ReactNode }) {
+/** Marco del panel: menú lateral por grupos en computadora y menú desplegable en el teléfono. */
+export default function AdminShell({ children, solicitudesNuevas = 0 }: { children: React.ReactNode; solicitudesNuevas?: number }) {
   const pathname = usePathname();
   const router = useRouter();
+  // El menú del teléfono queda abierto solo en la pantalla donde se abrió: al navegar se cierra solo.
+  const [abiertoEn, setAbiertoEn] = useState<string | null>(null);
+  const menuAbierto = abiertoEn === pathname;
+  const setMenuAbierto = (abrir: boolean) => setAbiertoEn(abrir ? pathname : null);
 
-  async function handleLogout() {
-    await fetch("/api/auth/logout", { method: "POST" });
+  async function salir() {
+    await pedir("/api/auth/logout", "POST").catch(() => null);
     router.push("/admin/login");
     router.refresh();
   }
 
+  const menu = (
+    <>
+      <nav aria-label="Panel" className="flex flex-1 flex-col gap-6 overflow-y-auto">
+        {GRUPOS.map((grupo) => (
+          <div key={grupo.titulo}>
+            <p className="mb-1.5 px-3 text-[10.5px] font-bold uppercase tracking-[0.14em] text-foreground/40">{grupo.titulo}</p>
+            <ul className="flex flex-col gap-0.5">
+              {grupo.enlaces.map(({ href, label, icono: Icono }) => {
+                const activo = pathname.startsWith(href);
+                const aviso = href === "/admin/solicitudes" && solicitudesNuevas > 0;
+                return (
+                  <li key={href}>
+                    <Link
+                      href={href}
+                      aria-current={activo ? "page" : undefined}
+                      className={`relative flex h-9 items-center gap-3 rounded-lg px-3 text-sm font-medium transition-colors ${
+                        activo ? "bg-white/[0.06] text-foreground" : "text-foreground/65 hover:bg-white/[0.04] hover:text-foreground"
+                      }`}
+                    >
+                      {activo && <span className="absolute left-0 top-2 h-5 w-0.5 rounded-full bg-neon-green" aria-hidden />}
+                      <Icono className={`h-4 w-4 ${activo ? "text-neon-green" : ""}`} aria-hidden />
+                      <span className="flex-1">{label}</span>
+                      {aviso && (
+                        <span className="rounded-md bg-neon-green px-1.5 font-mono text-[11px] font-bold tabular-nums text-background" aria-label={`${solicitudesNuevas} nuevas`}>
+                          {solicitudesNuevas}
+                        </span>
+                      )}
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        ))}
+      </nav>
+      <div className="mt-6 flex flex-col gap-0.5 border-t border-white/[0.07] pt-4">
+        <Link href="/" target="_blank" className="flex h-9 items-center gap-3 rounded-lg px-3 text-sm text-foreground/65 hover:bg-white/[0.04] hover:text-foreground">
+          <ExternalLink className="h-4 w-4" aria-hidden /> Ver el sitio
+        </Link>
+        <button type="button" onClick={salir} className="flex h-9 items-center gap-3 rounded-lg px-3 text-left text-sm text-foreground/65 hover:bg-red-500/10 hover:text-red-300">
+          <LogOut className="h-4 w-4" aria-hidden /> Cerrar sesión
+        </button>
+      </div>
+    </>
+  );
+
   return (
     <div className="flex min-h-screen">
-      <aside className="hidden w-56 flex-col border-r border-border bg-background-elevated p-4 sm:flex">
-        <Link href="/admin/dashboard" className="mb-8">
-          <Logo height={30} />
+      <aside className="sticky top-0 hidden h-screen w-60 shrink-0 flex-col border-r border-white/[0.07] bg-background-elevated px-3 pb-4 pt-5 md:flex">
+        <Link href="/admin/resultados" className="mb-7 flex items-center gap-3 px-3">
+          <Logo height={28} />
+          <span className="rounded border border-white/15 px-1.5 py-px text-[10px] font-bold uppercase tracking-wider text-foreground/55">Panel</span>
         </Link>
-        <nav className="flex flex-1 flex-col gap-1">
-          {LINKS.map((link) => {
-            const active = pathname.startsWith(link.href);
-            return (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={`flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
-                  active ? "bg-neon-green/10 text-neon-green" : "text-foreground/80 hover:bg-background-card"
-                }`}
-              >
-                {link.label}
-              </Link>
-            );
-          })}
-        </nav>
-        <Link href="/" className="mb-2 text-xs text-muted hover:text-neon-green">
-          ← Ver sitio público
-        </Link>
-        <button
-          type="button"
-          onClick={handleLogout}
-          className="rounded-lg border border-border px-3 py-2 text-left text-sm text-muted hover:border-red-400 hover:text-red-400"
-        >
-          Cerrar sesión
-        </button>
+        {menu}
       </aside>
 
-      <div className="flex-1 overflow-x-hidden">
-        <header className="flex items-center justify-between border-b border-border bg-background-elevated px-4 py-3 sm:hidden">
-          <Link href="/admin/dashboard">
+      <div className="min-w-0 flex-1">
+        <header className="sticky top-0 z-40 flex items-center justify-between border-b border-white/[0.07] bg-background-elevated/95 px-4 py-2.5 backdrop-blur md:hidden">
+          <Link href="/admin/resultados" className="flex items-center gap-2.5">
             <Logo height={24} />
+            <span className="rounded border border-white/15 px-1.5 py-px text-[10px] font-bold uppercase tracking-wider text-foreground/55">Panel</span>
           </Link>
-          <button onClick={handleLogout} className="text-xs text-muted">
-            Salir
+          <button
+            type="button"
+            onClick={() => setMenuAbierto(true)}
+            aria-label="Abrir menú"
+            aria-expanded={menuAbierto}
+            className="relative flex h-10 w-10 items-center justify-center rounded-lg border border-white/12"
+          >
+            <Menu className="h-5 w-5" aria-hidden />
+            {solicitudesNuevas > 0 && <span className="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-neon-green" aria-hidden />}
           </button>
         </header>
-        <nav className="flex gap-1 overflow-x-auto border-b border-border bg-background-elevated px-2 py-2 sm:hidden">
-          {LINKS.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className={`whitespace-nowrap rounded-lg px-3 py-1.5 text-xs font-medium ${
-                pathname.startsWith(link.href) ? "bg-neon-green/10 text-neon-green" : "text-foreground/80"
-              }`}
-            >
-              {link.label}
-            </Link>
-          ))}
-        </nav>
-        <main className="p-4 sm:p-8">{children}</main>
+
+        {menuAbierto && (
+          <div className="fixed inset-0 z-50 md:hidden" role="dialog" aria-modal="true" aria-label="Menú del panel">
+            <div className="absolute inset-0 bg-black/70" onClick={() => setMenuAbierto(false)} />
+            <div className="absolute inset-y-0 left-0 flex w-72 max-w-[85vw] flex-col border-r border-white/10 bg-background-elevated px-3 pb-4 pt-4">
+              <div className="mb-6 flex items-center justify-between px-3">
+                <Logo height={24} />
+                <button type="button" onClick={() => setMenuAbierto(false)} aria-label="Cerrar menú" className="rounded-lg p-2 text-muted hover:text-foreground">
+                  <X className="h-5 w-5" />
+                </button>
+              </div>
+              {menu}
+            </div>
+          </div>
+        )}
+
+        <main className="mx-auto w-full max-w-6xl px-4 py-6 sm:px-8 sm:py-9">{children}</main>
       </div>
     </div>
   );

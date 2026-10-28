@@ -1,54 +1,39 @@
 "use client";
 
 import { FormEvent, useState } from "react";
+import Desplegable from "@/components/admin/Desplegable";
+import { listaClase } from "@/components/admin/Encabezado";
+import { Aviso } from "@/components/admin/ui";
+import { useColeccion } from "@/components/admin/useColeccion";
 import { TIPOS_RECURSO, TIPO_RECURSO_LABEL, type TipoRecurso } from "@/lib/validation";
 
 type Recurso = { id: string; nombre: string; tipo: TipoRecurso; cantidadTotal: number };
 
-export default function RecursosManager({ initialRecursos }: { initialRecursos: Recurso[] }) {
-  const [recursos, setRecursos] = useState(initialRecursos);
+const porNombre = (a: Recurso, b: Recurso) => a.nombre.localeCompare(b.nombre);
+
+/** Inventario: trajes, equipos y personal con la cantidad disponible para los eventos. */
+export default function RecursosManager({ iniciales }: { iniciales: Recurso[] }) {
+  const { items: recursos, error, crear, actualizar, borrar } = useColeccion(iniciales, "/api/recursos", "recurso");
   const [nombre, setNombre] = useState("");
   const [tipo, setTipo] = useState<TipoRecurso>("EQUIPO");
   const [cantidadTotal, setCantidadTotal] = useState(1);
   const [creando, setCreando] = useState(false);
 
-  async function handleCreate(e: FormEvent) {
+  async function agregar(e: FormEvent) {
     e.preventDefault();
     setCreando(true);
-    const res = await fetch("/api/recursos", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ nombre, tipo, cantidadTotal }),
-    });
-    if (res.ok) {
-      const data = await res.json();
-      setRecursos((prev) => [...prev, data.recurso].sort((a, b) => a.nombre.localeCompare(b.nombre)));
+    if (await crear({ nombre, tipo, cantidadTotal }, porNombre)) {
       setNombre("");
       setCantidadTotal(1);
     }
     setCreando(false);
   }
 
-  async function handleUpdateCantidad(id: string, cantidadTotal: number) {
-    const recurso = recursos.find((r) => r.id === id);
-    if (!recurso) return;
-    setRecursos((prev) => prev.map((r) => (r.id === id ? { ...r, cantidadTotal } : r)));
-    await fetch(`/api/recursos/${id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ nombre: recurso.nombre, tipo: recurso.tipo, cantidadTotal }),
-    });
-  }
-
-  async function handleDelete(id: string) {
-    if (!confirm("¿Eliminar este recurso?")) return;
-    setRecursos((prev) => prev.filter((r) => r.id !== id));
-    await fetch(`/api/recursos/${id}`, { method: "DELETE" });
-  }
-
   return (
     <div className="flex flex-col gap-6">
-      <form onSubmit={handleCreate} className="card-glass flex flex-wrap items-end gap-3 rounded-2xl p-5">
+      {error && <Aviso tipo="error">{error}</Aviso>}
+      <Desplegable etiqueta="Agregar recurso">
+      <form onSubmit={agregar} className="flex flex-wrap items-end gap-3">
         <label className="flex flex-col gap-1 text-sm">
           Nombre
           <input
@@ -90,10 +75,11 @@ export default function RecursosManager({ initialRecursos }: { initialRecursos: 
           Agregar recurso
         </button>
       </form>
+      </Desplegable>
 
-      <div className="flex flex-col gap-2">
+      <div className={listaClase}>
         {recursos.map((r) => (
-          <div key={r.id} className="card-glass flex items-center justify-between gap-3 rounded-xl p-4">
+          <div key={r.id} className="flex items-center justify-between gap-3 px-4 py-3">
             <div>
               <p className="font-medium">{r.nombre}</p>
               <p className="text-xs text-muted">{TIPO_RECURSO_LABEL[r.tipo]}</p>
@@ -105,14 +91,14 @@ export default function RecursosManager({ initialRecursos }: { initialRecursos: 
                   type="number"
                   min={1}
                   value={r.cantidadTotal}
-                  onChange={(e) => handleUpdateCantidad(r.id, Number(e.target.value))}
-                  className="w-20 rounded-lg border border-border bg-background px-2 py-1 outline-none focus:border-neon-green"
+                  onChange={(e) => actualizar(r, { cantidadTotal: Number(e.target.value) })}
+                  className="w-20 rounded-md border border-white/15 bg-background px-2 py-1.5 text-right font-mono tabular-nums outline-none focus:border-neon-green"
                 />
               </label>
               <button
                 type="button"
-                onClick={() => handleDelete(r.id)}
-                className="rounded-full border border-border px-3 py-1.5 text-xs text-muted hover:border-red-400 hover:text-red-400"
+                onClick={() => borrar(r, "¿Eliminar este recurso?")}
+                className="rounded-md px-2.5 py-1.5 text-xs font-semibold text-muted hover:bg-red-500/10 hover:text-red-300"
               >
                 Eliminar
               </button>

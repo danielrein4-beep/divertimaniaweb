@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { prisma } from "@/lib/db";
 import { ESTADOS_EVENTO } from "@/lib/validation";
+import { requireAdmin } from "@/lib/auth";
 
 export async function GET(_request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -34,6 +35,9 @@ const updateSchema = z.object({
 });
 
 export async function PUT(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  const denied = await requireAdmin();
+  if (denied) return denied;
+
   const { id } = await params;
   const body = await request.json().catch(() => null);
   const parsed = updateSchema.safeParse(body);
@@ -45,34 +49,40 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
   const existing = await prisma.evento.findUnique({ where: { id } });
   if (!existing) return NextResponse.json({ error: "Evento no encontrado" }, { status: 404 });
 
-  await prisma.cliente.update({
-    where: { id: existing.clienteId },
-    data: { nombre: data.clienteNombre, telefono: data.clienteTelefono, email: data.clienteEmail || null },
-  });
+  // Todo o nada: si falla la actualización, no se pierden los servicios y recursos ya borrados.
+  const evento = await prisma.$transaction(async (tx) => {
+    await tx.cliente.update({
+      where: { id: existing.clienteId },
+      data: { nombre: data.clienteNombre, telefono: data.clienteTelefono, email: data.clienteEmail || null },
+    });
 
-  await prisma.eventoServicio.deleteMany({ where: { eventoId: id } });
-  await prisma.eventoRecurso.deleteMany({ where: { eventoId: id } });
+    await tx.eventoServicio.deleteMany({ where: { eventoId: id } });
+    await tx.eventoRecurso.deleteMany({ where: { eventoId: id } });
 
-  const evento = await prisma.evento.update({
-    where: { id },
-    data: {
-      fecha: data.fecha,
-      horaInicio: data.horaInicio,
-      horaFin: data.horaFin,
-      tipo: data.tipo,
-      ubicacion: data.ubicacion || null,
-      estado: data.estado,
-      notas: data.notas || null,
-      servicios: { create: data.servicioIds.map((servicioId) => ({ servicioId })) },
-      recursos: { create: data.recursos.map((r) => ({ recursoId: r.recursoId, cantidadUsada: r.cantidadUsada })) },
-    },
-    include: { cliente: true, servicios: { include: { servicio: true } }, recursos: { include: { recurso: true } } },
+    return tx.evento.update({
+      where: { id },
+      data: {
+        fecha: data.fecha,
+        horaInicio: data.horaInicio,
+        horaFin: data.horaFin,
+        tipo: data.tipo,
+        ubicacion: data.ubicacion || null,
+        estado: data.estado,
+        notas: data.notas || null,
+        servicios: { create: data.servicioIds.map((servicioId) => ({ servicioId })) },
+        recursos: { create: data.recursos.map((r) => ({ recursoId: r.recursoId, cantidadUsada: r.cantidadUsada })) },
+      },
+      include: { cliente: true, servicios: { include: { servicio: true } }, recursos: { include: { recurso: true } } },
+    });
   });
 
   return NextResponse.json({ evento });
 }
 
 export async function DELETE(_request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  const denied = await requireAdmin();
+  if (denied) return denied;
+
   const { id } = await params;
   await prisma.evento.delete({ where: { id } }).catch(() => null);
   return NextResponse.json({ ok: true });

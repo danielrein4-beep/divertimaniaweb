@@ -1,12 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { prisma } from "@/lib/db";
+import { requireAdmin } from "@/lib/auth";
 
 const schema = z.object({
   badge: z.string().trim().min(1),
   titulo: z.string().trim().min(2),
   descripcion: z.string().trim().min(2),
-  fotoUrl: z.string().trim().optional().or(z.literal("")),
+  fotoUrl: z.string().trim().nullable().optional().or(z.literal("")),
   ctaTexto: z.string().trim().min(1),
   ctaUrl: z.string().trim().optional().or(z.literal("")),
   activo: z.boolean(),
@@ -14,6 +15,9 @@ const schema = z.object({
 });
 
 export async function PUT(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  const denied = await requireAdmin();
+  if (denied) return denied;
+
   const { id } = await params;
   const body = await request.json().catch(() => null);
   const parsed = schema.safeParse(body);
@@ -30,6 +34,9 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
 }
 
 export async function DELETE(_request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  const denied = await requireAdmin();
+  if (denied) return denied;
+
   const { id } = await params;
   await prisma.novedad.delete({ where: { id } }).catch(() => null);
   return NextResponse.json({ ok: true });

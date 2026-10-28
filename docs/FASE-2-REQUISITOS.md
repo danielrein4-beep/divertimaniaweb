@@ -58,7 +58,7 @@ categorías están hardcodeadas en `lib/site.ts` (`CATEGORIAS`).
 
 **Primer paso obligatorio:** clona el repo, corre `npm install`,
 `npm run db:seed` y `npm run dev`, y navega el sitio completo (público +
-admin, usuario `admin` / contraseña `divertimania2024`) para entender los
+admin, usuario `admin`; la clave es la de `ADMIN_CLAVE_INICIAL` o la de prueba del seed) para entender los
 patrones existentes antes de proponer nada nuevo. No repitas patrones que ya
 existen con otro nombre.
 
