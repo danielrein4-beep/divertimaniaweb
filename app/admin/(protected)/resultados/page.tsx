@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Encabezado from "@/components/admin/Encabezado";
 import { prisma } from "@/lib/db";
 import { ORIGEN_LABEL } from "@/lib/metricas";
 
@@ -97,12 +98,12 @@ export default async function ResultadosPage({ searchParams }: { searchParams: P
   ).slice(0, 6);
 
   return (
-    <div className="flex flex-col gap-8">
-      <div className="flex flex-wrap items-end justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-bold">Resultados de la página</h1>
-          <p className="text-sm text-muted">Cuánta gente entra y cuántos terminan escribiendo por WhatsApp.</p>
-        </div>
+    <div className="flex flex-col gap-8 [&>header]:mb-0">
+      <Encabezado
+        grupo="Negocio"
+        titulo="Resultados"
+        descripcion="Cuánta gente entra a la página y cuántos terminan escribiendo por WhatsApp."
+        acciones={
         <nav aria-label="Periodo" className="flex gap-1 rounded-full border border-border p-1">
           {RANGOS.map((r) => (
             <Link
@@ -117,7 +118,8 @@ export default async function ResultadosPage({ searchParams }: { searchParams: P
             </Link>
           ))}
         </nav>
-      </div>
+        }
+      />
 
       <section className="grid grid-cols-2 gap-3 lg:grid-cols-4">
         <Dato titulo="Personas que entraron" valor={numero.format(personas)} nota={`${numero.format(visitas.length)} páginas vistas`} />

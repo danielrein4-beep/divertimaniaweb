@@ -10,6 +10,7 @@ import { ListaOrdenable } from "@/components/admin/catalogo/Ordenable";
 import FilaServicio, { type ServicioFila } from "@/components/admin/catalogo/FilaServicio";
 import OrdenSecciones, { type SeccionOrden } from "@/components/admin/catalogo/OrdenSecciones";
 import NuevoServicio from "@/components/admin/catalogo/NuevoServicio";
+import Encabezado, { botonPrimario, botonSecundario } from "@/components/admin/Encabezado";
 
 export type { ServicioFila };
 export type SeccionAdmin = { id: string | null; nombre: string; color: string };
@@ -105,34 +106,32 @@ export default function CatalogoAdmin({ servicios: iniciales, secciones: seccion
   const hayVisibles = todas.some((sec) => deSeccion(sec.nombre).some((s) => (!filtro || s.categoria === filtro) && (!termino || s.nombre.toLowerCase().includes(termino))));
 
   return (
-    <div className="mx-auto flex max-w-6xl flex-col gap-6">
-      <header className="flex flex-col gap-5">
-        <div className="flex flex-wrap items-end justify-between gap-4">
-          <div className="flex items-baseline gap-4">
-            <h1 className="text-2xl font-extrabold sm:text-3xl">Catálogo</h1>
-            <EstadoGuardado estado={estado} />
-          </div>
-          <div className="flex flex-wrap gap-2">
-            {seccionesOrdenables.length > 1 && (
-              <BotonSecundario onClick={() => setOrdenandoSecciones(true)}>
-                <ListOrdered className="h-4 w-4" aria-hidden /> Orden de secciones
-              </BotonSecundario>
-            )}
-            <Link href="/admin/categorias" className={claseSecundario}>
-              <Settings2 className="h-4 w-4" aria-hidden /> Secciones
-            </Link>
-            <a href="/catalogo/pdf" target="_blank" rel="noopener" className={claseSecundario}>
-              Ver PDF <ArrowUpRight className="h-4 w-4" aria-hidden />
-            </a>
-            <button
-              type="button"
-              onClick={() => setCreando(true)}
-              className="inline-flex h-10 items-center gap-2 rounded-lg bg-neon-green px-4 text-sm font-bold text-background hover:bg-neon-green-dark"
-            >
-              <Plus className="h-4 w-4" aria-hidden /> Nuevo servicio
-            </button>
-          </div>
-        </div>
+    <div className="flex flex-col gap-6">
+      <div className="flex flex-col gap-5 [&>header]:mb-0">
+        <Encabezado
+          grupo="Catálogo"
+          titulo="Servicios"
+          extra={<EstadoGuardado estado={estado} />}
+          descripcion="Todo lo que se ofrece en el sitio y en el catálogo PDF, en el orden en que aparece."
+          acciones={
+            <>
+              {seccionesOrdenables.length > 1 && (
+                <BotonSecundario onClick={() => setOrdenandoSecciones(true)}>
+                  <ListOrdered className="h-4 w-4" aria-hidden /> Orden de secciones
+                </BotonSecundario>
+              )}
+              <Link href="/admin/categorias" className={botonSecundario}>
+                <Settings2 className="h-4 w-4" aria-hidden /> Secciones
+              </Link>
+              <a href="/catalogo/pdf" target="_blank" rel="noopener" className={botonSecundario}>
+                Ver PDF <ArrowUpRight className="h-4 w-4" aria-hidden />
+              </a>
+              <button type="button" onClick={() => setCreando(true)} className={botonPrimario}>
+                <Plus className="h-4 w-4" aria-hidden /> Nuevo servicio
+              </button>
+            </>
+          }
+        />
 
         <dl className="grid grid-cols-2 overflow-hidden rounded-xl border border-white/10 sm:grid-cols-4">
           {metricas.map((m, i) => (
@@ -142,7 +141,7 @@ export default function CatalogoAdmin({ servicios: iniciales, secciones: seccion
             </div>
           ))}
         </dl>
-      </header>
+      </div>
 
       {creando && <NuevoServicio categorias={todas.map((c) => c.nombre)} inicial={filtro} onCerrar={() => setCreando(false)} />}
       {ordenandoSecciones && (
@@ -227,12 +226,9 @@ export default function CatalogoAdmin({ servicios: iniciales, secciones: seccion
   );
 }
 
-const claseSecundario =
-  "inline-flex h-10 items-center gap-2 rounded-lg border border-white/15 px-3.5 text-sm font-semibold hover:border-neon-green hover:text-neon-green";
-
 function BotonSecundario({ onClick, children }: { onClick: () => void; children: React.ReactNode }) {
   return (
-    <button type="button" onClick={onClick} className={claseSecundario}>
+    <button type="button" onClick={onClick} className={botonSecundario}>
       {children}
     </button>
   );

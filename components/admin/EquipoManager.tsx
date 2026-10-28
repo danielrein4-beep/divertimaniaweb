@@ -1,5 +1,7 @@
 "use client";
 
+import Desplegable from "@/components/admin/Desplegable";
+import { listaClase } from "@/components/admin/Encabezado";
 import { FormEvent, useState } from "react";
 import Image from "next/image";
 import SubirFoto from "@/components/admin/SubirFoto";
@@ -69,7 +71,8 @@ export default function EquipoManager({ initialRecreadores }: { initialRecreador
 
   return (
     <div className="flex flex-col gap-6">
-      <form onSubmit={handleCreate} className="card-glass flex flex-col gap-3 rounded-2xl p-5">
+      <Desplegable etiqueta="Agregar a alguien">
+      <form onSubmit={handleCreate} className="flex flex-col gap-3">
         <div className="grid gap-3 sm:grid-cols-2">
           <label className="flex flex-col gap-1 text-sm">
             Nombre
@@ -115,11 +118,12 @@ export default function EquipoManager({ initialRecreadores }: { initialRecreador
           Agregar al equipo
         </button>
       </form>
+      </Desplegable>
 
-      <div className="flex flex-col gap-2">
+      <div className={listaClase}>
         {recreadores.map((r) =>
           editandoId === r.id ? (
-            <div key={r.id} className="card-glass flex flex-col gap-2 rounded-xl p-4">
+            <div key={r.id} className="flex flex-col gap-2 px-4 py-3">
               <input
                 value={r.nombre}
                 onChange={(e) => setRecreadores((prev) => prev.map((x) => (x.id === r.id ? { ...x, nombre: e.target.value } : x)))}
@@ -160,7 +164,7 @@ export default function EquipoManager({ initialRecreadores }: { initialRecreador
               </div>
             </div>
           ) : (
-            <div key={r.id} className="card-glass flex items-center justify-between gap-3 rounded-xl p-4">
+            <div key={r.id} className="flex items-center justify-between gap-3 px-4 py-3">
               <div className="relative h-16 w-[52px] shrink-0 overflow-hidden rounded-lg bg-black/40">
                 {r.fotoUrl && <Image src={r.fotoUrl} alt="" fill sizes="52px" className="object-cover" />}
               </div>
@@ -189,7 +193,7 @@ export default function EquipoManager({ initialRecreadores }: { initialRecreador
                 <button
                   type="button"
                   onClick={() => handleDelete(r.id)}
-                  className="rounded-full border border-border px-3 py-1.5 text-xs text-muted hover:border-red-400 hover:text-red-400"
+                  className="rounded-md px-2.5 py-1.5 text-xs font-semibold text-muted hover:bg-red-500/10 hover:text-red-300"
                 >
                   Eliminar
                 </button>

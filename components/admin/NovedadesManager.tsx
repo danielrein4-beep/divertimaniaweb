@@ -1,5 +1,7 @@
 "use client";
 
+import Desplegable from "@/components/admin/Desplegable";
+import { listaClase } from "@/components/admin/Encabezado";
 import { FormEvent, useState } from "react";
 import SubirFoto from "@/components/admin/SubirFoto";
 
@@ -55,7 +57,8 @@ export default function NovedadesManager({ initialNovedades }: { initialNovedade
 
   return (
     <div className="flex flex-col gap-6">
-      <form onSubmit={handleCreate} className="card-glass flex flex-col gap-3 rounded-2xl p-5">
+      <Desplegable etiqueta="Nueva novedad">
+      <form onSubmit={handleCreate} className="flex flex-col gap-3">
         <div className="grid gap-3 sm:grid-cols-2">
           <label className="flex flex-col gap-1 text-sm">
             Etiqueta (badge)
@@ -119,11 +122,12 @@ export default function NovedadesManager({ initialNovedades }: { initialNovedade
           Publicar novedad
         </button>
       </form>
+      </Desplegable>
 
-      <div className="flex flex-col gap-2">
+      <div className={listaClase}>
         {novedades.length === 0 && <p className="text-sm text-muted">No hay novedades todavía.</p>}
         {novedades.map((n) => (
-          <div key={n.id} className="card-glass flex items-center justify-between gap-3 rounded-xl p-4">
+          <div key={n.id} className="flex items-center justify-between gap-3 px-4 py-3">
             <div>
               <p className="text-xs font-semibold text-neon-green">{n.badge}</p>
               <p className="font-medium">
@@ -142,7 +146,7 @@ export default function NovedadesManager({ initialNovedades }: { initialNovedade
               <button
                 type="button"
                 onClick={() => handleDelete(n.id)}
-                className="rounded-full border border-border px-3 py-1.5 text-xs text-muted hover:border-red-400 hover:text-red-400"
+                className="rounded-md px-2.5 py-1.5 text-xs font-semibold text-muted hover:bg-red-500/10 hover:text-red-300"
               >
                 Eliminar
               </button>

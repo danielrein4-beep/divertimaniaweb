@@ -1,4 +1,5 @@
 import EventoForm from "@/components/admin/EventoForm";
+import Encabezado from "@/components/admin/Encabezado";
 import { prisma } from "@/lib/db";
 
 export const dynamic = "force-dynamic";
@@ -11,7 +12,7 @@ export default async function NuevoEventoPage() {
 
   return (
     <div>
-      <h1 className="mb-6 text-2xl font-bold">Nuevo evento</h1>
+      <Encabezado grupo="Negocio · Eventos" titulo="Nuevo evento" descripcion="Cliente, fecha, servicios y recursos. Si algo se cruza con otro evento, te avisa antes de guardar." />
       <EventoForm
         servicios={servicios}
         recursos={recursos.map((r) => ({ ...r, tipo: r.tipo as "PERSONAJE" | "EQUIPO" | "PERSONAL" }))}

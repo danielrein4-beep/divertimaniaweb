@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/db";
 import RecursosManager from "@/components/admin/RecursosManager";
+import Encabezado from "@/components/admin/Encabezado";
 
 export const dynamic = "force-dynamic";
 
@@ -8,11 +9,11 @@ export default async function RecursosPage() {
 
   return (
     <div>
-      <h1 className="mb-2 text-2xl font-bold">Recursos e inventario</h1>
-      <p className="mb-6 text-sm text-muted">
-        Trajes, equipos y personal que se asignan a los eventos. La cantidad disponible es la
-        que usa el sistema para avisar de conflictos entre eventos simultáneos.
-      </p>
+      <Encabezado
+        grupo="Catálogo"
+        titulo="Inventario"
+        descripcion="Trajes, equipos y personal que se asignan a los eventos. Con estas cantidades el sistema avisa si dos eventos a la misma hora piden más de lo que hay."
+      />
       <RecursosManager
         initialRecursos={recursos.map((r) => ({ ...r, tipo: r.tipo as "PERSONAJE" | "EQUIPO" | "PERSONAL" }))}
       />

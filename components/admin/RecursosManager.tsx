@@ -1,5 +1,7 @@
 "use client";
 
+import Desplegable from "@/components/admin/Desplegable";
+import { listaClase } from "@/components/admin/Encabezado";
 import { FormEvent, useState } from "react";
 import { TIPOS_RECURSO, TIPO_RECURSO_LABEL, type TipoRecurso } from "@/lib/validation";
 
@@ -48,7 +50,8 @@ export default function RecursosManager({ initialRecursos }: { initialRecursos: 
 
   return (
     <div className="flex flex-col gap-6">
-      <form onSubmit={handleCreate} className="card-glass flex flex-wrap items-end gap-3 rounded-2xl p-5">
+      <Desplegable etiqueta="Agregar recurso">
+      <form onSubmit={handleCreate} className="flex flex-wrap items-end gap-3">
         <label className="flex flex-col gap-1 text-sm">
           Nombre
           <input
@@ -90,10 +93,11 @@ export default function RecursosManager({ initialRecursos }: { initialRecursos: 
           Agregar recurso
         </button>
       </form>
+      </Desplegable>
 
-      <div className="flex flex-col gap-2">
+      <div className={listaClase}>
         {recursos.map((r) => (
-          <div key={r.id} className="card-glass flex items-center justify-between gap-3 rounded-xl p-4">
+          <div key={r.id} className="flex items-center justify-between gap-3 px-4 py-3">
             <div>
               <p className="font-medium">{r.nombre}</p>
               <p className="text-xs text-muted">{TIPO_RECURSO_LABEL[r.tipo]}</p>
@@ -106,13 +110,13 @@ export default function RecursosManager({ initialRecursos }: { initialRecursos: 
                   min={1}
                   value={r.cantidadTotal}
                   onChange={(e) => handleUpdateCantidad(r.id, Number(e.target.value))}
-                  className="w-20 rounded-lg border border-border bg-background px-2 py-1 outline-none focus:border-neon-green"
+                  className="w-20 rounded-md border border-white/15 bg-background px-2 py-1.5 text-right font-mono tabular-nums outline-none focus:border-neon-green"
                 />
               </label>
               <button
                 type="button"
                 onClick={() => handleDelete(r.id)}
-                className="rounded-full border border-border px-3 py-1.5 text-xs text-muted hover:border-red-400 hover:text-red-400"
+                className="rounded-md px-2.5 py-1.5 text-xs font-semibold text-muted hover:bg-red-500/10 hover:text-red-300"
               >
                 Eliminar
               </button>

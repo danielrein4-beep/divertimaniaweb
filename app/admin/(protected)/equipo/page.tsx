@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/db";
 import EquipoManager from "@/components/admin/EquipoManager";
+import Encabezado from "@/components/admin/Encabezado";
 
 export const dynamic = "force-dynamic";
 
@@ -8,11 +9,11 @@ export default async function AdminEquipoPage() {
 
   return (
     <div>
-      <h1 className="mb-2 text-2xl font-bold">Equipo de recreadores</h1>
-      <p className="mb-6 text-sm text-muted">
-        Esto es lo que se muestra en la página pública /equipo. Puedes ocultar a alguien sin
-        borrarlo desactivando su tarjeta.
-      </p>
+      <Encabezado
+        grupo="Sitio"
+        titulo="Equipo"
+        descripcion="Las tarjetas de la página Equipo. Ocultar a alguien no lo borra: vuelve cuando lo actives."
+      />
       <EquipoManager initialRecreadores={recreadores} />
     </div>
   );

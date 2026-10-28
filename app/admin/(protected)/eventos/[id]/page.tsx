@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import Encabezado from "@/components/admin/Encabezado";
 import EventoForm from "@/components/admin/EventoForm";
 import { prisma } from "@/lib/db";
 import { type EstadoEvento } from "@/lib/validation";
@@ -21,7 +22,7 @@ export default async function EditarEventoPage({ params }: { params: Promise<{ i
 
   return (
     <div>
-      <h1 className="mb-6 text-2xl font-bold">Editar evento</h1>
+      <Encabezado grupo="Negocio · Eventos" titulo="Editar evento" descripcion="Cliente, fecha, servicios y recursos. Si algo se cruza con otro evento, te avisa antes de guardar." />
       <EventoForm
         servicios={servicios}
         recursos={recursos.map((r) => ({ ...r, tipo: r.tipo as "PERSONAJE" | "EQUIPO" | "PERSONAL" }))}

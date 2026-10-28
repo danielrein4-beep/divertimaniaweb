@@ -1,7 +1,7 @@
 "use client";
 
 import { FormEvent, useState } from "react";
-import Link from "next/link";
+import Encabezado from "@/components/admin/Encabezado";
 import { useRouter } from "next/navigation";
 import { ArrowDown, ArrowUp, Check, Loader2, Plus, Trash2 } from "lucide-react";
 import { COLORES_CATEGORIA } from "@/lib/categorias-comun";
@@ -78,16 +78,12 @@ export default function CategoriasManager({ iniciales }: { iniciales: Fila[] }) 
   }
 
   return (
-    <div className="mx-auto flex max-w-3xl flex-col gap-6">
-      <div>
-        <Link href="/admin/catalogo" className="text-sm text-muted hover:text-neon-green">
-          ← Catálogo
-        </Link>
-        <h1 className="mt-1 text-2xl font-extrabold sm:text-3xl">Secciones del catálogo</h1>
-        <p className="mt-1 text-sm text-muted">
-          Son las pestañas del catálogo y del Inicio, en este orden. El color es la barrita de cada sección.
-        </p>
-      </div>
+    <div className="flex max-w-3xl flex-col gap-6 [&>header]:mb-1">
+      <Encabezado
+        grupo="Catálogo"
+        titulo="Secciones"
+        descripcion="Las pestañas del catálogo, del Inicio y los capítulos del PDF, en este orden. El color es la barrita de cada sección."
+      />
 
       {error && <Aviso tipo="error">{error}</Aviso>}
 
