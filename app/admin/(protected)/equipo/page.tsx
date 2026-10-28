@@ -14,7 +14,7 @@ export default async function AdminEquipoPage() {
         titulo="Equipo"
         descripcion="Las tarjetas de la página Equipo. Ocultar a alguien no lo borra: vuelve cuando lo actives."
       />
-      <EquipoManager initialRecreadores={recreadores} />
+      <EquipoManager iniciales={recreadores} />
     </div>
   );
 }

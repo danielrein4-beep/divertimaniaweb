@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Plus } from "lucide-react";
 import MonthCalendar from "@/components/calendar/MonthCalendar";
 import Encabezado, { botonPrimario } from "@/components/admin/Encabezado";
+import { pedir } from "@/lib/servidor";
 import { todayStr } from "@/lib/date";
 import { ESTADO_EVENTO_LABEL, type EstadoEvento } from "@/lib/validation";
 
@@ -30,9 +31,9 @@ export default function AdminDashboardPage() {
   const today = todayStr();
 
   useEffect(() => {
-    fetch("/api/eventos")
-      .then((res) => res.json())
+    pedir<{ eventos: EventoResumen[] }>("/api/eventos", "GET")
       .then((data) => setEventos(data.eventos ?? []))
+      .catch(() => setEventos([]))
       .finally(() => setLoading(false));
   }, []);
 

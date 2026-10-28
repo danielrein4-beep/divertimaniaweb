@@ -14,7 +14,7 @@ export default async function AdminNovedadesPage() {
         titulo="Novedades"
         descripcion="El aviso de temporada que aparece en la portada del Inicio (Halloween, Navidad, giras). Se activa y desactiva sin tocar código."
       />
-      <NovedadesManager initialNovedades={novedades} />
+      <NovedadesManager iniciales={novedades} />
     </div>
   );
 }

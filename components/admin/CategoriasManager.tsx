@@ -8,7 +8,7 @@ import Desplegable from "@/components/admin/Desplegable";
 import { ListaOrdenable, useFilaOrdenable } from "@/components/admin/catalogo/Ordenable";
 import VistaPreviaSecciones from "@/components/admin/catalogo/VistaPreviaSecciones";
 import { COLORES_CATEGORIA } from "@/lib/categorias-comun";
-import { pedir } from "@/components/admin/subir";
+import { pedir } from "@/lib/servidor";
 import { Aviso, inputClase } from "@/components/admin/ui";
 
 type Fila = { id: string; nombre: string; color: string; servicios: number };

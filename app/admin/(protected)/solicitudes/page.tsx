@@ -17,7 +17,7 @@ export default async function SolicitudesPage() {
         descripcion="Lo que la gente deja en el formulario de Contacto. Márcalas a medida que las atiendes."
       />
       <SolicitudesManager
-        initialSolicitudes={solicitudes.map((s) => ({
+        iniciales={solicitudes.map((s) => ({
           ...s,
           estado: s.estado as "NUEVA" | "CONTACTADA" | "CONVERTIDA" | "DESCARTADA",
           createdAt: s.createdAt.toISOString(),

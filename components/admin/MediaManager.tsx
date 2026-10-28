@@ -4,7 +4,7 @@ import { useRef, useState } from "react";
 import Image from "next/image";
 import { ChevronLeft, ChevronRight, Film, Loader2, Star, Trash2, Upload } from "lucide-react";
 import { type TipoServicioMedia } from "@/lib/validation";
-import { pedir, subirArchivo } from "@/components/admin/subir";
+import { pedir, subirArchivo } from "@/lib/servidor";
 
 type MediaItem = {
   id: string;
@@ -18,16 +18,16 @@ type MediaItem = {
 /** Galería de un servicio: subir varias fotos/videos a la vez, ordenar, borrar y elegir portada. */
 export default function MediaManager({
   servicioId,
-  initialMedia,
+  mediaInicial,
   portada,
   onUsarComoPortada,
 }: {
   servicioId: string;
-  initialMedia: MediaItem[];
+  mediaInicial: MediaItem[];
   portada: string | null;
   onUsarComoPortada: (url: string) => void;
 }) {
-  const [media, setMedia] = useState<MediaItem[]>(initialMedia);
+  const [media, setMedia] = useState<MediaItem[]>(mediaInicial);
   const [progreso, setProgreso] = useState<{ hecho: number; total: number } | null>(null);
   const [encima, setEncima] = useState(false);
   const [error, setError] = useState("");

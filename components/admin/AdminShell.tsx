@@ -21,6 +21,7 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import Logo from "@/components/site/Logo";
+import { pedir } from "@/lib/servidor";
 
 type Enlace = { href: string; label: string; icono: LucideIcon };
 
@@ -62,7 +63,7 @@ export default function AdminShell({ children, solicitudesNuevas = 0 }: { childr
   const setMenuAbierto = (abrir: boolean) => setAbiertoEn(abrir ? pathname : null);
 
   async function salir() {
-    await fetch("/api/auth/logout", { method: "POST" });
+    await pedir("/api/auth/logout", "POST").catch(() => null);
     router.push("/admin/login");
     router.refresh();
   }

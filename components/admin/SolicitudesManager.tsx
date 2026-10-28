@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { Inbox } from "lucide-react";
 import { listaClase, Vacio } from "@/components/admin/Encabezado";
+import { pedir } from "@/lib/servidor";
 import { ESTADOS_SOLICITUD, ESTADO_SOLICITUD_LABEL, type EstadoSolicitud } from "@/lib/validation";
 
 type Solicitud = {
@@ -24,16 +25,19 @@ const ESTADO_BADGE: Record<EstadoSolicitud, string> = {
   DESCARTADA: "text-muted ring-white/20",
 };
 
-export default function SolicitudesManager({ initialSolicitudes }: { initialSolicitudes: Solicitud[] }) {
-  const [solicitudes, setSolicitudes] = useState(initialSolicitudes);
+/** Solicitudes del formulario de Contacto, con su estado (nueva, contactada, convertida, descartada). */
+export default function SolicitudesManager({ iniciales }: { iniciales: Solicitud[] }) {
+  const [solicitudes, setSolicitudes] = useState(iniciales);
 
   async function cambiarEstado(id: string, estado: EstadoSolicitud) {
+    const anterior = solicitudes;
     setSolicitudes((prev) => prev.map((s) => (s.id === id ? { ...s, estado } : s)));
-    await fetch(`/api/solicitudes/${id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ estado }),
-    });
+    try {
+      await pedir(`/api/solicitudes/${id}`, "PUT", { estado });
+    } catch (e) {
+      setSolicitudes(anterior);
+      alert(e instanceof Error ? e.message : "No se pudo cambiar el estado.");
+    }
   }
 
   if (solicitudes.length === 0) {

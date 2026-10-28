@@ -15,7 +15,7 @@ export default async function RecursosPage() {
         descripcion="Trajes, equipos y personal que se asignan a los eventos. Con estas cantidades el sistema avisa si dos eventos a la misma hora piden más de lo que hay."
       />
       <RecursosManager
-        initialRecursos={recursos.map((r) => ({ ...r, tipo: r.tipo as "PERSONAJE" | "EQUIPO" | "PERSONAL" }))}
+        iniciales={recursos.map((r) => ({ ...r, tipo: r.tipo as "PERSONAJE" | "EQUIPO" | "PERSONAL" }))}
       />
     </div>
   );

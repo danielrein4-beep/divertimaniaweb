@@ -3,7 +3,7 @@
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Loader2, X } from "lucide-react";
-import { pedir } from "@/components/admin/subir";
+import { pedir } from "@/lib/servidor";
 import { Aviso, Campo, inputClase } from "@/components/admin/ui";
 
 /** Ventana para crear un servicio: nombre y sección; luego se abre su ficha para completarlo. */

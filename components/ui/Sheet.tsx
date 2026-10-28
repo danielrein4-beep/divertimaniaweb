@@ -29,14 +29,14 @@ export default function Sheet({ isOpen, onClose, title, description, children, f
     document.body.style.overflow = "hidden";
     panelRef.current?.focus();
 
-    const handleKeyDown = (e: KeyboardEvent) => {
+    const alPresionarTecla = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
     };
-    window.addEventListener("keydown", handleKeyDown);
+    window.addEventListener("keydown", alPresionarTecla);
 
     return () => {
       document.body.style.overflow = originalOverflow;
-      window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("keydown", alPresionarTecla);
       previousFocus?.focus?.();
     };
   }, [isOpen, onClose]);

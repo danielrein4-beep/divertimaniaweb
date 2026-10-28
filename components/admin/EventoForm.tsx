@@ -4,6 +4,7 @@ import { FormEvent, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { ESTADOS_EVENTO, ESTADO_EVENTO_LABEL, TIPO_RECURSO_LABEL, type EstadoEvento } from "@/lib/validation";
 import type { ConflictoRecurso } from "@/lib/conflicts";
+import { pedir } from "@/lib/servidor";
 
 type Servicio = { id: string; nombre: string; categoria: string };
 type Recurso = { id: string; nombre: string; tipo: "PERSONAJE" | "EQUIPO" | "PERSONAL"; cantidadTotal: number };
@@ -66,19 +67,12 @@ export default function EventoForm({
     if (!puedeHaberConflictos) return;
     const controller = new AbortController();
     const timeout = setTimeout(() => {
-      fetch("/api/eventos/conflictos", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        signal: controller.signal,
-        body: JSON.stringify({
-          eventoId: evento?.id ?? null,
-          fecha,
-          horaInicio,
-          horaFin,
-          recursos: recursosPayload,
-        }),
-      })
-        .then((res) => res.json())
+      pedir<{ conflictos: ConflictoRecurso[] }>(
+        "/api/eventos/conflictos",
+        "POST",
+        { eventoId: evento?.id ?? null, fecha, horaInicio, horaFin, recursos: recursosPayload },
+        { signal: controller.signal }
+      )
         .then((data) => setConflictos(data.conflictos ?? []))
         .catch(() => {});
     }, 350);
@@ -114,7 +108,7 @@ export default function EventoForm({
     });
   }
 
-  async function handleSubmit(e: FormEvent) {
+  async function guardar(e: FormEvent) {
     e.preventDefault();
     setSubmitting(true);
     setError("");
@@ -135,16 +129,7 @@ export default function EventoForm({
     };
 
     try {
-      const res = await fetch(isEdit ? `/api/eventos/${evento!.id}` : "/api/eventos", {
-        method: isEdit ? "PUT" : "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-      if (!res.ok) {
-        const body = await res.json().catch(() => ({}));
-        throw new Error(body.error ?? "No se pudo guardar el evento");
-      }
-      const data = await res.json();
+      const data = await pedir<{ evento: { id: string } }>(isEdit ? `/api/eventos/${evento!.id}` : "/api/eventos", isEdit ? "PUT" : "POST", payload);
       router.push(`/admin/eventos/${data.evento.id}`);
       router.refresh();
     } catch (err) {
@@ -161,7 +146,7 @@ export default function EventoForm({
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+    <form onSubmit={guardar} className="flex flex-col gap-6">
       <section className="border border-white/10 bg-background-card rounded-xl p-5">
         <h2 className="mb-4 border-b border-white/[0.07] pb-3 text-[15px] font-bold">Cliente</h2>
         <div className="grid gap-4 sm:grid-cols-3">

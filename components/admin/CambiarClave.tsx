@@ -2,7 +2,7 @@
 
 import { FormEvent, useState } from "react";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
-import { pedir } from "@/components/admin/subir";
+import { pedir } from "@/lib/servidor";
 import { Aviso, Campo, Tarjeta, inputClase } from "@/components/admin/ui";
 
 /** Cambiar la contraseña del panel. */

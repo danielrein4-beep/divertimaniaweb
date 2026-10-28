@@ -1,10 +1,12 @@
 "use client";
 
-import Desplegable from "@/components/admin/Desplegable";
-import { listaClase } from "@/components/admin/Encabezado";
 import { FormEvent, useState } from "react";
 import Image from "next/image";
+import Desplegable from "@/components/admin/Desplegable";
+import { listaClase } from "@/components/admin/Encabezado";
 import SubirFoto from "@/components/admin/SubirFoto";
+import { Aviso } from "@/components/admin/ui";
+import { useColeccion } from "@/components/admin/useColeccion";
 
 type Recreador = {
   id: string;
@@ -16,63 +18,35 @@ type Recreador = {
   activo: boolean;
 };
 
-const emptyForm = { nombre: "", cargo: "", descripcion: "", fotoUrl: "" };
+const FORMULARIO_VACIO = { nombre: "", cargo: "", descripcion: "", fotoUrl: "" };
 
-export default function EquipoManager({ initialRecreadores }: { initialRecreadores: Recreador[] }) {
-  const [recreadores, setRecreadores] = useState(initialRecreadores);
-  const [form, setForm] = useState(emptyForm);
+/** Tarjetas de la página Equipo: agregar, editar, ocultar y borrar recreadores. */
+export default function EquipoManager({ iniciales }: { iniciales: Recreador[] }) {
+  const { items: recreadores, setItems: setRecreadores, error, crear, actualizar, borrar } = useColeccion(
+    iniciales,
+    "/api/recreadores",
+    "recreador"
+  );
+  const [form, setForm] = useState(FORMULARIO_VACIO);
   const [creando, setCreando] = useState(false);
   const [editandoId, setEditandoId] = useState<string | null>(null);
 
-  async function handleCreate(e: FormEvent) {
+  async function agregar(e: FormEvent) {
     e.preventDefault();
     setCreando(true);
-    const res = await fetch("/api/recreadores", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ...form, orden: recreadores.length, activo: true }),
-    });
-    if (res.ok) {
-      const data = await res.json();
-      setRecreadores((prev) => [...prev, data.recreador]);
-      setForm(emptyForm);
-    }
+    if (await crear({ ...form, orden: recreadores.length, activo: true })) setForm(FORMULARIO_VACIO);
     setCreando(false);
   }
 
-  async function handleToggleActivo(r: Recreador) {
-    setRecreadores((prev) => prev.map((x) => (x.id === r.id ? { ...x, activo: !x.activo } : x)));
-    await fetch(`/api/recreadores/${r.id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ...r, activo: !r.activo }),
-    });
-  }
-
-  async function handleSaveEdit(r: Recreador) {
-    const res = await fetch(`/api/recreadores/${r.id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(r),
-    }).catch(() => null);
-    if (!res?.ok) {
-      const data = await res?.json().catch(() => ({}));
-      alert(data?.error ?? "No se pudo guardar. Revisa la conexión o vuelve a entrar al panel.");
-      return;
-    }
-    setEditandoId(null);
-  }
-
-  async function handleDelete(id: string) {
-    if (!confirm("¿Eliminar este recreador del equipo?")) return;
-    setRecreadores((prev) => prev.filter((r) => r.id !== id));
-    await fetch(`/api/recreadores/${id}`, { method: "DELETE" });
+  async function guardarEdicion(r: Recreador) {
+    if (await actualizar(r, {})) setEditandoId(null);
   }
 
   return (
     <div className="flex flex-col gap-6">
+      {error && <Aviso tipo="error">{error}</Aviso>}
       <Desplegable etiqueta="Agregar a alguien">
-      <form onSubmit={handleCreate} className="flex flex-col gap-3">
+      <form onSubmit={agregar} className="flex flex-col gap-3">
         <div className="grid gap-3 sm:grid-cols-2">
           <label className="flex flex-col gap-1 text-sm">
             Nombre
@@ -149,7 +123,7 @@ export default function EquipoManager({ initialRecreadores }: { initialRecreador
               <div className="flex gap-2">
                 <button
                   type="button"
-                  onClick={() => handleSaveEdit(r)}
+                  onClick={() => guardarEdicion(r)}
                   className="rounded-full bg-neon-green px-4 py-1.5 text-xs font-semibold text-background"
                 >
                   Guardar
@@ -178,7 +152,7 @@ export default function EquipoManager({ initialRecreadores }: { initialRecreador
               <div className="flex flex-none items-center gap-2">
                 <button
                   type="button"
-                  onClick={() => handleToggleActivo(r)}
+                  onClick={() => actualizar(r, { activo: !r.activo })}
                   className="rounded-full border border-border px-3 py-1.5 text-xs text-muted hover:border-neon-green hover:text-neon-green"
                 >
                   {r.activo ? "Ocultar" : "Mostrar"}
@@ -192,7 +166,7 @@ export default function EquipoManager({ initialRecreadores }: { initialRecreador
                 </button>
                 <button
                   type="button"
-                  onClick={() => handleDelete(r.id)}
+                  onClick={() => borrar(r, "¿Eliminar este recreador del equipo?")}
                   className="rounded-md px-2.5 py-1.5 text-xs font-semibold text-muted hover:bg-red-500/10 hover:text-red-300"
                 >
                   Eliminar

@@ -137,7 +137,7 @@ export const ChromaGrid = ({
     });
   };
 
-  const handleMove = (e: React.PointerEvent<HTMLDivElement>) => {
+  const alMoverPuntero = (e: React.PointerEvent<HTMLDivElement>) => {
     if (!rootRef.current) return;
     const r = rootRef.current.getBoundingClientRect();
     moveTo(e.clientX - r.left, e.clientY - r.top);
@@ -146,7 +146,7 @@ export const ChromaGrid = ({
     }
   };
 
-  const handleLeave = () => {
+  const alSalirPuntero = () => {
     if (fadeRef.current) {
       gsap.to(fadeRef.current, {
         opacity: 1,
@@ -156,13 +156,13 @@ export const ChromaGrid = ({
     }
   };
 
-  const handleCardClick = (url?: string) => {
+  const alTocarTarjeta = (url?: string) => {
     if (url) {
       window.open(url, "_blank", "noopener,noreferrer");
     }
   };
 
-  const handleCardMove = (e: React.MouseEvent<HTMLElement>) => {
+  const alMoverSobreTarjeta = (e: React.MouseEvent<HTMLElement>) => {
     const card = e.currentTarget;
     const rect = card.getBoundingClientRect();
     const x = e.clientX - rect.left;
@@ -180,15 +180,15 @@ export const ChromaGrid = ({
         ["--cols" as string]: columns,
         ["--rows" as string]: rows,
       }}
-      onPointerMove={handleMove}
-      onPointerLeave={handleLeave}
+      onPointerMove={alMoverPuntero}
+      onPointerLeave={alSalirPuntero}
     >
       {data.map((c, i) => (
         <article
           key={c.id ?? i}
           className="chroma-card"
-          onMouseMove={handleCardMove}
-          onClick={() => handleCardClick(c.url)}
+          onMouseMove={alMoverSobreTarjeta}
+          onClick={() => alTocarTarjeta(c.url)}
           style={{
             ["--card-border" as string]: c.borderColor || "#a8ff30",
             ["--card-gradient" as string]: c.gradient || "linear-gradient(145deg, #a8ff30, #0b0b0b)",

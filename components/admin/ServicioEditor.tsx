@@ -10,7 +10,7 @@ import { type TipoServicioMedia } from "@/lib/validation";
 import SubirFoto from "@/components/admin/SubirFoto";
 import MediaManager from "@/components/admin/MediaManager";
 import OpcionesManager from "@/components/admin/OpcionesManager";
-import { pedir } from "@/components/admin/subir";
+import { pedir } from "@/lib/servidor";
 import Encabezado, { botonSecundario } from "@/components/admin/Encabezado";
 import { Aviso, Campo, Interruptor, Tarjeta, inputClase } from "@/components/admin/ui";
 
@@ -48,7 +48,7 @@ export default function ServicioEditor({
   categorias: string[];
   otros: Otro[];
   media: Media[];
-  opciones: React.ComponentProps<typeof OpcionesManager>["initialOpciones"];
+  opciones: React.ComponentProps<typeof OpcionesManager>["opcionesIniciales"];
 }) {
   const router = useRouter();
   const [guardado, setGuardado] = useState(inicial);
@@ -281,7 +281,7 @@ export default function ServicioEditor({
 
           <MediaManager
             servicioId={form.id}
-            initialMedia={media}
+            mediaInicial={media}
             portada={form.fotoUrl}
             onUsarComoPortada={(url) => {
               set("fotoUrl", url);
@@ -293,7 +293,7 @@ export default function ServicioEditor({
             titulo="Variantes y dinámicas"
             ayuda="Opciones que el cliente elige al cotizar: “Rapunzel sola” o “con el príncipe”, o los juegos de un baby shower. Se guardan al momento."
           >
-            <OpcionesManager servicioId={form.id} initialOpciones={opciones} />
+            <OpcionesManager servicioId={form.id} opcionesIniciales={opciones} />
           </Tarjeta>
 
           <section className="rounded-2xl border border-red-500/25 p-5">

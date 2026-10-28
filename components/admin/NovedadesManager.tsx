@@ -1,9 +1,11 @@
 "use client";
 
+import { FormEvent, useState } from "react";
 import Desplegable from "@/components/admin/Desplegable";
 import { listaClase } from "@/components/admin/Encabezado";
-import { FormEvent, useState } from "react";
 import SubirFoto from "@/components/admin/SubirFoto";
+import { Aviso } from "@/components/admin/ui";
+import { useColeccion } from "@/components/admin/useColeccion";
 
 type Novedad = {
   id: string;
@@ -17,48 +19,26 @@ type Novedad = {
   orden: number;
 };
 
-const emptyForm = { badge: "", titulo: "", descripcion: "", fotoUrl: "", ctaTexto: "Consultar disponibilidad", ctaUrl: "" };
+const FORMULARIO_VACIO = { badge: "", titulo: "", descripcion: "", fotoUrl: "", ctaTexto: "Consultar disponibilidad", ctaUrl: "" };
 
-export default function NovedadesManager({ initialNovedades }: { initialNovedades: Novedad[] }) {
-  const [novedades, setNovedades] = useState(initialNovedades);
-  const [form, setForm] = useState(emptyForm);
+/** Novedades de temporada que aparecen en la portada del Inicio. */
+export default function NovedadesManager({ iniciales }: { iniciales: Novedad[] }) {
+  const { items: novedades, error, crear, actualizar, borrar } = useColeccion(iniciales, "/api/novedades", "novedad");
+  const [form, setForm] = useState(FORMULARIO_VACIO);
   const [creando, setCreando] = useState(false);
 
-  async function handleCreate(e: FormEvent) {
+  async function agregar(e: FormEvent) {
     e.preventDefault();
     setCreando(true);
-    const res = await fetch("/api/novedades", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ...form, orden: novedades.length, activo: true }),
-    });
-    if (res.ok) {
-      const data = await res.json();
-      setNovedades((prev) => [...prev, data.novedad]);
-      setForm(emptyForm);
-    }
+    if (await crear({ ...form, orden: novedades.length, activo: true })) setForm(FORMULARIO_VACIO);
     setCreando(false);
-  }
-
-  async function handleToggleActivo(n: Novedad) {
-    setNovedades((prev) => prev.map((x) => (x.id === n.id ? { ...x, activo: !x.activo } : x)));
-    await fetch(`/api/novedades/${n.id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ...n, activo: !n.activo }),
-    });
-  }
-
-  async function handleDelete(id: string) {
-    if (!confirm("¿Eliminar esta novedad?")) return;
-    setNovedades((prev) => prev.filter((n) => n.id !== id));
-    await fetch(`/api/novedades/${id}`, { method: "DELETE" });
   }
 
   return (
     <div className="flex flex-col gap-6">
+      {error && <Aviso tipo="error">{error}</Aviso>}
       <Desplegable etiqueta="Nueva novedad">
-      <form onSubmit={handleCreate} className="flex flex-col gap-3">
+      <form onSubmit={agregar} className="flex flex-col gap-3">
         <div className="grid gap-3 sm:grid-cols-2">
           <label className="flex flex-col gap-1 text-sm">
             Etiqueta (badge)
@@ -138,14 +118,14 @@ export default function NovedadesManager({ initialNovedades }: { initialNovedade
             <div className="flex flex-none items-center gap-2">
               <button
                 type="button"
-                onClick={() => handleToggleActivo(n)}
+                onClick={() => actualizar(n, { activo: !n.activo })}
                 className="rounded-full border border-border px-3 py-1.5 text-xs text-muted hover:border-neon-green hover:text-neon-green"
               >
                 {n.activo ? "Desactivar" : "Activar"}
               </button>
               <button
                 type="button"
-                onClick={() => handleDelete(n.id)}
+                onClick={() => borrar(n, "¿Eliminar esta novedad?")}
                 className="rounded-md px-2.5 py-1.5 text-xs font-semibold text-muted hover:bg-red-500/10 hover:text-red-300"
               >
                 Eliminar

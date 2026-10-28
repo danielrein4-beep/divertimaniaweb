@@ -3,7 +3,7 @@
 import { useRef, useState } from "react";
 import Image from "next/image";
 import { ImagePlus, Loader2, RefreshCw, Trash2 } from "lucide-react";
-import { subirArchivo } from "@/components/admin/subir";
+import { subirArchivo } from "@/lib/servidor";
 
 /** Foto única (portada): se toca o se arrastra una imagen, se sube y se muestra al momento. */
 export default function SubirFoto({

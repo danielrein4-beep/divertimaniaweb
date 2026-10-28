@@ -5,7 +5,7 @@ import Image from "next/image";
 import { ArrowDown, ArrowUp, Film, Loader2, Pencil, Plus, Trash2, X } from "lucide-react";
 import { TIPOS_OPCION, TIPO_OPCION_LABEL, type TipoOpcion } from "@/lib/validation";
 import SubirFoto from "@/components/admin/SubirFoto";
-import { pedir, subirArchivo } from "@/components/admin/subir";
+import { pedir, subirArchivo } from "@/lib/servidor";
 import { Aviso, Campo, inputClase } from "@/components/admin/ui";
 
 type Opcion = {
@@ -32,8 +32,8 @@ const aDatos = (o: Opcion): Datos => ({
 });
 
 /** Variantes de personaje (con foto) y dinámicas de juego de un servicio. Cada cambio se guarda al momento. */
-export default function OpcionesManager({ servicioId, initialOpciones }: { servicioId: string; initialOpciones: Opcion[] }) {
-  const [opciones, setOpciones] = useState(initialOpciones);
+export default function OpcionesManager({ servicioId, opcionesIniciales }: { servicioId: string; opcionesIniciales: Opcion[] }) {
+  const [opciones, setOpciones] = useState(opcionesIniciales);
   const [agregando, setAgregando] = useState(false);
   const [editando, setEditando] = useState<string | null>(null);
   const [error, setError] = useState("");

@@ -60,7 +60,7 @@ export default function ServicioCard({
     setIsPlaying(false);
   };
 
-  const handleAdd = () => {
+  const agregarAMiFiesta = () => {
     if (tieneOpciones) {
       router.push(`/catalogo/${id}`);
       return;
@@ -145,7 +145,7 @@ export default function ServicioCard({
         )}
         <button
           type="button"
-          onClick={handleAdd}
+          onClick={agregarAMiFiesta}
           aria-label={
             tieneOpciones
               ? `Elegir opciones de ${nombre}`

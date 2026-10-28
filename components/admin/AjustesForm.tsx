@@ -1,11 +1,12 @@
 "use client";
 
 import { FormEvent, useState } from "react";
+import { pedir } from "@/lib/servidor";
 import { buildWhatsAppLink, esTelefonoValido, formatTelefono, normalizarTelefono } from "@/lib/telefono";
 
-export default function AjustesForm({ initialWhatsapp }: { initialWhatsapp: string }) {
-  const [guardado, setGuardado] = useState(initialWhatsapp);
-  const [valor, setValor] = useState(formatTelefono(initialWhatsapp));
+export default function AjustesForm({ whatsappInicial }: { whatsappInicial: string }) {
+  const [guardado, setGuardado] = useState(whatsappInicial);
+  const [valor, setValor] = useState(formatTelefono(whatsappInicial));
   const [guardando, setGuardando] = useState(false);
   const [mensaje, setMensaje] = useState<{ tipo: "ok" | "error"; texto: string } | null>(null);
 
@@ -13,33 +14,24 @@ export default function AjustesForm({ initialWhatsapp }: { initialWhatsapp: stri
   const valido = esTelefonoValido(digitos);
   const sinCambios = digitos === guardado;
 
-  async function handleSubmit(e: FormEvent) {
+  async function guardar(e: FormEvent) {
     e.preventDefault();
     setGuardando(true);
     setMensaje(null);
     try {
-      const res = await fetch("/api/ajustes", {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ whatsapp: valor }),
-      });
-      const data = await res.json().catch(() => ({}));
-      if (!res.ok) {
-        setMensaje({ tipo: "error", texto: data.error ?? "No se pudo guardar. Revisa que tu sesión siga activa." });
-        return;
-      }
-      setGuardado(data.config.whatsapp);
-      setValor(formatTelefono(data.config.whatsapp));
+      const { config } = await pedir<{ config: { whatsapp: string } }>("/api/ajustes", "PUT", { whatsapp: valor });
+      setGuardado(config.whatsapp);
+      setValor(formatTelefono(config.whatsapp));
       setMensaje({ tipo: "ok", texto: "Número guardado. Ya se usa en todo el sitio." });
-    } catch {
-      setMensaje({ tipo: "error", texto: "Sin conexión. Intenta de nuevo." });
+    } catch (err) {
+      setMensaje({ tipo: "error", texto: err instanceof Error ? err.message : "No se pudo guardar." });
     } finally {
       setGuardando(false);
     }
   }
 
   return (
-    <form onSubmit={handleSubmit} className="border border-white/10 bg-background-card flex flex-col gap-4 rounded-xl p-6">
+    <form onSubmit={guardar} className="border border-white/10 bg-background-card flex flex-col gap-4 rounded-xl p-6">
       <label className="flex flex-col gap-1.5 text-sm font-medium">
         Número de WhatsApp para cotizaciones
         <input

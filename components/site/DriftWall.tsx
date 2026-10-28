@@ -221,7 +221,7 @@ export default function DriftWall({
     setActiveId(null);
   }, []);
 
-  const handlePointerMove = useCallback(
+  const alMoverPuntero = useCallback(
     (e: React.PointerEvent<HTMLDivElement>) => {
       const rect = containerRef.current?.getBoundingClientRect();
       if (!rect) return;
@@ -243,7 +243,7 @@ export default function DriftWall({
     [parallax, reduced]
   );
 
-  const handlePointerLeaveWall = useCallback(() => {
+  const alSalirDelMuro = useCallback(() => {
     wallHoveredRef.current = false;
     pointerRef.current = { x: 0, y: 0 };
     release();
@@ -302,11 +302,11 @@ export default function DriftWall({
       ref={containerRef}
       className={rootClass}
       style={cssVars}
-      onPointerMove={handlePointerMove}
+      onPointerMove={alMoverPuntero}
       onPointerEnter={() => {
         wallHoveredRef.current = true;
       }}
-      onPointerLeave={handlePointerLeaveWall}
+      onPointerLeave={alSalirDelMuro}
       role="group"
       aria-label="Drifting wall of tiles"
     >

@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { ArrowUpRight, Check, ListOrdered, Loader2, Plus, Search, Settings2 } from "lucide-react";
 import Link from "next/link";
-import { pedir } from "@/components/admin/subir";
+import { pedir } from "@/lib/servidor";
 import { Aviso, inputClase } from "@/components/admin/ui";
 import { ListaOrdenable } from "@/components/admin/catalogo/Ordenable";
 import FilaServicio, { type ServicioFila } from "@/components/admin/catalogo/FilaServicio";
