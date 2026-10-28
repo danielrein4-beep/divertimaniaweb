@@ -1,5 +1,11 @@
+import type { Metadata } from "next";
 import DriftWall from "@/components/site/DriftWall";
 import { ITEMS_GALERIA } from "@/lib/galeria";
+
+export const metadata: Metadata = {
+  title: "Galería de eventos | Divertimania",
+  description: "Fotos y videos de fiestas infantiles, 15 años, bodas y eventos de empresa animados por Divertimania en Venezuela.",
+};
 
 export default function GaleriaPage() {
   return (

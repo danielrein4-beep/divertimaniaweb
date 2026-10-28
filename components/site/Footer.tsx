@@ -21,7 +21,7 @@ export default async function Footer() {
 
           <div className="flex items-center gap-2 text-xs font-semibold text-neon-green mt-1">
             <MapPin className="w-4 h-4 shrink-0" />
-            <span>Atendemos todo el Estado Táchira</span>
+            <span>Desde el Táchira para toda Venezuela</span>
           </div>
         </div>
 
@@ -39,6 +39,9 @@ export default async function Footer() {
               {link.label}
             </Link>
           ))}
+          <Link href="/preguntas" className="text-foreground/80 hover:text-neon-green transition-colors">
+            Preguntas frecuentes
+          </Link>
         </div>
 
         {/* Canales de Contacto */}

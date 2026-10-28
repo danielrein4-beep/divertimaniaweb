@@ -3,6 +3,7 @@ import bcrypt from "bcryptjs";
 import { z } from "zod";
 import { prisma } from "@/lib/db";
 import { createSession } from "@/lib/auth";
+import { ipDelVisitante, permitirIntento, reiniciarIntentos } from "@/lib/limiteIntentos";
 
 const schema = z.object({
   usuario: z.string().trim().min(1),
@@ -10,6 +11,12 @@ const schema = z.object({
 });
 
 export async function POST(request: NextRequest) {
+  // Contra adivinar la clave a fuerza bruta: 5 intentos fallidos cada 15 minutos por IP.
+  const clave = `login:${ipDelVisitante(request)}`;
+  if (!permitirIntento(clave, 5, 15 * 60_000)) {
+    return NextResponse.json({ error: "Demasiados intentos. Espera 15 minutos." }, { status: 429 });
+  }
+
   const body = await request.json().catch(() => null);
   const parsed = schema.safeParse(body);
   if (!parsed.success) {
@@ -23,6 +30,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Usuario o contraseña incorrectos" }, { status: 401 });
   }
 
+  reiniciarIntentos(clave);
   await createSession(user.usuario);
   return NextResponse.json({ ok: true });
 }

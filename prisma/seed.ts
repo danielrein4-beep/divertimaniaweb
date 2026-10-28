@@ -724,7 +724,8 @@ async function main() {
     create: { id: "principal", whatsapp: "584147286881" },
   });
 
-  const passwordHash = await bcrypt.hash("divertimania2024", 10);
+  // En el servidor la clave inicial sale de ADMIN_CLAVE_INICIAL (variable de Coolify, nunca en el código).
+  const passwordHash = await bcrypt.hash(process.env.ADMIN_CLAVE_INICIAL || "divertimania2024", 10);
   await prisma.adminUser.create({
     data: { usuario: "admin", passwordHash },
   });

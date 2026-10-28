@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { prisma } from "@/lib/db";
+import { ipDelVisitante, permitirIntento } from "@/lib/limiteIntentos";
 
 const schema = z.object({
   nombre: z.string().trim().min(2, "El nombre es muy corto").max(120),
@@ -11,6 +12,11 @@ const schema = z.object({
 });
 
 export async function POST(request: NextRequest) {
+  // Contra spam del formulario: 5 solicitudes por hora por IP.
+  if (!permitirIntento(`contacto:${ipDelVisitante(request)}`, 5, 60 * 60_000)) {
+    return NextResponse.json({ error: "Ya recibimos varias solicitudes. Escríbenos por WhatsApp." }, { status: 429 });
+  }
+
   const body = await request.json().catch(() => null);
   const parsed = schema.safeParse(body);
 

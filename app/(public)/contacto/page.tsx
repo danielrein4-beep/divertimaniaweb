@@ -8,7 +8,7 @@ import { getConfigSitio } from "@/lib/configSitio";
 
 export const metadata: Metadata = {
   title: "Contacto y cotización | Divertimania",
-  description: "Cuéntanos de tu evento y te mandamos la cotización por WhatsApp. Atendemos todo el Estado Táchira.",
+  description: "Cuéntanos de tu evento y te mandamos la cotización por WhatsApp. Desde el Táchira para toda Venezuela.",
 };
 
 export default async function ContactoPage() {

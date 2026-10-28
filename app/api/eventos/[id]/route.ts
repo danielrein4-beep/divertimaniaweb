@@ -49,28 +49,31 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
   const existing = await prisma.evento.findUnique({ where: { id } });
   if (!existing) return NextResponse.json({ error: "Evento no encontrado" }, { status: 404 });
 
-  await prisma.cliente.update({
-    where: { id: existing.clienteId },
-    data: { nombre: data.clienteNombre, telefono: data.clienteTelefono, email: data.clienteEmail || null },
-  });
+  // Todo o nada: si falla la actualización, no se pierden los servicios y recursos ya borrados.
+  const evento = await prisma.$transaction(async (tx) => {
+    await tx.cliente.update({
+      where: { id: existing.clienteId },
+      data: { nombre: data.clienteNombre, telefono: data.clienteTelefono, email: data.clienteEmail || null },
+    });
 
-  await prisma.eventoServicio.deleteMany({ where: { eventoId: id } });
-  await prisma.eventoRecurso.deleteMany({ where: { eventoId: id } });
+    await tx.eventoServicio.deleteMany({ where: { eventoId: id } });
+    await tx.eventoRecurso.deleteMany({ where: { eventoId: id } });
 
-  const evento = await prisma.evento.update({
-    where: { id },
-    data: {
-      fecha: data.fecha,
-      horaInicio: data.horaInicio,
-      horaFin: data.horaFin,
-      tipo: data.tipo,
-      ubicacion: data.ubicacion || null,
-      estado: data.estado,
-      notas: data.notas || null,
-      servicios: { create: data.servicioIds.map((servicioId) => ({ servicioId })) },
-      recursos: { create: data.recursos.map((r) => ({ recursoId: r.recursoId, cantidadUsada: r.cantidadUsada })) },
-    },
-    include: { cliente: true, servicios: { include: { servicio: true } }, recursos: { include: { recurso: true } } },
+    return tx.evento.update({
+      where: { id },
+      data: {
+        fecha: data.fecha,
+        horaInicio: data.horaInicio,
+        horaFin: data.horaFin,
+        tipo: data.tipo,
+        ubicacion: data.ubicacion || null,
+        estado: data.estado,
+        notas: data.notas || null,
+        servicios: { create: data.servicioIds.map((servicioId) => ({ servicioId })) },
+        recursos: { create: data.recursos.map((r) => ({ recursoId: r.recursoId, cantidadUsada: r.cantidadUsada })) },
+      },
+      include: { cliente: true, servicios: { include: { servicio: true } }, recursos: { include: { recurso: true } } },
+    });
   });
 
   return NextResponse.json({ evento });

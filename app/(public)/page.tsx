@@ -7,6 +7,8 @@ import PersonajesCarousel from "@/components/site/PersonajesCarousel";
 import GaleriaViva from "@/components/site/GaleriaViva";
 import MomentosReales from "@/components/site/MomentosReales";
 import CotizarButtons from "@/components/site/CotizarButtons";
+import ComoReservar from "@/components/site/ComoReservar";
+import Testimonios from "@/components/site/Testimonios";
 import { prisma } from "@/lib/db";
 import { getCategorias } from "@/lib/categorias";
 
@@ -71,6 +73,8 @@ export default async function Home() {
 
       <GaleriaViva />
       <MomentosReales />
+      <Testimonios />
+      <ComoReservar />
 
       <section className="mx-auto flex max-w-3xl flex-col items-center gap-6 px-4 py-20 text-center sm:px-6 sm:py-28">
         <h2 className="type-h1 font-display font-extrabold">

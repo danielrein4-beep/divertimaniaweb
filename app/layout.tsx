@@ -13,10 +13,10 @@ const inter = Inter({
   subsets: ["latin"],
 });
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
-const TITULO = "Divertimania | Personajes, shows y animación en el Táchira";
+import { SITE_URL } from "@/lib/negocio";
+const TITULO = "Divertimania | Personajes, shows y animación en toda Venezuela";
 const DESCRIPCION =
-  "Arma tu fiesta en 2 minutos: personajes, shows, animación infantil, baby showers, 15 años y bodas. Te cotizamos por WhatsApp.";
+  "Arma tu fiesta en 2 minutos: personajes, shows, animación infantil, baby showers, 15 años, bodas y eventos de empresa. Desde el Táchira para toda Venezuela. Te cotizamos por WhatsApp.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),

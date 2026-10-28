@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { prisma } from "@/lib/db";
 import { MENSAJES_WHATSAPP } from "@/lib/whatsapp";
 import { buildWhatsAppLink } from "@/lib/telefono";
@@ -5,6 +6,11 @@ import { getConfigSitio } from "@/lib/configSitio";
 import ChromaGrid from "@/components/site/ChromaGrid";
 
 export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = {
+  title: "Nuestro equipo de recreadores | Divertimania",
+  description: "Conoce a los animadores, recreadores y personajes que llevan la fiesta a tu evento.",
+};
 
 const ACCENT_PALETTE = [
   { border: "#a8ff30", gradient: "linear-gradient(145deg, #a8ff30, #0b0b0b)" },
