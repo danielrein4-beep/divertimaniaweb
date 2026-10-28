@@ -114,8 +114,8 @@ export default function Hero({ novedad, categorias }: { novedad: NovedadHero | n
         />
 
         <p className="max-w-xl text-lg text-foreground/85">
-          Animación, shows, personajes y hora loca para cumpleaños, baby showers, 15 años, bodas y empresas en todo el
-          Táchira.
+          Animación, shows, personajes y hora loca para cumpleaños, baby showers, 15 años, bodas y empresas en toda
+          Venezuela.
         </p>
 
         <div className="flex w-full flex-col items-center gap-3 sm:w-auto sm:flex-row">

@@ -30,6 +30,7 @@ const updateServicioSchema = z.object({
   masPedido: z.boolean().optional(),
   destacado: z.boolean().optional(),
   soloAdultos: z.boolean().optional(),
+  enPdf: z.boolean().optional(),
   activo: z.boolean().optional(),
   ocasiones: z.string().trim().nullable().optional(),
   combinaCon: z.string().trim().nullable().optional(),

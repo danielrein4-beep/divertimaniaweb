@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { prisma } from "@/lib/db";
 import { getCategorias } from "@/lib/categorias";
+import DescargarCatalogoPdf from "@/components/site/DescargarCatalogoPdf";
 import CatalogoExplorer, { type ServicioCatalogo } from "@/components/site/CatalogoExplorer";
 
 export const dynamic = "force-dynamic";
@@ -8,7 +9,7 @@ export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: "Catálogo de shows y personajes | Divertimania",
   description:
-    "Personajes, shows, animación infantil, baby showers y atracciones en el Táchira. Arma tu fiesta y pide tu cotización por WhatsApp.",
+    "Personajes, shows, animación infantil, baby showers y atracciones en toda Venezuela. Descarga el catálogo en PDF o arma tu fiesta y pide tu cotización por WhatsApp.",
 };
 
 export default async function CatalogoPage({
@@ -46,12 +47,15 @@ export default async function CatalogoPage({
   }));
 
   return (
-    <CatalogoExplorer
-      servicios={data}
-      categorias={categorias}
-      categoriaInicial={categoria ?? null}
-      ocasionInicial={ocasion ?? null}
-      busquedaInicial={q ?? ""}
-    />
+    <>
+      <CatalogoExplorer
+        servicios={data}
+        categorias={categorias}
+        categoriaInicial={categoria ?? null}
+        ocasionInicial={ocasion ?? null}
+        busquedaInicial={q ?? ""}
+      />
+      <DescargarCatalogoPdf />
+    </>
   );
 }

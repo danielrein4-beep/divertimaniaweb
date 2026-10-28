@@ -25,6 +25,7 @@ export type ServicioEditable = {
   masPedido: boolean;
   destacado: boolean;
   soloAdultos: boolean;
+  enPdf: boolean;
   activo: boolean;
   ocasiones: string | null;
   combinaCon: string | null;
@@ -85,6 +86,7 @@ export default function ServicioEditor({
         masPedido: form.masPedido,
         destacado: form.destacado,
         soloAdultos: form.soloAdultos,
+        enPdf: form.enPdf,
         activo: form.activo,
         ocasiones: form.ocasiones,
         combinaCon: form.combinaCon,
@@ -340,6 +342,12 @@ export default function ServicioEditor({
                 activo={form.soloAdultos}
                 onCambio={(v) => set("soloAdultos", v)}
                 tono="rojo"
+              />
+              <Interruptor
+                titulo="Mostrar en el PDF"
+                ayuda="Apágalo para que se vea en la web pero no en el catálogo PDF."
+                activo={form.enPdf}
+                onCambio={(v) => set("enPdf", v)}
               />
             </div>
           </Tarjeta>

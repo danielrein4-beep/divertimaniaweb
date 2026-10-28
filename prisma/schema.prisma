@@ -62,6 +62,7 @@ model Servicio {
   masPedido   Boolean  @default(false)
   destacado   Boolean  @default(false)
   soloAdultos Boolean  @default(false)
+  enPdf       Boolean  @default(true) // false = se ve en la web pero no en el catálogo PDF
   ocasiones   String?  // cumpleanos, baby-shower, quince, boda, corporativo, graduacion, navidad
   combinaCon  String?  // IDs separados por comas
   eventos     EventoServicio[]

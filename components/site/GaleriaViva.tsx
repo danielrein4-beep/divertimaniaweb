@@ -42,7 +42,7 @@ export default function GaleriaViva() {
           Así se viven nuestras fiestas
         </h2>
         <p className="max-w-md text-base text-white/85 drop-shadow">
-          Fotos reales de cumpleaños, baby showers, 15 años y eventos en todo el Táchira.
+          Fotos reales de cumpleaños, baby showers, 15 años y eventos en toda Venezuela.
         </p>
         <div className="pointer-events-auto flex flex-wrap justify-center gap-3">
           <Link
