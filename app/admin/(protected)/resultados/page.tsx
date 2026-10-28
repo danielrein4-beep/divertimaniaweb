@@ -162,7 +162,7 @@ export default async function ResultadosPage({ searchParams }: { searchParams: P
             nota="Ideas de servicios para agregar al catálogo."
           />
         )}
-        <div className="card-glass rounded-2xl p-5">
+        <div className="border border-white/10 bg-background-card rounded-xl p-5">
           <h2 className="mb-3 font-semibold">Solicitudes en este periodo</h2>
           <dl className="grid grid-cols-2 gap-3 text-sm">
             {[
@@ -181,7 +181,7 @@ export default async function ResultadosPage({ searchParams }: { searchParams: P
             Ver y marcar solicitudes →
           </Link>
         </div>
-        <div className="card-glass rounded-2xl p-5">
+        <div className="border border-white/10 bg-background-card rounded-xl p-5">
           <h2 className="mb-1 font-semibold">Instagram</h2>
           <p className="text-3xl font-bold tabular-nums">{numero.format(instagram.length)}</p>
           <p className="text-sm text-muted">veces que tocaron el enlace a su Instagram</p>
@@ -219,7 +219,7 @@ function Barras({
   const total = datos.reduce((s, d) => s + d.valor, 0);
   const cadaCuanto = Math.ceil(datos.length / 6);
   return (
-    <figure className="card-glass rounded-2xl p-5">
+    <figure className="border border-white/10 bg-background-card rounded-xl p-5">
       <figcaption className="mb-4 flex items-baseline justify-between gap-2">
         <span className="font-semibold">{titulo}</span>
         <span className="text-sm tabular-nums text-muted">
@@ -268,7 +268,7 @@ function Ranking({
 }) {
   const max = Math.max(1, ...filas.map(([, v]) => v));
   return (
-    <div className="card-glass rounded-2xl p-5">
+    <div className="border border-white/10 bg-background-card rounded-xl p-5">
       <h2 className="font-semibold">{titulo}</h2>
       {nota && <p className="text-xs text-muted">{nota}</p>}
       {filas.length === 0 ? (

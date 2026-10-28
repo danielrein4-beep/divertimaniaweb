@@ -41,7 +41,7 @@ export default function AdminLoginPage() {
       <Logo height={56} className="mb-2" />
       <p className="mb-8 text-sm text-muted">Acceso del equipo</p>
 
-      <form onSubmit={handleSubmit} className="card-glass w-full flex-col gap-4 rounded-2xl p-6">
+      <form onSubmit={handleSubmit} className="border border-white/10 bg-background-card w-full flex-col gap-4 rounded-xl p-6">
         <div className="flex flex-col gap-4">
           <label className="flex flex-col gap-1 text-sm">
             Usuario

@@ -17,12 +17,12 @@ export function Tarjeta({
   className?: string;
 }) {
   return (
-    <section className={`card-glass flex flex-col gap-4 rounded-2xl p-5 ${className}`}>
-      <div>
-        <h2 className="text-lg font-bold">{titulo}</h2>
-        {ayuda && <p className="mt-0.5 text-sm text-muted">{ayuda}</p>}
+    <section className={`flex flex-col rounded-xl border border-white/10 bg-background-card ${className}`}>
+      <div className="border-b border-white/[0.07] px-5 py-3.5">
+        <h2 className="text-[15px] font-bold">{titulo}</h2>
+        {ayuda && <p className="mt-0.5 text-xs leading-relaxed text-muted">{ayuda}</p>}
       </div>
-      {children}
+      <div className="flex flex-col gap-4 p-5">{children}</div>
     </section>
   );
 }

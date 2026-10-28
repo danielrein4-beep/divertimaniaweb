@@ -162,8 +162,8 @@ export default function EventoForm({
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-6">
-      <section className="card-glass rounded-2xl p-5">
-        <h2 className="mb-4 font-semibold">Cliente</h2>
+      <section className="border border-white/10 bg-background-card rounded-xl p-5">
+        <h2 className="mb-4 border-b border-white/[0.07] pb-3 text-[15px] font-bold">Cliente</h2>
         <div className="grid gap-4 sm:grid-cols-3">
           <label className="flex flex-col gap-1 text-sm">
             Nombre*
@@ -195,8 +195,8 @@ export default function EventoForm({
         </div>
       </section>
 
-      <section className="card-glass rounded-2xl p-5">
-        <h2 className="mb-4 font-semibold">Evento</h2>
+      <section className="border border-white/10 bg-background-card rounded-xl p-5">
+        <h2 className="mb-4 border-b border-white/[0.07] pb-3 text-[15px] font-bold">Evento</h2>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           <label className="flex flex-col gap-1 text-sm">
             Fecha*
@@ -272,8 +272,8 @@ export default function EventoForm({
         </div>
       </section>
 
-      <section className="card-glass rounded-2xl p-5">
-        <h2 className="mb-4 font-semibold">Servicios contratados</h2>
+      <section className="border border-white/10 bg-background-card rounded-xl p-5">
+        <h2 className="mb-4 border-b border-white/[0.07] pb-3 text-[15px] font-bold">Servicios contratados</h2>
         <div className="flex flex-col gap-4">
           {Array.from(serviciosPorCategoria.entries()).map(([categoria, items]) => (
             <div key={categoria}>
@@ -299,8 +299,8 @@ export default function EventoForm({
         </div>
       </section>
 
-      <section className="card-glass rounded-2xl p-5">
-        <h2 className="mb-1 font-semibold">Recursos asignados</h2>
+      <section className="border border-white/10 bg-background-card rounded-xl p-5">
+        <h2 className="mb-1 text-[15px] font-bold">Recursos asignados</h2>
         <p className="mb-4 text-xs text-muted">
           Asigna trajes, equipos o personal específico. El sistema avisa (sin bloquear) si un
           recurso queda comprometido con otro evento que se solape en horario.
@@ -330,7 +330,7 @@ export default function EventoForm({
                 }`}
               >
                 <label className="flex flex-1 items-center gap-2 text-sm">
-                  <input type="checkbox" checked={asignado} onChange={() => toggleRecurso(r.id)} />
+                  <input type="checkbox" checked={asignado} onChange={() => toggleRecurso(r.id)} className="h-4 w-4 accent-[#a8ff30]" />
                   {r.nombre}
                   <span className="text-xs text-muted">
                     ({TIPO_RECURSO_LABEL[r.tipo]} · disponibles: {r.cantidadTotal})

@@ -88,7 +88,7 @@ export default function MediaManager({
   const fotos = media.filter((m) => m.tipo === "FOTO").length;
 
   return (
-    <section className="card-glass flex flex-col gap-4 rounded-2xl p-5">
+    <section className="border border-white/10 bg-background-card flex flex-col gap-4 rounded-xl p-5">
       <div className="flex flex-wrap items-end justify-between gap-2">
         <div>
           <h2 className="text-lg font-bold">Galería</h2>

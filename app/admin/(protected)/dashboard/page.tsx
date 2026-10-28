@@ -83,7 +83,7 @@ export default function AdminDashboardPage() {
           }}
         />
 
-        <div className="card-glass h-fit rounded-2xl p-5">
+        <div className="border border-white/10 bg-background-card h-fit rounded-xl p-5">
           <h2 className="mb-3 font-semibold">Próximos eventos</h2>
           {loading && <p className="text-sm text-muted">Cargando...</p>}
           {!loading && eventos.filter((e) => e.fecha >= today).length === 0 && (

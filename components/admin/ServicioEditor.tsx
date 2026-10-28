@@ -11,6 +11,7 @@ import SubirFoto from "@/components/admin/SubirFoto";
 import MediaManager from "@/components/admin/MediaManager";
 import OpcionesManager from "@/components/admin/OpcionesManager";
 import { pedir } from "@/components/admin/subir";
+import Encabezado, { botonSecundario } from "@/components/admin/Encabezado";
 import { Aviso, Campo, Interruptor, Tarjeta, inputClase } from "@/components/admin/ui";
 
 export type ServicioEditable = {
@@ -127,36 +128,34 @@ export default function ServicioEditor({
 
   return (
     <div className="flex flex-col gap-6 pb-28">
-      <div className="flex flex-wrap items-start justify-between gap-3">
-        <div>
-          <Link href="/admin/catalogo" className="text-sm text-muted hover:text-neon-green">
-            ← Catálogo
-          </Link>
-          <h1 className="mt-1 text-2xl font-extrabold sm:text-3xl">{guardado.nombre}</h1>
-          <p className="mt-1 flex items-center gap-2 text-sm text-muted">
+      <div className="[&>header]:mb-0">
+        <Encabezado
+          grupo={
+            <Link href="/admin/catalogo" className="hover:text-neon-green">
+              Catálogo · Servicios · {guardado.categoria}
+            </Link>
+          }
+          titulo={guardado.nombre}
+          extra={
             <span
-              className={`inline-flex items-center rounded-md px-2 py-0.5 text-xs font-bold ${
-                guardado.activo ? "bg-neon-green/15 text-neon-green" : "bg-white/10 text-foreground/80"
+              className={`rounded px-1.5 py-px text-[10.5px] font-bold uppercase tracking-wide ring-1 ring-inset ${
+                guardado.activo ? "text-neon-green ring-neon-green/40" : "text-foreground/70 ring-white/20"
               }`}
             >
-              {guardado.activo ? "Visible en el sitio" : "Oculto"}
+              {guardado.activo ? "Visible" : "Oculto"}
             </span>
-            {guardado.categoria}
-          </p>
-        </div>
-        {guardado.activo && (
-          <a
-            href={`/catalogo/${guardado.id}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex h-10 items-center gap-1.5 rounded-lg border border-white/15 px-3 text-sm font-semibold hover:border-neon-green hover:text-neon-green"
-          >
-            Ver en el sitio <ExternalLink className="h-4 w-4" aria-hidden />
-          </a>
-        )}
+          }
+          acciones={
+            guardado.activo && (
+              <a href={`/catalogo/${guardado.id}`} target="_blank" rel="noopener noreferrer" className={botonSecundario}>
+                Ver en el sitio <ExternalLink className="h-4 w-4" aria-hidden />
+              </a>
+            )
+          }
+        />
       </div>
 
-      <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,1fr)_340px]">
+      <div className="grid items-start gap-6 xl:grid-cols-[minmax(0,1fr)_340px]">
         <div className="flex flex-col gap-6">
           <Tarjeta titulo="Información" ayuda="Lo primero que leen los clientes en la tarjeta y en la ficha.">
             <div className="grid gap-4 sm:grid-cols-2">
@@ -312,7 +311,7 @@ export default function ServicioEditor({
           </section>
         </div>
 
-        <div className="flex flex-col gap-6 lg:sticky lg:top-6">
+        <div className="flex flex-col gap-6 xl:sticky xl:top-6">
           <Tarjeta titulo="Foto de portada" ayuda="La que se ve en el catálogo. Mejor vertical, con caras visibles.">
             <SubirFoto valor={form.fotoUrl} onCambio={(url) => set("fotoUrl", url)} />
           </Tarjeta>
@@ -357,7 +356,7 @@ export default function ServicioEditor({
       </div>
 
       {/* Barra de guardado: siempre a mano, avisa si hay cambios pendientes */}
-      <div className="fixed inset-x-0 bottom-0 z-40 border-t border-white/10 bg-background/95 backdrop-blur-md sm:left-56">
+      <div className="fixed inset-x-0 bottom-0 z-40 border-t border-white/10 bg-background/95 backdrop-blur-md md:left-60">
         <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-end gap-3 px-4 py-3 sm:px-8">
           <div className="mr-auto min-w-0 text-sm">
             {aviso ? (

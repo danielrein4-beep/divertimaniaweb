@@ -117,7 +117,7 @@ export default function CategoriasManager({ iniciales }: { iniciales: Fila[] }) 
         ))}
       </ul>
 
-      <form onSubmit={crear} className="card-glass flex flex-col gap-3 rounded-2xl p-5">
+      <form onSubmit={crear} className="border border-white/10 bg-background-card flex flex-col gap-3 rounded-xl p-5">
         <h2 className="text-lg font-bold">Nueva sección</h2>
         <div className="flex flex-col gap-3 sm:flex-row">
           <input

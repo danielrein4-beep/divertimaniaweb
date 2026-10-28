@@ -16,7 +16,7 @@ export default function Encabezado({
   acciones,
   extra,
 }: {
-  grupo: string;
+  grupo: ReactNode;
   titulo: ReactNode;
   descripcion?: ReactNode;
   acciones?: ReactNode;

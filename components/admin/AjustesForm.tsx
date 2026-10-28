@@ -39,7 +39,7 @@ export default function AjustesForm({ initialWhatsapp }: { initialWhatsapp: stri
   }
 
   return (
-    <form onSubmit={handleSubmit} className="card-glass flex flex-col gap-4 rounded-2xl p-6">
+    <form onSubmit={handleSubmit} className="border border-white/10 bg-background-card flex flex-col gap-4 rounded-xl p-6">
       <label className="flex flex-col gap-1.5 text-sm font-medium">
         Número de WhatsApp para cotizaciones
         <input
