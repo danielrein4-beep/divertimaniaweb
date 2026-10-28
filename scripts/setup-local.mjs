@@ -22,4 +22,4 @@ run("npx prisma generate");
 run("npm run db:seed");
 
 console.log("\n✓ Listo. Ahora corre: npm run dev  y abre http://localhost:3000");
-console.log("  Panel admin: http://localhost:3000/admin/login  (usuario: admin · contraseña: divertimania2024)");
+console.log("  Panel admin: http://localhost:3000/admin/login  (usuario: admin · clave: ADMIN_CLAVE_INICIAL o la de prueba del seed)");
