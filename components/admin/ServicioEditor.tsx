@@ -1,18 +1,21 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Check, Clock, ExternalLink, Loader2, Search, Trash2, Users } from "lucide-react";
-import { OCASIONES } from "@/lib/ocasiones";
+import { ExternalLink, Trash2 } from "lucide-react";
 import { type TipoServicioMedia } from "@/lib/validation";
 import SubirFoto from "@/components/admin/SubirFoto";
+import Ocasiones from "@/components/admin/servicio/Ocasiones";
+import CombinaCon from "@/components/admin/servicio/CombinaCon";
+import Publicacion from "@/components/admin/servicio/Publicacion";
+import BarraGuardado from "@/components/admin/servicio/BarraGuardado";
+import VistaPrevia from "@/components/admin/servicio/VistaPrevia";
 import MediaManager from "@/components/admin/MediaManager";
 import OpcionesManager from "@/components/admin/OpcionesManager";
 import { pedir } from "@/lib/servidor";
 import Encabezado, { botonSecundario } from "@/components/admin/Encabezado";
-import { Aviso, Campo, Interruptor, Tarjeta, inputClase } from "@/components/admin/ui";
+import { Campo, Tarjeta, inputClase } from "@/components/admin/ui";
 
 export type ServicioEditable = {
   id: string;
@@ -35,7 +38,6 @@ export type ServicioEditable = {
 type Media = { id: string; servicioId: string; url: string; tipo: TipoServicioMedia; poster: string | null; orden: number };
 type Otro = { id: string; nombre: string; categoria: string };
 
-const lista = (v: string | null) => (v ?? "").split(",").map((x) => x.trim()).filter(Boolean);
 
 export default function ServicioEditor({
   servicio: inicial,
@@ -55,7 +57,6 @@ export default function ServicioEditor({
   const [form, setForm] = useState(inicial);
   const [guardando, setGuardando] = useState(false);
   const [aviso, setAviso] = useState<{ tipo: "error" | "ok"; texto: string } | null>(null);
-  const [buscaCombo, setBuscaCombo] = useState("");
 
   const cambios = JSON.stringify(form) !== JSON.stringify(guardado);
   const set = <K extends keyof ServicioEditable>(k: K, v: ServicioEditable[K]) => setForm((f) => ({ ...f, [k]: v }));
@@ -114,17 +115,6 @@ export default function ServicioEditor({
     }
   }
 
-  const ocasiones = lista(form.ocasiones);
-  const toggleOcasion = (slug: string) =>
-    set("ocasiones", (ocasiones.includes(slug) ? ocasiones.filter((o) => o !== slug) : [...ocasiones, slug]).join(",") || null);
-
-  const combina = lista(form.combinaCon);
-  const toggleCombo = (id: string) =>
-    set("combinaCon", (combina.includes(id) ? combina.filter((c) => c !== id) : [...combina, id]).join(",") || null);
-  const t = buscaCombo.trim().toLowerCase();
-  const otrosFiltrados = otros
-    .filter((o) => !combina.includes(o.id) && (!t || o.nombre.toLowerCase().includes(t)))
-    .slice(0, 12);
 
   return (
     <div className="flex flex-col gap-6 pb-28">
@@ -213,71 +203,9 @@ export default function ServicioEditor({
             </Campo>
           </Tarjeta>
 
-          <Tarjeta titulo="¿Para qué ocasiones sirve?" ayuda="Aparece cuando el cliente filtra el catálogo por ocasión.">
-            <div className="flex flex-wrap gap-2">
-              {OCASIONES.map((o) => {
-                const on = ocasiones.includes(o.slug);
-                return (
-                  <button
-                    key={o.slug}
-                    type="button"
-                    aria-pressed={on}
-                    onClick={() => toggleOcasion(o.slug)}
-                    className={`inline-flex h-10 items-center gap-1.5 rounded-lg border px-3 text-sm font-semibold transition-colors ${
-                      on ? "border-neon-green bg-neon-green/15 text-neon-green" : "border-white/15 text-foreground/80 hover:border-white/35"
-                    }`}
-                  >
-                    {on && <Check className="h-4 w-4" aria-hidden />}
-                    {o.nombre}
-                  </button>
-                );
-              })}
-            </div>
-          </Tarjeta>
+          <Ocasiones valor={form.ocasiones} onCambio={(v) => set("ocasiones", v)} />
 
-          <Tarjeta titulo="Se combina con" ayuda="Se sugieren en la ficha como “Agrégale también”.">
-            {combina.length > 0 && (
-              <div className="flex flex-wrap gap-2">
-                {combina.map((id) => {
-                  const o = otros.find((x) => x.id === id);
-                  if (!o) return null;
-                  return (
-                    <button
-                      key={id}
-                      type="button"
-                      onClick={() => toggleCombo(id)}
-                      className="inline-flex h-9 items-center gap-1.5 rounded-lg bg-neon-green/15 px-3 text-sm font-semibold text-neon-green hover:bg-red-500/15 hover:text-red-300"
-                      title="Quitar"
-                    >
-                      {o.nombre} <span aria-hidden>×</span>
-                    </button>
-                  );
-                })}
-              </div>
-            )}
-            <label className="relative block">
-              <span className="sr-only">Buscar servicio para combinar</span>
-              <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted" aria-hidden />
-              <input
-                value={buscaCombo}
-                onChange={(e) => setBuscaCombo(e.target.value)}
-                placeholder="Buscar servicio para agregar…"
-                className={`${inputClase} pl-9`}
-              />
-            </label>
-            <div className="flex flex-wrap gap-2">
-              {otrosFiltrados.map((o) => (
-                <button
-                  key={o.id}
-                  type="button"
-                  onClick={() => toggleCombo(o.id)}
-                  className="inline-flex h-9 items-center rounded-lg border border-white/15 px-3 text-sm text-foreground/85 hover:border-neon-green hover:text-neon-green"
-                >
-                  + {o.nombre}
-                </button>
-              ))}
-            </div>
-          </Tarjeta>
+          <CombinaCon valor={form.combinaCon} otros={otros} onCambio={(v) => set("combinaCon", v)} />
 
           <MediaManager
             servicioId={form.id}
@@ -316,123 +244,22 @@ export default function ServicioEditor({
             <SubirFoto valor={form.fotoUrl} onCambio={(url) => set("fotoUrl", url)} />
           </Tarjeta>
 
-          <Tarjeta titulo="Publicación">
-            <div className="flex flex-col gap-2">
-              <Interruptor
-                titulo="Visible en el sitio"
-                ayuda={form.fotoUrl ? "Apágalo para ocultarlo sin borrarlo." : "Ponle una foto antes de mostrarlo."}
-                activo={form.activo}
-                onCambio={(v) => set("activo", v)}
-              />
-              <Interruptor
-                titulo="Más pedido"
-                ayuda="Etiqueta en la tarjeta (como mucho una por fila)."
-                activo={form.masPedido}
-                onCambio={(v) => set("masPedido", v)}
-              />
-              <Interruptor
-                titulo="Destacado en el Inicio"
-                activo={form.destacado}
-                onCambio={(v) => set("destacado", v)}
-              />
-              <Interruptor
-                titulo="Solo adultos (+18)"
-                ayuda="Solo aparece dentro de su sección, nunca en “Todo”."
-                activo={form.soloAdultos}
-                onCambio={(v) => set("soloAdultos", v)}
-                tono="rojo"
-              />
-              <Interruptor
-                titulo="Mostrar en el PDF"
-                ayuda="Apágalo para que se vea en la web pero no en el catálogo PDF."
-                activo={form.enPdf}
-                onCambio={(v) => set("enPdf", v)}
-              />
-            </div>
-          </Tarjeta>
+          <Publicacion form={form} set={set} />
 
           <VistaPrevia servicio={form} />
         </div>
       </div>
 
-      {/* Barra de guardado: siempre a mano, avisa si hay cambios pendientes */}
-      <div className="fixed inset-x-0 bottom-0 z-40 border-t border-white/10 bg-background/95 backdrop-blur-md md:left-60">
-        <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-end gap-3 px-4 py-3 sm:px-8">
-          <div className="mr-auto min-w-0 text-sm">
-            {aviso ? (
-              <Aviso tipo={aviso.tipo}>{aviso.texto}</Aviso>
-            ) : cambios ? (
-              <span className="font-semibold text-gold">Tienes cambios sin guardar</span>
-            ) : (
-              <span className="text-muted">Todo guardado</span>
-            )}
-          </div>
-          {cambios && (
-            <button
-              type="button"
-              onClick={() => {
-                setForm(guardado);
-                setAviso(null);
-              }}
-              className="h-11 rounded-lg px-4 text-sm font-semibold text-foreground/80 hover:text-foreground"
-            >
-              Descartar
-            </button>
-          )}
-          <button
-            type="button"
-            onClick={guardar}
-            disabled={!cambios || guardando}
-            className="inline-flex h-11 items-center gap-2 rounded-lg bg-neon-green px-6 text-sm font-bold text-background transition-opacity hover:bg-neon-green-dark disabled:opacity-40"
-          >
-            {guardando && <Loader2 className="h-4 w-4 animate-spin" aria-hidden />}
-            Guardar cambios
-          </button>
-        </div>
-      </div>
+      <BarraGuardado
+        aviso={aviso}
+        cambios={cambios}
+        guardando={guardando}
+        onDescartar={() => {
+          setForm(guardado);
+          setAviso(null);
+        }}
+        onGuardar={guardar}
+      />
     </div>
-  );
-}
-
-/** Mini tarjeta como la del catálogo público, para ver el resultado antes de guardar. */
-function VistaPrevia({ servicio }: { servicio: ServicioEditable }) {
-  return (
-    <Tarjeta titulo="Así se ve en el catálogo">
-      <div className="mx-auto w-full max-w-[220px] overflow-hidden rounded-xl border border-white/10 bg-background-card">
-        <div className="relative aspect-[4/5] w-full bg-black/40">
-          {servicio.fotoUrl ? (
-            <Image src={servicio.fotoUrl} alt="" fill sizes="220px" className="object-cover" />
-          ) : (
-            <span className="absolute inset-0 flex items-center justify-center text-xs text-muted">Sin foto</span>
-          )}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/10 to-transparent" />
-          {servicio.masPedido && (
-            <span className="absolute left-2 top-2 -rotate-2 rounded-md bg-neon-green px-2 py-1 text-[10px] font-bold uppercase text-background">
-              Más pedido
-            </span>
-          )}
-          <p className="ig-caption absolute inset-x-2.5 bottom-2.5 line-clamp-2 text-base leading-tight">
-            {servicio.nombre || "Nombre del servicio"}
-          </p>
-        </div>
-        <div className="flex flex-col gap-2 p-2.5">
-          <p className="flex flex-wrap gap-x-3 gap-y-1 text-xs text-foreground/75">
-            {servicio.edadIdeal && (
-              <span className="inline-flex items-center gap-1">
-                <Users className="h-3.5 w-3.5 text-muted" aria-hidden /> {servicio.edadIdeal}
-              </span>
-            )}
-            {servicio.duracion && (
-              <span className="inline-flex items-center gap-1">
-                <Clock className="h-3.5 w-3.5 text-muted" aria-hidden /> {servicio.duracion}
-              </span>
-            )}
-          </p>
-          <span className="flex h-9 items-center justify-center rounded-lg border border-neon-green/55 text-xs font-bold text-neon-green">
-            + Agregar
-          </span>
-        </div>
-      </div>
-    </Tarjeta>
   );
 }
