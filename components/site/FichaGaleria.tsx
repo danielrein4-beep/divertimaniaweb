@@ -1,5 +1,6 @@
 "use client";
 
+import { fotoOptimizada } from "@/lib/fotoOptimizada";
 import { useRef, useState } from "react";
 import Image from "next/image";
 
@@ -34,7 +35,7 @@ export default function FichaGaleria({ media, nombre }: { media: MediaItem[]; no
             {m.tipo === "VIDEO" ? (
               <video
                 src={m.url}
-                poster={m.poster ?? undefined}
+                poster={m.poster ? fotoOptimizada(m.poster, 1080) : undefined}
                 controls
                 muted
                 playsInline

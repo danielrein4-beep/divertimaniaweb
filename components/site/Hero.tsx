@@ -7,6 +7,8 @@ import IntroMontage, { posterDeReel } from "@/components/site/IntroMontage";
 import MaskedHeading from "@/components/site/MaskedHeading";
 import { useMiFiesta } from "@/context/MiFiestaContext";
 import { INSTAGRAM_URL, PERFIL_IG } from "@/lib/site";
+import { useConexionLigera } from "@/lib/useConexionLigera";
+import { fotoOptimizada } from "@/lib/fotoOptimizada";
 
 // Clips cortos (6 s, sin audio) generados por scripts/comprimir-videos.mjs.
 const REELS_INTRO = Array.from({ length: 12 }, (_, i) => `/reels/intro/reel-${i + 1}.mp4`);
@@ -36,7 +38,9 @@ export type NovedadHero = { id: string; titulo: string; badge: string; ctaUrl: s
 export default function Hero({ novedad, categorias }: { novedad: NovedadHero | null; categorias: string[] }) {
   const introVista = useIntroVista();
   const [introTerminada, setIntroTerminada] = useState(false);
-  const mostrarIntro = !introVista && !introTerminada;
+  // Con conexión lenta o ahorro de datos no hay intro de videos y el fondo va con fotos.
+  const ligera = useConexionLigera();
+  const mostrarIntro = !ligera && !introVista && !introTerminada;
   const { items, openPanel } = useMiFiesta();
 
   const terminarIntro = () => {
@@ -54,19 +58,24 @@ export default function Hero({ novedad, categorias }: { novedad: NovedadHero | n
 
       {/* El mosaico de la intro se queda vivo de fondo, atenuado */}
       <div aria-hidden className="absolute inset-0 -z-10 grid grid-cols-3 grid-rows-2 sm:grid-cols-6 sm:grid-rows-1">
-        {REELS_FONDO.map((src) => (
-          <video
-            key={src}
-            src={src}
-            poster={posterDeReel(src)}
-            muted
-            autoPlay
-            loop
-            playsInline
-            preload="metadata"
-            className="h-full w-full object-cover opacity-30"
-          />
-        ))}
+        {REELS_FONDO.map((src) =>
+          ligera ? (
+            // eslint-disable-next-line @next/next/no-img-element -- fondo decorativo atenuado; el póster ya está comprimido
+            <img key={src} src={fotoOptimizada(posterDeReel(src) ?? "")} alt="" loading="lazy" className="h-full w-full object-cover opacity-30" />
+          ) : (
+            <video
+              key={src}
+              src={src}
+              poster={fotoOptimizada(posterDeReel(src) ?? "")}
+              muted
+              autoPlay
+              loop
+              playsInline
+              preload="metadata"
+              className="h-full w-full object-cover opacity-30"
+            />
+          )
+        )}
       </div>
       <div
         aria-hidden
@@ -92,8 +101,8 @@ export default function Hero({ novedad, categorias }: { novedad: NovedadHero | n
           key={mostrarIntro ? "espera" : "listo"}
           text="DIVIERTE TUS FIESTAS"
           tag="h1"
-          mediaType="video"
-          src="/hero.mp4"
+          mediaType={ligera ? "image" : "video"}
+          src={ligera ? "/hero-poster.jpg" : "/hero.mp4"}
           poster="/hero-poster.jpg"
           fillScale={1.25}
           parallax={26}

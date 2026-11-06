@@ -129,7 +129,7 @@ export default function CatalogoExplorer({
     <div className="pb-24">
       <header className="mx-auto grid max-w-6xl items-center gap-10 px-4 pt-10 sm:px-6 sm:pt-14 lg:grid-cols-[1.15fr_0.85fr] lg:pt-16">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-neon-green">Catálogo · Táchira</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-neon-green">Catálogo · Toda Venezuela</p>
           <h1 className="type-display mt-3 font-display font-extrabold">
             {ocasionActual ? (
               `Para ${ocasionActual.nombre.toLowerCase()}`

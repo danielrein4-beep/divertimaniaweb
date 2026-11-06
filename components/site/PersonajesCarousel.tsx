@@ -45,7 +45,7 @@ export default function PersonajesCarousel({ personajes, total }: { personajes: 
                 {personaje.fotoUrl ? (
                   <Image
                     src={personaje.fotoUrl}
-                    alt={personaje.nombre}
+                    alt=""
                     fill
                     className="object-cover group-hover:scale-110 transition-transform duration-500"
                     sizes="128px"

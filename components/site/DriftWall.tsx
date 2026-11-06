@@ -10,6 +10,7 @@ import {
   useSyncExternalStore,
   type CSSProperties,
 } from "react";
+import { fotoOptimizada } from "@/lib/fotoOptimizada";
 import "./DriftWall.css";
 
 export interface DriftWallItem {
@@ -270,7 +271,8 @@ export default function DriftWall({
   const renderTile = (item: DriftWallItem, id: string, colIndex: number) => {
     const inner = (
       <span className="drift-wall__inner">
-        <img src={item.image} alt={item.title ?? ""} loading="lazy" decoding="async" draggable={false} />
+        {/* eslint-disable-next-line @next/next/no-img-element -- ya pasa por el optimizador (fotoOptimizada) */}
+        <img src={fotoOptimizada(item.image)} alt={item.title ?? ""} loading="lazy" decoding="async" draggable={false} />
         <span className="drift-wall__overlay" aria-hidden="true" />
       </span>
     );

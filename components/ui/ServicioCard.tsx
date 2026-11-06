@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { Check, ChevronRight, Clock, Plus, Users } from "lucide-react";
 import { useMiFiesta } from "@/context/MiFiestaContext";
 import PlaceholderImage from "@/components/site/PlaceholderImage";
+import { fotoOptimizada } from "@/lib/fotoOptimizada";
 
 export interface ServicioCardProps {
   id: string;
@@ -80,7 +81,7 @@ export default function ServicioCard({
         {fotoUrl ? (
           <Image
             src={fotoUrl}
-            alt={nombre}
+            alt=""
             fill
             priority={priority}
             sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
@@ -94,7 +95,7 @@ export default function ServicioCard({
           <video
             ref={videoRef}
             src={videoUrl}
-            poster={posterUrl || undefined}
+            poster={posterUrl ? fotoOptimizada(posterUrl) : undefined}
             muted
             loop
             playsInline
@@ -148,9 +149,9 @@ export default function ServicioCard({
           onClick={agregarAMiFiesta}
           aria-label={
             tieneOpciones
-              ? `Elegir opciones de ${nombre}`
+              ? `Ver opciones de ${nombre}`
               : added
-                ? `Quitar ${nombre} de mi fiesta`
+                ? `En tu fiesta: ${nombre}. Toca para quitarlo`
                 : `Agregar ${nombre} a mi fiesta`
           }
           aria-pressed={tieneOpciones ? undefined : added}

@@ -2,6 +2,7 @@
 
 import { useRef, useEffect } from "react";
 import { gsap } from "gsap";
+import { fotoOptimizada } from "@/lib/fotoOptimizada";
 import "./ChromaGrid.css";
 
 export interface ChromaGridItem {
@@ -196,7 +197,8 @@ export const ChromaGrid = ({
           }}
         >
           <div className="chroma-img-wrapper">
-            <img src={c.image} alt={c.title} loading="lazy" />
+            {/* eslint-disable-next-line @next/next/no-img-element -- ya pasa por el optimizador (fotoOptimizada) */}
+            <img src={fotoOptimizada(c.image)} alt={c.title} loading="lazy" />
           </div>
           <footer className="chroma-info">
             <h3 className="name">{c.title}</h3>

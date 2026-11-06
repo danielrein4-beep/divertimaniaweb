@@ -78,7 +78,7 @@ export default async function Footer() {
             <span>@divertimania2</span>
           </a>
 
-          <p className="text-xs text-muted/70 max-w-xs mt-1">
+          <p className="text-xs text-muted max-w-xs mt-1">
             Cada fiesta es única: cotizaciones personalizadas directamente vía WhatsApp.
           </p>
 
@@ -92,7 +92,7 @@ export default async function Footer() {
         </div>
       </div>
 
-      <div className="border-t border-white/5 py-5 text-center text-xs text-muted/70">
+      <div className="border-t border-white/5 py-5 text-center text-xs text-muted">
         © {new Date().getFullYear()} Divertimania. Tu fiesta, armada en 2 minutos. San Cristóbal, Táchira.
       </div>
     </footer>
