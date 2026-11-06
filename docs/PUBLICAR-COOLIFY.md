@@ -30,6 +30,20 @@ Sin este volumen, cada actualización borra todo.
 
 `DATABASE_URL` y `UPLOADS_DIR` ya vienen en el Dockerfile.
 
+**Aviso de solicitudes por correo** (opcional: sin estas variables queda apagado y el formulario funciona igual).
+Con el correo de Hostinger del dominio:
+
+| Variable | Valor |
+|---|---|
+| `SMTP_HOST` | `smtp.hostinger.com` |
+| `SMTP_PUERTO` | `465` |
+| `SMTP_USUARIO` | el buzón que envía, por ejemplo `contacto@divertimania.com` |
+| `SMTP_CLAVE` | la clave de ese buzón |
+| `AVISO_CORREO_PARA` | a quién le llega el aviso (puede ser el mismo buzón o un Gmail del equipo) |
+
+Para comprobarlo: en el panel, **Ajustes → Aviso de solicitudes por correo** debe decir «Activo»; luego llenar
+el formulario de Contacto del sitio y revisar que llegue el correo.
+
 ## 5. Límite de recursos (para no frenar a Aurora)
 Advanced → Resource Limits: memoria **512 MB**, CPU **0.5**.
 

@@ -14,7 +14,7 @@ const CABECERAS_SEGURIDAD = [
 const nextConfig: NextConfig = {
   poweredByHeader: false,
   // El PDF del catálogo se arma en el servidor con react-pdf; va fuera del empaquetado.
-  serverExternalPackages: ["@react-pdf/renderer"],
+  serverExternalPackages: ["@react-pdf/renderer", "nodemailer"],
   async headers() {
     return [{ source: "/:path*", headers: CABECERAS_SEGURIDAD }];
   },

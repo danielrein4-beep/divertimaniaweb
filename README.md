@@ -66,6 +66,7 @@ lib/
   catalogoPdf/       datos y diseño del catálogo en PDF
   negocio.ts         cobertura, pagos, preguntas y testimonios que se muestran en el sitio
   limiteIntentos.ts  tope de intentos por IP (login y formulario de contacto)
+  avisoSolicitud.ts  correo al equipo cuando llega una solicitud (se activa con SMTP_*)
   conflicts.ts       cruces de inventario entre eventos que se solapan
 prisma/
   schema.prisma      modelo de datos

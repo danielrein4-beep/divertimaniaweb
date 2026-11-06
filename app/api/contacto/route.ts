@@ -1,7 +1,8 @@
-import { NextRequest, NextResponse } from "next/server";
+import { after, NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { prisma } from "@/lib/db";
 import { ipDelVisitante, permitirIntento } from "@/lib/limiteIntentos";
+import { avisarSolicitud } from "@/lib/avisoSolicitud";
 
 const schema = z.object({
   nombre: z.string().trim().min(2, "El nombre es muy corto").max(120),
@@ -38,6 +39,9 @@ export async function POST(request: NextRequest) {
       fechaDeseada: fechaDeseada || null,
     },
   });
+
+  // El correo sale después de responder: el visitante no espera por él y una falla no lo afecta.
+  after(() => avisarSolicitud(solicitud));
 
   return NextResponse.json({ ok: true, id: solicitud.id }, { status: 201 });
 }
