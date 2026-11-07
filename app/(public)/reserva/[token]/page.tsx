@@ -8,6 +8,8 @@ import { formatFechaAmigable } from "@/lib/miFiesta";
 import { PAGOS } from "@/lib/negocio";
 import { leerServicios, PASOS_CLIENTE, type EstadoReserva } from "@/lib/reservas/estados";
 import SubirComprobante from "@/components/site/reservas/SubirComprobante";
+import CuentasCliente from "@/components/site/reservas/CuentasCliente";
+import { cuentasActivas, leerCuentas, metodosDisponibles } from "@/lib/cuentasPago";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = { title: "Mi reserva | Divertimania", robots: { index: false, follow: false } };
@@ -70,18 +72,13 @@ export default async function MiReserva({ params }: { params: Promise<{ token: s
             <p className="font-display text-4xl font-extrabold text-neon-green">US$ {reserva.montoAnticipo}</p>
             {reserva.montoTotal != null && <p className="mt-1 text-sm text-muted">Total cotizado: US$ {reserva.montoTotal}. El resto se paga el día del evento.</p>}
           </div>
-          {config?.datosPago && (
-            <div>
-              <h2 className="font-display text-lg font-bold">Dónde pagar</h2>
-              <p className="mt-2 whitespace-pre-line rounded-xl bg-black/30 p-4 font-mono text-sm leading-relaxed">{config.datosPago}</p>
-            </div>
-          )}
+          <CuentasCliente cuentas={cuentasActivas(config?.datosPago)} textoLibre={leerCuentas(config?.datosPago).textoLibre} />
           {estado === "PAGO_REPORTADO" && (
             <p className="rounded-xl border border-gold/40 bg-gold/10 px-4 py-3 text-sm text-gold">
               Recibimos tu comprobante ({reserva.metodoPago}, ref. {reserva.referenciaPago}). Lo estamos revisando.
             </p>
           )}
-          <SubirComprobante token={reserva.token} metodos={PAGOS.metodos} yaReportado={estado === "PAGO_REPORTADO"} />
+          <SubirComprobante token={reserva.token} metodos={metodosDisponibles(config?.datosPago, PAGOS.metodos)} yaReportado={estado === "PAGO_REPORTADO"} />
         </section>
       )}
 

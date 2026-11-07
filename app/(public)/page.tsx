@@ -8,6 +8,8 @@ import GaleriaViva from "@/components/site/GaleriaViva";
 import MomentosReales from "@/components/site/MomentosReales";
 import CotizarButtons from "@/components/site/CotizarButtons";
 import ComoReservar from "@/components/site/ComoReservar";
+import { metodosDisponibles } from "@/lib/cuentasPago";
+import { PAGOS } from "@/lib/negocio";
 import Testimonios from "@/components/site/Testimonios";
 import { prisma } from "@/lib/db";
 import { getCategorias } from "@/lib/categorias";
@@ -16,7 +18,7 @@ export const dynamic = "force-dynamic";
 
 export default async function Home() {
   const now = new Date();
-  const [novedad, personajes, destacados, totalPersonajes, categorias, conServicios] = await Promise.all([
+  const [novedad, personajes, destacados, totalPersonajes, categorias, conServicios, config] = await Promise.all([
     prisma.novedad.findFirst({
       where: {
         activo: true,
@@ -45,6 +47,7 @@ export default async function Home() {
     prisma.servicio.count({ where: { activo: true, categoria: "Personajes Infantiles", soloAdultos: false } }),
     getCategorias(),
     prisma.servicio.findMany({ where: { activo: true }, distinct: ["categoria"], select: { categoria: true } }),
+    prisma.configuracionSitio.findUnique({ where: { id: "principal" }, select: { datosPago: true } }),
   ]);
 
   return (
@@ -74,7 +77,7 @@ export default async function Home() {
       <GaleriaViva />
       <MomentosReales />
       <Testimonios />
-      <ComoReservar />
+      <ComoReservar metodosPago={metodosDisponibles(config?.datosPago, PAGOS.metodos)} />
 
       <section className="mx-auto flex max-w-3xl flex-col items-center gap-6 px-4 py-20 text-center sm:px-6 sm:py-28">
         <h2 className="type-h1 font-display font-extrabold">

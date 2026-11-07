@@ -5,9 +5,10 @@ import { ipDelVisitante, permitirIntento } from "@/lib/limiteIntentos";
 import { guardarComprobante } from "@/lib/reservas/comprobantes";
 import { avisarPagoReportado } from "@/lib/reservas/avisos";
 import { PAGOS } from "@/lib/negocio";
+import { metodosDisponibles } from "@/lib/cuentasPago";
 
 const datosSchema = z.object({
-  metodoPago: z.enum(PAGOS.metodos as unknown as [string, ...string[]], { message: "Elige cómo pagaste" }),
+  metodoPago: z.string().trim().min(1, "Elige cómo pagaste").max(60),
   referenciaPago: z.string().trim().min(3, "Escribe la referencia del pago").max(80),
 });
 
@@ -28,6 +29,10 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
   const archivo = form?.get("comprobante");
   const datos = datosSchema.safeParse({ metodoPago: form?.get("metodoPago"), referenciaPago: form?.get("referenciaPago") });
   if (!datos.success) return NextResponse.json({ error: datos.error.issues[0]?.message ?? "Datos inválidos" }, { status: 400 });
+  const config = await prisma.configuracionSitio.findUnique({ where: { id: "principal" }, select: { datosPago: true } });
+  if (!metodosDisponibles(config?.datosPago, PAGOS.metodos).includes(datos.data.metodoPago)) {
+    return NextResponse.json({ error: "Elige uno de los métodos de pago de la lista." }, { status: 400 });
+  }
   if (!(archivo instanceof File) || archivo.size === 0) return NextResponse.json({ error: "Adjunta la captura del pago." }, { status: 400 });
 
   let comprobante: string;

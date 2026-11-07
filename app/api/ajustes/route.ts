@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { prisma } from "@/lib/db";
 import { requireAdmin } from "@/lib/auth";
+import { cuentasSchema } from "@/lib/cuentasPago";
 import { esTelefonoValido, normalizarTelefono, WHATSAPP_POR_DEFECTO } from "@/lib/telefono";
 
 const schema = z.object({
@@ -10,8 +11,8 @@ const schema = z.object({
     .transform(normalizarTelefono)
     .refine(esTelefonoValido, "Escribe el número completo con código de país, por ejemplo 58 414 728 6881")
     .optional(),
-  // Reservas: cuentas para el anticipo y cuántas fiestas por día se aceptan.
-  datosPago: z.string().trim().max(1500).nullable().optional(),
+  // Reservas: cuentas para cobrar (por método) y cuántas fiestas por día se aceptan.
+  cuentasPago: cuentasSchema.optional(),
   eventosPorDia: z.number().int().min(1).max(30).optional(),
 });
 
@@ -25,7 +26,8 @@ export async function PUT(request: NextRequest) {
     return NextResponse.json({ error: parsed.error.issues[0]?.message ?? "Datos inválidos" }, { status: 400 });
   }
 
-  const { whatsapp, ...reservas } = parsed.data;
+  const { whatsapp, cuentasPago, eventosPorDia } = parsed.data;
+  const reservas = { ...(cuentasPago ? { datosPago: JSON.stringify(cuentasPago) } : {}), ...(eventosPorDia ? { eventosPorDia } : {}) };
   const actual = await prisma.configuracionSitio.findUnique({ where: { id: "principal" } });
   const config = await prisma.configuracionSitio.upsert({
     where: { id: "principal" },

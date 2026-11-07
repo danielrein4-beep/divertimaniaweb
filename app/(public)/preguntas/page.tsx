@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { PAGOS, PREGUNTAS } from "@/lib/negocio";
+import { prisma } from "@/lib/db";
+import { metodosDisponibles } from "@/lib/cuentasPago";
 import CotizarButtons from "@/components/site/CotizarButtons";
 
 export const metadata: Metadata = {
@@ -18,7 +20,11 @@ const FAQ_JSON_LD = {
   })),
 };
 
-export default function PreguntasPage() {
+export const dynamic = "force-dynamic";
+
+export default async function PreguntasPage() {
+  const config = await prisma.configuracionSitio.findUnique({ where: { id: "principal" }, select: { datosPago: true } });
+  const metodos = metodosDisponibles(config?.datosPago, PAGOS.metodos);
   return (
     <div className="mx-auto max-w-3xl px-4 py-12 sm:px-6 sm:py-16">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(FAQ_JSON_LD) }} />
@@ -42,7 +48,7 @@ export default function PreguntasPage() {
       <section className="mt-12 rounded-2xl border border-white/10 bg-white/[0.03] p-6">
         <h2 className="font-display text-xl font-bold">Formas de pago</h2>
         <ul className="mt-3 flex flex-wrap gap-2">
-          {PAGOS.metodos.map((m) => (
+          {metodos.map((m) => (
             <li key={m} className="rounded-full border border-white/15 px-3 py-1 text-sm">{m}</li>
           ))}
         </ul>

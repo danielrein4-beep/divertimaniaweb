@@ -3,7 +3,7 @@ import { ArrowRight, MapPin } from "lucide-react";
 import { CIUDADES, COBERTURA, PASOS_RESERVA, PAGOS } from "@/lib/negocio";
 
 /** Inicio: a dónde llegamos y cómo se aparta una fecha, para que el cliente no tenga que preguntarlo. */
-export default function ComoReservar() {
+export default function ComoReservar({ metodosPago = PAGOS.metodos }: { metodosPago?: readonly string[] }) {
   return (
     <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-24">
       <div className="grid gap-10 md:grid-cols-2 md:gap-16">
@@ -42,7 +42,7 @@ export default function ComoReservar() {
             ))}
           </ol>
           <p className="text-sm text-muted">
-            <span className="font-semibold text-foreground">Pagos:</span> {PAGOS.metodos.join(" · ")}
+            <span className="font-semibold text-foreground">Pagos:</span> {metodosPago.join(" · ")}
           </p>
           <Link
             href="/preguntas"
