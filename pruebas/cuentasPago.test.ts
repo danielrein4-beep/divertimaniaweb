@@ -19,13 +19,18 @@ describe("cuentas para cobrar", () => {
 
   it("solo se muestran los métodos encendidos que tienen datos (el efectivo no los necesita)", () => {
     const g = guardar([
-      { tipo: "PAGO_MOVIL", activo: true, datos: { banco: "Banesco", telefono: "0414-1234567", documento: "V-1" } },
-      { tipo: "ZELLE", activo: true, datos: { correo: " " } },
-      { tipo: "BINANCE", activo: false, datos: { payId: "123" } },
+      { tipo: "ZELLE", activo: true, datos: { correo: "pagos@correo.com", titular: "Ana" } },
+      { tipo: "BINANCE", activo: true, datos: { payId: " " } },
       { tipo: "EFECTIVO", activo: true, datos: {} },
     ]);
-    expect(cuentasActivas(g).map((c) => c.tipo)).toEqual(["PAGO_MOVIL", "EFECTIVO"]);
-    expect(metodosDisponibles(g, POR_DEFECTO)).toEqual(["Pago móvil", "Efectivo en dólares"]);
+    expect(cuentasActivas(g).map((c) => c.tipo)).toEqual(["ZELLE", "EFECTIVO"]);
+    expect(metodosDisponibles(g, POR_DEFECTO)).toEqual(["Zelle", "Efectivo en dólares"]);
+  });
+
+  it("las cuentas en bolívares guardadas antes se ignoran sin romper nada", () => {
+    const viejo = JSON.stringify([{ tipo: "PAGO_MOVIL", activo: true, datos: { banco: "Banesco" } }, { tipo: "EFECTIVO", activo: true, datos: {} }]);
+    expect(leerCuentas(viejo).textoLibre).toBeNull();
+    expect(cuentasActivas(viejo).map((c) => c.tipo)).toEqual(["EFECTIVO"]);
   });
 
   it("rechaza métodos que no existen y datos demasiado largos", () => {

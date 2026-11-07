@@ -42,7 +42,7 @@ export const PASOS_RESERVA = [
 
 /** POR CONFIRMAR: métodos que de verdad aceptan y porcentaje del anticipo. */
 export const PAGOS = {
-  metodos: ["Pago móvil", "Transferencia en bolívares", "Zelle", "Binance (USDT)", "Efectivo en dólares"],
+  metodos: ["Zelle", "Binance (USDT)", "Efectivo en dólares"],
   anticipo: "50 % para apartar la fecha y el resto el día del evento.",
   cambios: "Si necesitas mover la fecha, avísanos con 7 días de anticipación y la pasamos sin costo según disponibilidad.",
 };

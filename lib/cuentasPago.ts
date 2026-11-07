@@ -1,30 +1,14 @@
 // Cuentas donde Divertimania recibe pagos. Las llenan los dueños en Ajustes, por método, y el
 // cliente las ve como tarjetas en su reserva. Se guardan como JSON en ConfiguracionSitio.datosPago
 // (antes era texto libre: si lo que hay no es JSON, se muestra tal cual como «Otros datos»).
+// Solo cobros en divisas: los métodos en bolívares se quitaron a pedido de los dueños.
 import { z } from "zod";
 
-export const TIPOS_CUENTA = ["PAGO_MOVIL", "TRANSFERENCIA", "ZELLE", "BINANCE", "EFECTIVO"] as const;
+export const TIPOS_CUENTA = ["ZELLE", "BINANCE", "EFECTIVO"] as const;
 export type TipoCuenta = (typeof TIPOS_CUENTA)[number];
 
 /** Nombre del método y los datos que pide, en el orden en que se muestran. */
 export const METODOS: Record<TipoCuenta, { nombre: string; campos: { clave: string; etiqueta: string; ejemplo: string }[] }> = {
-  PAGO_MOVIL: {
-    nombre: "Pago móvil",
-    campos: [
-      { clave: "banco", etiqueta: "Banco", ejemplo: "Banesco (0134)" },
-      { clave: "telefono", etiqueta: "Teléfono", ejemplo: "0414-1234567" },
-      { clave: "documento", etiqueta: "Cédula o RIF", ejemplo: "V-12345678" },
-    ],
-  },
-  TRANSFERENCIA: {
-    nombre: "Transferencia en bolívares",
-    campos: [
-      { clave: "banco", etiqueta: "Banco", ejemplo: "Mercantil" },
-      { clave: "cuenta", etiqueta: "Número de cuenta", ejemplo: "0105 0000 00 0000000000" },
-      { clave: "titular", etiqueta: "Titular", ejemplo: "Divertimania C.A." },
-      { clave: "documento", etiqueta: "Cédula o RIF", ejemplo: "J-12345678-9" },
-    ],
-  },
   ZELLE: {
     nombre: "Zelle",
     campos: [
@@ -60,7 +44,10 @@ export function leerCuentas(guardado: string | null | undefined): CuentasGuardad
   const vacias: CuentaPago[] = TIPOS_CUENTA.map((tipo) => ({ tipo, activo: false, datos: {} }));
   if (!guardado?.trim()) return { cuentas: vacias, textoLibre: null };
   try {
-    const leidas = cuentasSchema.parse(JSON.parse(guardado));
+    // Métodos que ya no se ofrecen (pago móvil, transferencia en bolívares) se descartan sin error.
+    const crudas: unknown = JSON.parse(guardado);
+    const vigentes = Array.isArray(crudas) ? crudas.filter((c) => TIPOS_CUENTA.includes((c as { tipo?: TipoCuenta })?.tipo as TipoCuenta)) : crudas;
+    const leidas = cuentasSchema.parse(vigentes);
     return { cuentas: vacias.map((v) => leidas.find((c) => c.tipo === v.tipo) ?? v), textoLibre: null };
   } catch {
     return { cuentas: vacias, textoLibre: guardado };
