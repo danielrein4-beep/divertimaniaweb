@@ -7,6 +7,7 @@ import Link from "next/link";
 import { useMiFiesta } from "@/context/MiFiestaContext";
 import SectionHeader from "@/components/ui/SectionHeader";
 import { OCASIONES } from "@/lib/ocasiones";
+import { rutaDeOcasion } from "@/lib/fiestas";
 
 /** Escritorio: se reproduce al pasar el mouse. Celulares (sin hover): en bucle mientras la tarjeta se ve. */
 function VideoOcasion({ src }: { src: string }) {
@@ -130,7 +131,7 @@ export default function QueCelebras() {
           {OCASIONES.map((ocasion, i) => (
             <Link
               key={ocasion.slug}
-              href={`/catalogo?ocasion=${ocasion.slug}`}
+              href={rutaDeOcasion(ocasion.slug) ? `/fiestas/${rutaDeOcasion(ocasion.slug)}` : `/catalogo?ocasion=${ocasion.slug}`}
               onClick={() => updateFormData({ tipoEvento: ocasion.tipoEvento })}
               className={`group relative aspect-[3/4] w-[42vw] max-w-[180px] shrink-0 snap-start overflow-hidden rounded-2xl border border-border bg-background-card sm:w-[200px] sm:max-w-none lg:w-[220px] ${
                 i % 2 === 0 ? "sm:-rotate-1" : "sm:rotate-1"

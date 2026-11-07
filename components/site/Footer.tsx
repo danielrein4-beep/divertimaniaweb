@@ -4,6 +4,8 @@ import { MENSAJES_WHATSAPP } from "@/lib/whatsapp";
 import { buildWhatsAppLink, formatTelefono } from "@/lib/telefono";
 import { getConfigSitio } from "@/lib/configSitio";
 import Logo from "@/components/site/Logo";
+import { FIESTAS } from "@/lib/fiestas";
+import { getOcasion } from "@/lib/ocasiones";
 import { MessageCircle, MapPin, ShieldCheck } from "lucide-react";
 
 export default async function Footer() {
@@ -42,6 +44,22 @@ export default async function Footer() {
           <Link href="/preguntas" className="text-foreground/80 hover:text-neon-green transition-colors">
             Preguntas frecuentes
           </Link>
+        </div>
+
+        {/* Una página por celebración (también ayuda a que Google las encuentre) */}
+        <div className="flex flex-col gap-2.5 text-sm">
+          <span className="text-xs font-bold uppercase tracking-wider text-muted">
+            Celebraciones
+          </span>
+          {FIESTAS.map((f) => (
+            <Link
+              key={f.ruta}
+              href={`/fiestas/${f.ruta}`}
+              className="text-foreground/80 hover:text-neon-green transition-colors"
+            >
+              {getOcasion(f.ocasion)?.nombre}
+            </Link>
+          ))}
         </div>
 
         {/* Canales de Contacto */}

@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { prisma } from "@/lib/db";
 import { SITE_URL } from "@/lib/negocio";
+import { FIESTAS } from "@/lib/fiestas";
 
 export const dynamic = "force-dynamic";
 
@@ -10,6 +11,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const servicios = await prisma.servicio.findMany({ where: { activo: true }, select: { id: true } });
   return [
     ...fijas.map((ruta) => ({ url: `${SITE_URL}${ruta}`, changeFrequency: "weekly" as const, priority: ruta ? 0.8 : 1 })),
+    ...FIESTAS.map((f) => ({ url: `${SITE_URL}/fiestas/${f.ruta}`, changeFrequency: "monthly" as const, priority: 0.9 })),
     ...servicios.map((s) => ({ url: `${SITE_URL}/catalogo/${s.id}`, changeFrequency: "monthly" as const, priority: 0.6 })),
   ];
 }
