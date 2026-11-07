@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/db";
 import { getConfigSitio } from "@/lib/configSitio";
@@ -130,6 +131,9 @@ export default async function PaginaFiesta({ params }: Props) {
         </h2>
         <p className="max-w-lg text-muted">{COBERTURA.titulo}. {COBERTURA.anticipacion}</p>
         <CotizarButtons />
+        <Link href="/reservar" className="text-sm font-semibold text-neon-green hover:underline">
+          O aparta tu fecha con anticipo
+        </Link>
       </section>
 
       <OtrasCelebraciones actual={fiesta.ruta} />

@@ -28,6 +28,7 @@ export default function MiFiestaSheet() {
       <ArrowRight className="h-4 w-4" aria-hidden />
     </button>
   ) : (
+    <div className="flex flex-col gap-2.5">
     <div className="flex items-center gap-3">
       <button
         type="button"
@@ -38,6 +39,10 @@ export default function MiFiestaSheet() {
         <ArrowLeft className="h-5 w-5" />
       </button>
       <EnviarCotizacionButton />
+    </div>
+      <Link href="/reservar" onClick={closePanel} className="text-center text-sm font-semibold text-neon-green hover:underline">
+        O aparta tu fecha con anticipo
+      </Link>
     </div>
   );
 

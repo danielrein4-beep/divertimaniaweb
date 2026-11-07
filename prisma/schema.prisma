@@ -168,9 +168,41 @@ model AdminUser {
 
 // Ajustes generales del sitio, editables desde /admin/ajustes (una sola fila).
 model ConfiguracionSitio {
-  id        String   @id @default("principal")
-  whatsapp  String // solo dígitos con código de país, ej. 584147286881
-  updatedAt DateTime @updatedAt
+  id            String   @id @default("principal")
+  whatsapp      String // solo dígitos con código de país, ej. 584147286881
+  datosPago     String? // cuentas para el anticipo (pago móvil, Zelle…), las ve el cliente en su reserva
+  eventosPorDia Int      @default(3) // tope de fiestas por día para ofrecer una fecha como disponible
+  updatedAt     DateTime @updatedAt
+}
+
+// Fecha apartada desde la web. El cliente la sigue con su enlace privado (token); el equipo
+// pone el monto del anticipo, revisa el comprobante y al confirmar se crea el Evento.
+// estado: SOLICITADA | ESPERANDO_PAGO | PAGO_REPORTADO | CONFIRMADA | RECHAZADA
+model Reserva {
+  id             String   @id @default(cuid())
+  codigo         String   @unique // DV-4821: para hablar por WhatsApp
+  token          String   @unique // enlace privado del cliente
+  estado         String   @default("SOLICITADA")
+  fecha          String // YYYY-MM-DD
+  horaInicio     String?
+  tipoEvento     String
+  zona           String
+  lugar          String?
+  invitados      String?
+  nombre         String
+  telefono       String
+  email          String?
+  comentarios    String?
+  servicios      String? // JSON: [{ servicioId, nombre, variante }] de «Mi fiesta»
+  montoAnticipo  Float?
+  montoTotal     Float?
+  metodoPago     String?
+  referenciaPago String?
+  comprobante    String? // nombre del archivo en UPLOADS_DIR/comprobantes (privado)
+  notaInterna    String?
+  eventoId       String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 }
 
 // Medición propia del sitio (sin servicios externos ni cookies de terceros).

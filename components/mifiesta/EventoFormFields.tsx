@@ -40,7 +40,8 @@ function Requerido() {
 }
 
 /** Campos del evento, conectados a Mi fiesta. Se usan en el panel y en la página de contacto. */
-export default function EventoFormFields() {
+/** telefonoObligatorio: al apartar fecha el teléfono hace falta (por ahí se manda el monto del anticipo). */
+export default function EventoFormFields({ telefonoObligatorio = false }: { telefonoObligatorio?: boolean } = {}) {
   const { formData, updateFormData } = useMiFiesta();
   const ids = useId();
 
@@ -63,7 +64,8 @@ export default function EventoFormFields() {
 
       <label className="flex flex-col gap-1.5 text-sm font-medium">
         <span>
-          Tu teléfono <span className="font-normal text-muted">(opcional, por si no nos llega tu mensaje)</span>
+          Tu teléfono{" "}
+          {telefonoObligatorio ? <Requerido /> : <span className="font-normal text-muted">(opcional, por si no nos llega tu mensaje)</span>}
         </span>
         <input
           type="tel"

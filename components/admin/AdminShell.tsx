@@ -6,6 +6,7 @@ import { usePathname, useRouter } from "next/navigation";
 import {
   BarChart3,
   Boxes,
+  CalendarCheck,
   CalendarDays,
   ExternalLink,
   Inbox,
@@ -30,6 +31,7 @@ const GRUPOS: { titulo: string; enlaces: Enlace[] }[] = [
     titulo: "Negocio",
     enlaces: [
       { href: "/admin/resultados", label: "Resultados", icono: BarChart3 },
+      { href: "/admin/reservas", label: "Reservas", icono: CalendarCheck },
       { href: "/admin/solicitudes", label: "Solicitudes", icono: Inbox },
       { href: "/admin/dashboard", label: "Calendario", icono: CalendarDays },
       { href: "/admin/eventos", label: "Eventos", icono: PartyPopper },
@@ -54,7 +56,9 @@ const GRUPOS: { titulo: string; enlaces: Enlace[] }[] = [
 ];
 
 /** Marco del panel: menú lateral por grupos en computadora y menú desplegable en el teléfono. */
-export default function AdminShell({ children, solicitudesNuevas = 0 }: { children: React.ReactNode; solicitudesNuevas?: number }) {
+/** avisos: cuántas cosas esperan en cada pantalla (href → número), para el globito del menú. */
+export default function AdminShell({ children, avisos = {} }: { children: React.ReactNode; avisos?: Record<string, number> }) {
+  const hayAvisos = Object.values(avisos).some((n) => n > 0);
   const pathname = usePathname();
   const router = useRouter();
   // El menú del teléfono queda abierto solo en la pantalla donde se abrió: al navegar se cierra solo.
@@ -77,7 +81,7 @@ export default function AdminShell({ children, solicitudesNuevas = 0 }: { childr
             <ul className="flex flex-col gap-0.5">
               {grupo.enlaces.map(({ href, label, icono: Icono }) => {
                 const activo = pathname.startsWith(href);
-                const aviso = href === "/admin/solicitudes" && solicitudesNuevas > 0;
+                const pendientes = avisos[href] ?? 0;
                 return (
                   <li key={href}>
                     <Link
@@ -90,9 +94,9 @@ export default function AdminShell({ children, solicitudesNuevas = 0 }: { childr
                       {activo && <span className="absolute left-0 top-2 h-5 w-0.5 rounded-full bg-neon-green" aria-hidden />}
                       <Icono className={`h-4 w-4 ${activo ? "text-neon-green" : ""}`} aria-hidden />
                       <span className="flex-1">{label}</span>
-                      {aviso && (
-                        <span className="rounded-md bg-neon-green px-1.5 font-mono text-[11px] font-bold tabular-nums text-background" aria-label={`${solicitudesNuevas} nuevas`}>
-                          {solicitudesNuevas}
+                      {pendientes > 0 && (
+                        <span className="rounded-md bg-neon-green px-1.5 font-mono text-[11px] font-bold tabular-nums text-background" aria-label={`${pendientes} pendientes`}>
+                          {pendientes}
                         </span>
                       )}
                     </Link>
@@ -138,7 +142,7 @@ export default function AdminShell({ children, solicitudesNuevas = 0 }: { childr
             className="relative flex h-10 w-10 items-center justify-center rounded-lg border border-white/12"
           >
             <Menu className="h-5 w-5" aria-hidden />
-            {solicitudesNuevas > 0 && <span className="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-neon-green" aria-hidden />}
+            {hayAvisos && <span className="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-neon-green" aria-hidden />}
           </button>
         </header>
 

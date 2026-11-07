@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import ConsultaFecha from "@/components/mifiesta/ConsultaFecha";
 
 export const metadata: Metadata = {
@@ -15,6 +16,12 @@ export default function DisponibilidadPage() {
         sea temporada alta.
       </p>
       <ConsultaFecha />
+      <p className="text-sm text-muted">
+        ¿Ya la tienes clara?{" "}
+        <Link href="/reservar" className="font-semibold text-neon-green hover:underline">
+          Aparta tu fecha con anticipo
+        </Link>
+      </p>
     </div>
   );
 }

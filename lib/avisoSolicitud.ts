@@ -78,6 +78,17 @@ export function armarCorreo(s: DatosSolicitud) {
  * y el visitante no debe ver un error por eso.
  */
 export async function avisarSolicitud(s: DatosSolicitud): Promise<"enviado" | "apagado" | "fallo"> {
+  const { asunto, texto, html } = armarCorreo(s);
+  return enviarCorreo({ asunto, texto, html, replyTo: s.email });
+}
+
+export type Correo = { asunto: string; texto: string; html: string; para?: string; replyTo?: string | null };
+
+/**
+ * Envía un correo con la cuenta del sitio. Sin `para` va al equipo (AVISO_CORREO_PARA).
+ * Nunca lanza: si falla, queda en el registro del servidor y lo demás sigue.
+ */
+export async function enviarCorreo(c: Correo): Promise<"enviado" | "apagado" | "fallo"> {
   const config = configCorreo();
   if (!config) return "apagado";
   try {
@@ -87,18 +98,19 @@ export async function avisarSolicitud(s: DatosSolicitud): Promise<"enviado" | "a
       secure: config.puerto === 465,
       auth: { user: config.usuario, pass: config.clave },
     });
-    const { asunto, texto, html } = armarCorreo(s);
     await transporte.sendMail({
-      from: `Divertimania web <${config.de}>`,
-      to: config.para,
-      replyTo: s.email || undefined,
-      subject: asunto,
-      text: texto,
-      html,
+      from: `Divertimania <${config.de}>`,
+      to: c.para ?? config.para,
+      replyTo: c.replyTo || undefined,
+      subject: c.asunto,
+      text: c.texto,
+      html: c.html,
     });
     return "enviado";
   } catch (e) {
-    console.error("No se pudo enviar el aviso de solicitud:", e instanceof Error ? e.message : e);
+    console.error("No se pudo enviar el correo:", e instanceof Error ? e.message : e);
     return "fallo";
   }
 }
+
+export { escapar };

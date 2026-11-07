@@ -15,6 +15,7 @@ export const ORIGEN_LABEL: Record<string, string> = {
   equipo: "Página del equipo",
   "mi-fiesta": "Cotización armada (Mi fiesta)",
   fiesta: "Página de una ocasión (cumpleaños, 15 años…)",
+  reserva: "Página de una reserva",
 };
 
 const VISITANTE_KEY = "divertimania_visitante";

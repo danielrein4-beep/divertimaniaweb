@@ -44,6 +44,9 @@ export default async function Footer() {
           <Link href="/preguntas" className="text-foreground/80 hover:text-neon-green transition-colors">
             Preguntas frecuentes
           </Link>
+          <Link href="/reservar" className="font-semibold text-neon-green hover:underline">
+            Apartar mi fecha
+          </Link>
         </div>
 
         {/* Una página por celebración (también ayuda a que Google las encuentre) */}
