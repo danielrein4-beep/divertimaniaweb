@@ -7,7 +7,7 @@ import IntroMontage, { posterDeReel } from "@/components/site/IntroMontage";
 import MaskedHeading from "@/components/site/MaskedHeading";
 import { useMiFiesta } from "@/context/MiFiestaContext";
 import { INSTAGRAM_URL, PERFIL_IG } from "@/lib/site";
-import { useConexionLigera } from "@/lib/useConexionLigera";
+import { useConexionLigera, usePantallaAncha, useTrasCarga } from "@/lib/useConexionLigera";
 import { fotoOptimizada } from "@/lib/fotoOptimizada";
 
 // Clips cortos (6 s, sin audio) generados por scripts/comprimir-videos.mjs.
@@ -40,7 +40,13 @@ export default function Hero({ novedad, categorias }: { novedad: NovedadHero | n
   const [introTerminada, setIntroTerminada] = useState(false);
   // Con conexión lenta o ahorro de datos no hay intro de videos y el fondo va con fotos.
   const ligera = useConexionLigera();
-  const mostrarIntro = !ligera && !introVista && !introTerminada;
+  // En el teléfono todo va con fotos (datos móviles). En pantallas anchas, fondo y titular
+  // arrancan con fotos y los videos se piden cuando la página ya cargó; la intro de 12 videos
+  // también es solo para pantallas anchas.
+  const ancha = usePantallaAncha();
+  const cargada = useTrasCarga();
+  const conVideos = ancha && !ligera && cargada;
+  const mostrarIntro = ancha && !ligera && !introVista && !introTerminada;
   const { items, openPanel } = useMiFiesta();
 
   const terminarIntro = () => {
@@ -59,9 +65,9 @@ export default function Hero({ novedad, categorias }: { novedad: NovedadHero | n
       {/* El mosaico de la intro se queda vivo de fondo, atenuado */}
       <div aria-hidden className="absolute inset-0 -z-10 grid grid-cols-3 grid-rows-2 sm:grid-cols-6 sm:grid-rows-1">
         {REELS_FONDO.map((src) =>
-          ligera ? (
-            // eslint-disable-next-line @next/next/no-img-element -- fondo decorativo atenuado; el póster ya está comprimido
-            <img key={src} src={fotoOptimizada(posterDeReel(src) ?? "")} alt="" loading="lazy" className="h-full w-full object-cover opacity-30" />
+          !conVideos ? (
+            // eslint-disable-next-line @next/next/no-img-element -- fondo atenuado que se ve apenas abre la página: se pide de una vez, sin esperar
+            <img key={src} src={fotoOptimizada(posterDeReel(src) ?? "")} alt="" fetchPriority="high" decoding="async" className="h-full w-full object-cover opacity-30" />
           ) : (
             <video
               key={src}
@@ -101,8 +107,8 @@ export default function Hero({ novedad, categorias }: { novedad: NovedadHero | n
           key={mostrarIntro ? "espera" : "listo"}
           text="DIVIERTE TUS FIESTAS"
           tag="h1"
-          mediaType={ligera ? "image" : "video"}
-          src={ligera ? "/hero-poster.jpg" : "/hero.mp4"}
+          mediaType={conVideos ? "video" : "image"}
+          src={conVideos ? "/hero.mp4" : "/hero-poster.jpg"}
           poster="/hero-poster.jpg"
           fillScale={1.25}
           parallax={26}

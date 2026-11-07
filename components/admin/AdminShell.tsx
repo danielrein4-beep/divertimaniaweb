@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import {
+  BadgeDollarSign,
   BarChart3,
   Boxes,
   CalendarCheck,
@@ -15,6 +16,7 @@ import {
   LogOut,
   Megaphone,
   Menu,
+  MessageSquareQuote,
   PartyPopper,
   Settings,
   Users,
@@ -49,6 +51,8 @@ const GRUPOS: { titulo: string; enlaces: Enlace[] }[] = [
     titulo: "Sitio",
     enlaces: [
       { href: "/admin/equipo", label: "Equipo", icono: Users },
+      { href: "/admin/testimonios", label: "Testimonios", icono: MessageSquareQuote },
+      { href: "/admin/precios", label: "Precios y cifras", icono: BadgeDollarSign },
       { href: "/admin/novedades", label: "Novedades", icono: Megaphone },
       { href: "/admin/ajustes", label: "Ajustes", icono: Settings },
     ],

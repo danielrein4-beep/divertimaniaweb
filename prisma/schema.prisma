@@ -172,7 +172,22 @@ model ConfiguracionSitio {
   whatsapp      String // solo dígitos con código de país, ej. 584147286881
   datosPago     String? // cuentas para el anticipo (pago móvil, Zelle…), las ve el cliente en su reserva
   eventosPorDia Int      @default(3) // tope de fiestas por día para ofrecer una fecha como disponible
+  cifras          String? // JSON {fiestas, anios, ciudades}: números de confianza del Inicio (vacío = no se muestran)
+  preciosPaquetes String? // JSON {"<ruta>/<paquete>": US$}: precio «desde» de cada paquete de /fiestas
   updatedAt     DateTime @updatedAt
+}
+
+// Opiniones reales de clientes (con su permiso). Se muestran en el Inicio y en las páginas por ocasión.
+model Testimonio {
+  id        String   @id @default(cuid())
+  nombre    String
+  evento    String // «Cumpleaños de Sofía», «Fin de año de Empresa X»
+  ciudad    String?
+  texto     String
+  fotoUrl   String?
+  activo    Boolean  @default(true)
+  orden     Int      @default(0)
+  createdAt DateTime @default(now())
 }
 
 // Fecha apartada desde la web. El cliente la sigue con su enlace privado (token); el equipo

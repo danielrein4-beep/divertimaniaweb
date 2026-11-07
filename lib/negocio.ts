@@ -80,11 +80,3 @@ export const PREGUNTAS: Pregunta[] = [
     respuesta: "Sí: fin de año, aniversarios, lanzamientos y activaciones de marca. Escríbenos y te armamos una propuesta.",
   },
 ];
-
-export type Testimonio = { nombre: string; evento: string; ciudad: string; texto: string };
-
-/**
- * Testimonios reales de clientes (con su permiso). Mientras esté vacío, la sección no aparece:
- * nunca inventar testimonios.
- */
-export const TESTIMONIOS: Testimonio[] = [];

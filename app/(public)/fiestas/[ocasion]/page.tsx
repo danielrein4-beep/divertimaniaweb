@@ -6,11 +6,13 @@ import { getConfigSitio } from "@/lib/configSitio";
 import { buildWhatsAppLink } from "@/lib/telefono";
 import { COBERTURA, SITE_URL } from "@/lib/negocio";
 import { FIESTAS, fiestaCompleta } from "@/lib/fiestas";
+import { leerPrecios, paquetesConPrecio } from "@/lib/confianza";
 import ServicioCard from "@/components/ui/ServicioCard";
 import CotizarButtons from "@/components/site/CotizarButtons";
 import PortadaFiesta from "@/components/site/fiestas/PortadaFiesta";
 import Paquetes from "@/components/site/fiestas/Paquetes";
 import GaleriaFiesta from "@/components/site/fiestas/GaleriaFiesta";
+import Testimonios from "@/components/site/Testimonios";
 import { OtrasCelebraciones, PasosReserva, PreguntasFiesta } from "@/components/site/fiestas/CierreFiesta";
 
 export const dynamic = "force-dynamic";
@@ -38,7 +40,7 @@ export default async function PaginaFiesta({ params }: Props) {
   if (!fiesta) notFound();
 
   const ocasiones = [fiesta.ocasion, ...(fiesta.tambienServicios ?? [])];
-  const [{ whatsapp }, servicios] = await Promise.all([
+  const [{ whatsapp }, servicios, config] = await Promise.all([
     getConfigSitio(),
     prisma.servicio.findMany({
       where: { activo: true, OR: ocasiones.map((o) => ({ ocasiones: { contains: o } })) },
@@ -48,6 +50,7 @@ export default async function PaginaFiesta({ params }: Props) {
         _count: { select: { opciones: true } },
       },
     }),
+    prisma.configuracionSitio.findUnique({ where: { id: "principal" }, select: { preciosPaquetes: true } }),
   ]);
 
   const mensaje = `Hola Divertimania, vengo de la página de ${fiesta.nombre.toLowerCase()} y quiero cotizar para mi evento.`;
@@ -90,7 +93,7 @@ export default async function PaginaFiesta({ params }: Props) {
         ))}
       </section>
 
-      <Paquetes paquetes={fiesta.paquetes} nombre={fiesta.nombre} whatsapp={whatsapp} ocasionSlug={fiesta.ocasion} />
+      <Paquetes paquetes={paquetesConPrecio(fiesta, leerPrecios(config?.preciosPaquetes))} nombre={fiesta.nombre} whatsapp={whatsapp} ocasionSlug={fiesta.ocasion} />
 
       {servicios.length > 0 && (
         <section className="mx-auto max-w-6xl px-4 pb-8 sm:px-6">
@@ -122,6 +125,7 @@ export default async function PaginaFiesta({ params }: Props) {
       )}
 
       <GaleriaFiesta fotos={fotos} nombre={fiesta.nombre} />
+      <Testimonios />
       <PasosReserva />
       <PreguntasFiesta preguntas={fiesta.preguntas} />
 

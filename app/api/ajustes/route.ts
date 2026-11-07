@@ -3,6 +3,7 @@ import { z } from "zod";
 import { prisma } from "@/lib/db";
 import { requireAdmin } from "@/lib/auth";
 import { cuentasSchema } from "@/lib/cuentasPago";
+import { cifrasSchema, preciosSchema } from "@/lib/confianza";
 import { esTelefonoValido, normalizarTelefono, WHATSAPP_POR_DEFECTO } from "@/lib/telefono";
 
 const schema = z.object({
@@ -13,6 +14,9 @@ const schema = z.object({
     .optional(),
   // Reservas: cuentas para cobrar (por método) y cuántas fiestas por día se aceptan.
   cuentasPago: cuentasSchema.optional(),
+  // Confianza: cifras del Inicio y precios «desde» de los paquetes.
+  cifras: cifrasSchema.optional(),
+  preciosPaquetes: preciosSchema.optional(),
   eventosPorDia: z.number().int().min(1).max(30).optional(),
 });
 
@@ -26,8 +30,13 @@ export async function PUT(request: NextRequest) {
     return NextResponse.json({ error: parsed.error.issues[0]?.message ?? "Datos inválidos" }, { status: 400 });
   }
 
-  const { whatsapp, cuentasPago, eventosPorDia } = parsed.data;
-  const reservas = { ...(cuentasPago ? { datosPago: JSON.stringify(cuentasPago) } : {}), ...(eventosPorDia ? { eventosPorDia } : {}) };
+  const { whatsapp, cuentasPago, eventosPorDia, cifras, preciosPaquetes } = parsed.data;
+  const reservas = {
+    ...(cuentasPago ? { datosPago: JSON.stringify(cuentasPago) } : {}),
+    ...(eventosPorDia ? { eventosPorDia } : {}),
+    ...(cifras ? { cifras: JSON.stringify(cifras) } : {}),
+    ...(preciosPaquetes ? { preciosPaquetes: JSON.stringify(preciosPaquetes) } : {}),
+  };
   const actual = await prisma.configuracionSitio.findUnique({ where: { id: "principal" } });
   const config = await prisma.configuracionSitio.upsert({
     where: { id: "principal" },

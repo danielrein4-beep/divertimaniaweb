@@ -9,6 +9,8 @@ import MomentosReales from "@/components/site/MomentosReales";
 import CotizarButtons from "@/components/site/CotizarButtons";
 import ComoReservar from "@/components/site/ComoReservar";
 import { metodosDisponibles } from "@/lib/cuentasPago";
+import { leerCifras } from "@/lib/confianza";
+import CifrasConfianza from "@/components/site/CifrasConfianza";
 import { PAGOS } from "@/lib/negocio";
 import Testimonios from "@/components/site/Testimonios";
 import { prisma } from "@/lib/db";
@@ -47,12 +49,13 @@ export default async function Home() {
     prisma.servicio.count({ where: { activo: true, categoria: "Personajes Infantiles", soloAdultos: false } }),
     getCategorias(),
     prisma.servicio.findMany({ where: { activo: true }, distinct: ["categoria"], select: { categoria: true } }),
-    prisma.configuracionSitio.findUnique({ where: { id: "principal" }, select: { datosPago: true } }),
+    prisma.configuracionSitio.findUnique({ where: { id: "principal" }, select: { datosPago: true, cifras: true } }),
   ]);
 
   return (
     <div>
       <Hero novedad={novedad} categorias={categorias.map((c) => c.nombre).filter((n) => conServicios.some((s) => s.categoria === n))} />
+      <CifrasConfianza cifras={leerCifras(config?.cifras)} />
       <QueCelebras />
       <ShowsEstrella
         shows={destacados.map((s) => ({
