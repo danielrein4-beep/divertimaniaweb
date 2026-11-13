@@ -83,7 +83,7 @@ async function main() {
       data: [
         { servicioId: princesasId, tipo: "VARIANTE", grupo: "Rapunzel", nombre: "Rapunzel sola", descripcion: "Solo el personaje de Rapunzel para fotos, baile y coronación.", fotoUrl: "/images/princesa-rapunzel.jpg", orden: 0 },
         { servicioId: princesasId, tipo: "VARIANTE", grupo: "Rapunzel", nombre: "Rapunzel con el príncipe", descripcion: "Rapunzel acompañada de Flynn / el príncipe.", fotoUrl: "/videos/rapunzel-flynn.jpg", videoUrl: "/videos/rapunzel-flynn.mp4", orden: 1 },
-        { servicioId: princesasId, tipo: "VARIANTE", grupo: "Rapunzel", nombre: "Rapunzel con todas las princesas", descripcion: "Show estelar con Rapunzel y el resto del elenco real.", fotoUrl: "/images/rapunzel-cumpleanos.png", orden: 2 },
+        { servicioId: princesasId, tipo: "VARIANTE", grupo: "Rapunzel", nombre: "Show de Rapunzel con Madre Gothel y Flynn", descripcion: "Rapunzel, el príncipe Flynn Rider y Madre Gothel, su madrastra, en un show juntos.", fotoUrl: "/videos/rapunzel-gothel-flynn.jpg", videoUrl: "/videos/rapunzel-gothel-flynn.mp4", orden: 2 },
         { servicioId: princesasId, tipo: "VARIANTE", grupo: "Bella", nombre: "Bella y Bestia", descripcion: "Vals clásico de Bella y Bestia con vestuario de salón.", fotoUrl: "/images/bella-y-bestia.png", orden: 3 },
         { servicioId: princesasId, tipo: "VARIANTE", grupo: "Elsa (Frozen)", nombre: "Elsa sola", descripcion: "Solo Elsa para fotos, baile y magia invernal.", fotoUrl: "/images/frozen-olaf-elsa.jpg", orden: 4 },
         { servicioId: princesasId, tipo: "VARIANTE", grupo: "Elsa (Frozen)", nombre: "Elsa y Anna", descripcion: "Show con las dos hermanas de Arendelle.", fotoUrl: "/images/frozen-olaf-elsa.jpg", orden: 5 },
