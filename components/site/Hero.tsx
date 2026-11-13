@@ -14,8 +14,8 @@ import { useConexionLigera } from "@/lib/useConexionLigera";
 const FONDO = [10, 5, 8, 11, 6, 9].map((n) => `/reels/posters/reel-${n}-poster.jpg`);
 // Dentro de las letras: mezcla de 7 s (personajes, espuma, piscina y niños), 399 KB, sin audio. Con conexión
 // lenta o ahorro de datos queda su primer cuadro como imagen fija.
-const VIDEO_TITULO = "/videos/titulo-portada.mp4";
-const POSTER_TITULO = "/videos/titulo-portada.jpg";
+const VIDEO_TITULO = "/videos/titulo-portada-mezcla.mp4";
+const POSTER_TITULO = "/videos/titulo-portada-mezcla.jpg";
 
 export type NovedadHero = { id: string; titulo: string; badge: string; ctaUrl: string | null };
 
