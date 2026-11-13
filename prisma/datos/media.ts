@@ -13,19 +13,15 @@ export const mediaList: Array<{
   // Galería Casa de Mickey Mouse
   { servicioNombre: "Casa de Mickey Mouse", url: "/images/minnie.jpg", tipo: "FOTO", orden: 0 },
   { servicioNombre: "Casa de Mickey Mouse", url: "/images/mickey-minnie-graduacion.jpg", tipo: "FOTO", orden: 1 },
-  { servicioNombre: "Casa de Mickey Mouse", url: "/images/mickey-navidad-show.png", tipo: "FOTO", orden: 2 },
   // Video Reels Casa de Mickey Mouse
   { servicioNombre: "Casa de Mickey Mouse", url: "/reels/reel-2.mp4", tipo: "VIDEO", poster: "/reels/posters/reel-2-poster.jpg", orden: 3 },
   { servicioNombre: "Casa de Mickey Mouse", url: "/reels/reel-4.mp4", tipo: "VIDEO", poster: "/reels/posters/reel-4-poster.jpg", orden: 4 },
   { servicioNombre: "Casa de Mickey Mouse", url: "/reels/reel-5.mp4", tipo: "VIDEO", poster: "/reels/posters/reel-5-poster.jpg", orden: 5 },
 
   // Galería Princesas Disney
-  { servicioNombre: "Princesas Disney", url: "/images/bella-y-bestia.png", tipo: "FOTO", orden: 0 },
   { servicioNombre: "Princesas Disney", url: "/images/princesa-rapunzel.jpg", tipo: "FOTO", orden: 1 },
-  { servicioNombre: "Princesas Disney", url: "/images/rapunzel-cumpleanos.png", tipo: "FOTO", orden: 2 },
 
   // Galería Pelotas Boom
-  { servicioNombre: "Pelotas Boom", url: "/images/pelotas-boom-piscina.png", tipo: "FOTO", orden: 0 },
 
   // Galería Show según temática
   { servicioNombre: "Show según temática", url: "/images/show-tematico-catrina.jpg", tipo: "FOTO", orden: 0 },
