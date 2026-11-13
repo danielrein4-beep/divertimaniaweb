@@ -1,87 +1,31 @@
 "use client";
 
-import { useState, useSyncExternalStore } from "react";
 import Link from "next/link";
 import { ArrowRight, Sparkles } from "lucide-react";
-import IntroMontage, { posterDeReel } from "@/components/site/IntroMontage";
 import MaskedHeading from "@/components/site/MaskedHeading";
 import { useMiFiesta } from "@/context/MiFiestaContext";
 import { INSTAGRAM_URL, PERFIL_IG } from "@/lib/site";
-import { useConexionLigera, usePantallaAncha, useTrasCarga } from "@/lib/useConexionLigera";
 import { fotoOptimizada } from "@/lib/fotoOptimizada";
 
-// Clips cortos (6 s, sin audio) generados por scripts/comprimir-videos.mjs.
-const REELS_INTRO = Array.from({ length: 12 }, (_, i) => `/reels/intro/reel-${i + 1}.mp4`);
-// Fondo vivo del hero: 6 clips variados (espuma, Mickey, neón, LED, baby shower, piscina).
-const REELS_FONDO = [10, 5, 8, 11, 6, 9].map((n) => `/reels/intro/reel-${n}.mp4`);
-
-const INTRO_KEY = "divertimania_intro_vista";
-const noSuscribir = () => () => {};
-
-/** La intro de reels se ve una vez por sesión; en el servidor se asume vista para no tapar el contenido. */
-function useIntroVista() {
-  return useSyncExternalStore(
-    noSuscribir,
-    () => {
-      try {
-        return sessionStorage.getItem(INTRO_KEY) === "1";
-      } catch {
-        return true;
-      }
-    },
-    () => true
-  );
-}
+// Fondo del hero: cuadros de 6 reels (espuma, Mickey, neón, LED, baby shower, piscina), atenuados.
+// Van como fotos y no como videos: detrás del degradado casi no se notaba el movimiento y
+// 6 videos a la vez ponían lenta la página en computadoras modestas y conexiones de Venezuela.
+const FONDO = [10, 5, 8, 11, 6, 9].map((n) => `/reels/posters/reel-${n}-poster.jpg`);
+// Lo que se ve dentro de las letras: Mickey y sus amigos (colorido y para niños).
+const FOTO_TITULO = fotoOptimizada("/images/mickey-amigos.jpg", 1080);
 
 export type NovedadHero = { id: string; titulo: string; badge: string; ctaUrl: string | null };
 
 export default function Hero({ novedad, categorias }: { novedad: NovedadHero | null; categorias: string[] }) {
-  const introVista = useIntroVista();
-  const [introTerminada, setIntroTerminada] = useState(false);
-  // Con conexión lenta o ahorro de datos no hay intro de videos y el fondo va con fotos.
-  const ligera = useConexionLigera();
-  // En el teléfono todo va con fotos (datos móviles). En pantallas anchas, fondo y titular
-  // arrancan con fotos y los videos se piden cuando la página ya cargó; la intro de 12 videos
-  // también es solo para pantallas anchas.
-  const ancha = usePantallaAncha();
-  const cargada = useTrasCarga();
-  const conVideos = ancha && !ligera && cargada;
-  const mostrarIntro = ancha && !ligera && !introVista && !introTerminada;
   const { items, openPanel } = useMiFiesta();
-
-  const terminarIntro = () => {
-    try {
-      sessionStorage.setItem(INTRO_KEY, "1");
-    } catch {
-      // sin almacenamiento: la intro simplemente se vuelve a ver la próxima vez
-    }
-    setIntroTerminada(true);
-  };
 
   return (
     <section className="relative isolate overflow-hidden">
-      {mostrarIntro && <IntroMontage videos={REELS_INTRO} maxRows={3} durationMs={3000} fadeMs={900} onComplete={terminarIntro} />}
-
-      {/* El mosaico de la intro se queda vivo de fondo, atenuado */}
       <div aria-hidden className="absolute inset-0 -z-10 grid grid-cols-3 grid-rows-2 sm:grid-cols-6 sm:grid-rows-1">
-        {REELS_FONDO.map((src) =>
-          !conVideos ? (
-            // eslint-disable-next-line @next/next/no-img-element -- fondo atenuado que se ve apenas abre la página: se pide de una vez, sin esperar
-            <img key={src} src={fotoOptimizada(posterDeReel(src) ?? "")} alt="" fetchPriority="high" decoding="async" className="h-full w-full object-cover opacity-30" />
-          ) : (
-            <video
-              key={src}
-              src={src}
-              poster={fotoOptimizada(posterDeReel(src) ?? "")}
-              muted
-              autoPlay
-              loop
-              playsInline
-              preload="metadata"
-              className="h-full w-full object-cover opacity-30"
-            />
-          )
-        )}
+        {FONDO.map((src) => (
+          // eslint-disable-next-line @next/next/no-img-element -- fondo atenuado; agrandada desde arriba para dejar fuera la marca de agua de abajo
+          <img key={src} src={fotoOptimizada(src)} alt="" fetchPriority="high" decoding="async" className="h-full w-full origin-top scale-[1.3] object-cover object-top opacity-30" />
+        ))}
       </div>
       <div
         aria-hidden
@@ -104,12 +48,10 @@ export default function Hero({ novedad, categorias }: { novedad: NovedadHero | n
         )}
 
         <MaskedHeading
-          key={mostrarIntro ? "espera" : "listo"}
           text="DIVIERTE TUS FIESTAS"
           tag="h1"
-          mediaType={conVideos ? "video" : "image"}
-          src={conVideos ? "/hero.mp4" : "/hero-poster.jpg"}
-          poster="/hero-poster.jpg"
+          mediaType="image"
+          src={FOTO_TITULO}
           fillScale={1.25}
           parallax={26}
           reveal="rise"

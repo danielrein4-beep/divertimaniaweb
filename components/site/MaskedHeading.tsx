@@ -93,7 +93,6 @@ const MaskedHeading = ({
     const maxY = Math.max(0, ((s.fillScale - 1) / 2) * H);
 
     media.style.transform = `translate3d(${clamp(off.x, -maxX, maxX).toFixed(2)}px, ${clamp(off.y, -maxY, maxY).toFixed(2)}px, 0) scale(${s.fillScale})`;
-    media.style.filter = `brightness(${s.brightness}) saturate(${s.saturation})${s.grayscale ? " grayscale(1)" : ""}`;
   }, []);
 
   const sync = useCallback(() => {
@@ -103,6 +102,10 @@ const MaskedHeading = ({
     const s = settingsRef.current;
 
     root.style.fontSize = `${clamp(root.clientWidth * s.textScale, 20, 280).toFixed(1)}px`;
+    // El filtro se aplica una sola vez: cambiarlo en cada cuadro obliga a repintar toda la máscara.
+    if (mediaRef.current) {
+      mediaRef.current.style.filter = `brightness(${s.brightness}) saturate(${s.saturation})${s.grayscale ? " grayscale(1)" : ""}`;
+    }
 
     const cs = window.getComputedStyle(measure);
     for (let i = 0; i < wordRefs.current.length; i += 1) {
@@ -152,6 +155,27 @@ const MaskedHeading = ({
       raf = requestAnimationFrame(frame);
     };
 
+    // El movimiento corre solo mientras el título se ve en pantalla y la pestaña está al frente:
+    // fuera de vista no gasta nada (antes seguía redibujando al bajar por la página).
+    let visible = false;
+    const arrancar = () => {
+      if (raf || !visible || document.hidden) return;
+      last = performance.now();
+      raf = requestAnimationFrame(frame);
+    };
+    const parar = () => {
+      cancelAnimationFrame(raf);
+      raf = 0;
+    };
+    const io = new IntersectionObserver(([e]) => {
+      visible = e.isIntersecting;
+      if (visible) arrancar();
+      else parar();
+    });
+    io.observe(root);
+    const alCambiarPestana = () => (document.hidden ? parar() : arrancar());
+    document.addEventListener("visibilitychange", alCambiarPestana);
+
     const onMove = (e: PointerEvent) => {
       const s = settingsRef.current;
       if (s.parallax <= 0) return;
@@ -169,10 +193,11 @@ const MaskedHeading = ({
 
     root.addEventListener("pointermove", onMove);
     root.addEventListener("pointerleave", onLeave);
-    raf = requestAnimationFrame(frame);
 
     return () => {
-      cancelAnimationFrame(raf);
+      parar();
+      io.disconnect();
+      document.removeEventListener("visibilitychange", alCambiarPestana);
       ro.disconnect();
       root.removeEventListener("pointermove", onMove);
       root.removeEventListener("pointerleave", onLeave);

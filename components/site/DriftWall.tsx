@@ -199,14 +199,32 @@ export default function DriftWall({
         }
       }
 
-      rafRef.current = requestAnimationFrame(animate);
+      if (rafRef.current !== null) rafRef.current = requestAnimationFrame(animate);
     };
 
-    rafRef.current = requestAnimationFrame(animate);
-    return () => {
+    // Solo se mueve mientras el muro está a la vista y la pestaña al frente; fuera de vista no gasta nada.
+    let visible = false;
+    const parar = () => {
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
       rafRef.current = null;
       lastTsRef.current = null;
+    };
+    const arrancar = () => {
+      if (rafRef.current || !visible || document.hidden) return;
+      rafRef.current = requestAnimationFrame(animate);
+    };
+    const io = new IntersectionObserver(([e]) => {
+      visible = e.isIntersecting;
+      if (visible) arrancar();
+      else parar();
+    });
+    if (containerRef.current) io.observe(containerRef.current);
+    const alCambiarPestana = () => (document.hidden ? parar() : arrancar());
+    document.addEventListener("visibilitychange", alCambiarPestana);
+    return () => {
+      parar();
+      io.disconnect();
+      document.removeEventListener("visibilitychange", alCambiarPestana);
     };
   }, [baseVelocities, columnMeta, pauseOnHover, parallax, reduced, applyPlaneTransform]);
 
