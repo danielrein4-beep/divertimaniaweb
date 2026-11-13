@@ -94,10 +94,27 @@ function SelectorVariantes({
                 enFiesta ? "border-neon-green/70" : "border-border"
               } bg-background-card`}
             >
-              {foto && (
+              {v.videoUrl ? (
+                // Video corto de la variante (sin audio, en bucle); la foto queda de portada mientras carga.
                 <div className="relative aspect-[4/5] w-full bg-background-elevated">
-                  <Image src={foto} alt={v.nombre} fill className="object-cover" sizes="(max-width: 640px) 50vw, 300px" />
+                  <video
+                    src={v.videoUrl}
+                    poster={foto ?? undefined}
+                    aria-label={v.nombre}
+                    muted
+                    autoPlay
+                    loop
+                    playsInline
+                    preload="metadata"
+                    className="absolute inset-0 h-full w-full object-cover"
+                  />
                 </div>
+              ) : (
+                foto && (
+                  <div className="relative aspect-[4/5] w-full bg-background-elevated">
+                    <Image src={foto} alt={v.nombre} fill className="object-cover" sizes="(max-width: 640px) 50vw, 300px" />
+                  </div>
+                )
               )}
               <div className="flex flex-1 flex-col gap-1 p-3 sm:p-4">
                 <h3 className="text-sm font-bold leading-tight sm:text-base">{v.nombre}</h3>
