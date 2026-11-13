@@ -17,7 +17,9 @@ describe("número de WhatsApp", () => {
   });
 
   it("arma el enlace con el mensaje codificado", () => {
-    expect(buildWhatsAppLink("584147286881", "Hola & chao")).toBe("https://wa.me/584147286881?text=Hola%20%26%20chao");
+    expect(buildWhatsAppLink("584147286881", "Hola & chao")).toBe("https://api.whatsapp.com/send?phone=584147286881&text=Hola%20%26%20chao");
+    // Los emojis viajan enteros (wa.me los rompía al redirigir).
+    expect(decodeURIComponent(buildWhatsAppLink("58414", "Hola 👋").split("text=")[1])).toBe("Hola 👋");
   });
 });
 

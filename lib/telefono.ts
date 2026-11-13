@@ -19,6 +19,10 @@ export function formatTelefono(digitos: string): string {
   return m ? `+58 ${m[1]}-${m[2]}-${m[3]}` : `+${digitos}`;
 }
 
+/**
+ * Enlace para abrir WhatsApp con el mensaje escrito. Va directo a api.whatsapp.com y no por wa.me: el atajo
+ * wa.me redirige y en ese salto cambia los emojis por «�» (comprobado en teléfono y en computadora).
+ */
 export function buildWhatsAppLink(numero: string, mensaje: string): string {
-  return `https://wa.me/${numero}?text=${encodeURIComponent(mensaje)}`;
+  return `https://api.whatsapp.com/send?phone=${numero}&text=${encodeURIComponent(mensaje)}`;
 }

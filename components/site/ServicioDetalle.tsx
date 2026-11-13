@@ -124,6 +124,7 @@ function SelectorVariantes({
                 <button
                   type="button"
                   aria-pressed={Boolean(enFiesta)}
+                  aria-label={enFiesta ? `Quitar ${v.nombre} de mi fiesta` : `Agregar ${v.nombre} a mi fiesta`}
                   onClick={() =>
                     enFiesta
                       ? removeItem(enFiesta.id)

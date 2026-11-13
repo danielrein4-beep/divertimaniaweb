@@ -19,7 +19,7 @@ export default function Medidor() {
     function onClick(e: MouseEvent) {
       const enlace = (e.target as Element | null)?.closest?.("a[href]");
       if (!(enlace instanceof HTMLAnchorElement)) return;
-      const tipo = enlace.href.includes("wa.me/")
+      const tipo = enlace.href.includes("wa.me/") || enlace.href.includes("api.whatsapp.com/")
         ? "WHATSAPP"
         : enlace.href.includes("instagram.com")
           ? "INSTAGRAM"

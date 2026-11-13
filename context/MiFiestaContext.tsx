@@ -85,7 +85,9 @@ export function MiFiestaProvider({ children }: { children: ReactNode }) {
           ? s.items.map((i) => (i.id === id ? { ...item, id } : i))
           : [...s.items, { ...item, id }],
       }));
-      showToast(existia ? `${item.nombre} actualizado en tu fiesta` : `${item.nombre} agregado a tu fiesta`);
+      // Con variante se nombra el show exacto («Cenicienta sola»), no la tarjeta («Princesas Disney»).
+      const cual = item.variante ?? item.nombre;
+      showToast(existia ? `${cual} actualizado en tu fiesta` : `${cual} agregado a tu fiesta`);
     },
     [showToast]
   );

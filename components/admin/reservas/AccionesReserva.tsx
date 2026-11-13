@@ -17,7 +17,7 @@ type Props = {
   montoTotal: number | null;
   notaInterna: string | null;
   eventoId: string | null;
-  /** wa.me con el monto y el enlace de pago, listo para mandarle al cliente. */
+  /** Enlace de WhatsApp con el monto y el enlace de pago, listo para mandarle al cliente. */
   whatsappCliente: string;
 };
 

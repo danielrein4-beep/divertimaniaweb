@@ -5,7 +5,7 @@ export const INSTAGRAM_URL = `https://www.instagram.com/${INSTAGRAM_HANDLE}/`;
 // Actualizarlos a mano cuando cambien.
 export const PERFIL_IG = {
   publicaciones: "1.060",
-  seguidores: "16,8 mil",
+  seguidores: "17,7 mil",
   bio: [
     { icono: "🤩", texto: "Creamos momentos inolvidables" },
     { icono: "🪅", texto: "Bodas · 15 años · corporativos y fiestas infantiles" },

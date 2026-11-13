@@ -122,6 +122,9 @@ const MaskedHeading = ({
       glyph.style.letterSpacing = cs.letterSpacing;
     }
     place();
+    // Ya hay letras recortadas en su sitio: el texto de respaldo (visible desde el primer instante, antes de
+    // que cargue el código) se desvanece y queda el título con la imagen o el video dentro.
+    root.dataset.listo = "1";
   }, [place]);
 
   useEffect(() => {
@@ -311,6 +314,9 @@ const MaskedHeading = ({
       className={`masked-heading ${className}`.trim()}
       style={{
         textAlign: align,
+        // Tamaño aproximado desde el servidor (el código lo ajusta exacto al cargar): así el título ocupa su
+        // lugar y se lee desde el primer instante, sin esperar a que cargue la página en el teléfono.
+        fontSize: `clamp(20px, calc((min(100vw, 72rem) - 2rem) * ${textScale}), 280px)`,
         fontWeight: weight,
         letterSpacing: `${tracking}em`,
         lineHeight,

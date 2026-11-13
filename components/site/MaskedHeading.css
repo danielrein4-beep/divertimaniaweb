@@ -11,6 +11,8 @@
 
 .masked-heading__measure {
   visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.45s ease, visibility 0s linear 0.45s;
   display: flex;
   flex-wrap: wrap;
   align-content: flex-start;
@@ -64,4 +66,17 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+/* Antes de que cargue el código el título se ve como texto blanco normal (en el teléfono eso puede tardar
+   varios segundos); al quedar listas las letras recortadas, este texto se desvanece. */
+.masked-heading:not([data-listo]) .masked-heading__measure {
+  visibility: visible;
+  opacity: 1;
+  color: #f4f4f4;
+  transition: none;
+}
+
+.masked-heading:not([data-listo]) .masked-heading__reveal {
+  opacity: 0;
 }
