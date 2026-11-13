@@ -10,7 +10,7 @@ export default function MomentosReales() {
         <div className="photo-polaroid relative mx-auto w-full max-w-sm">
           <div className="relative aspect-[4/5] w-full overflow-hidden">
             <Image
-              src="/images/rapunzel-cumpleanos.png"
+              src="/images/rapunzel-cumpleanos-hd.jpg"
               alt="Rapunzel abrazando a una cumpleañera"
               fill
               sizes="(max-width: 768px) 90vw, 400px"

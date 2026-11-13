@@ -13,6 +13,7 @@ export const mediaList: Array<{
   // Galería Casa de Mickey Mouse
   { servicioNombre: "Casa de Mickey Mouse", url: "/images/minnie.jpg", tipo: "FOTO", orden: 0 },
   { servicioNombre: "Casa de Mickey Mouse", url: "/images/mickey-minnie-graduacion.jpg", tipo: "FOTO", orden: 1 },
+  { servicioNombre: "Casa de Mickey Mouse", url: "/images/mickey-navidad-show-hd.jpg", tipo: "FOTO", orden: 2 },
   // Video Reels Casa de Mickey Mouse
   { servicioNombre: "Casa de Mickey Mouse", url: "/reels/reel-2.mp4", tipo: "VIDEO", poster: "/reels/posters/reel-2-poster.jpg", orden: 3 },
   { servicioNombre: "Casa de Mickey Mouse", url: "/reels/reel-4.mp4", tipo: "VIDEO", poster: "/reels/posters/reel-4-poster.jpg", orden: 4 },
@@ -20,6 +21,7 @@ export const mediaList: Array<{
 
   // Galería Princesas Disney
   { servicioNombre: "Princesas Disney", url: "/images/princesa-rapunzel.jpg", tipo: "FOTO", orden: 1 },
+  { servicioNombre: "Princesas Disney", url: "/images/rapunzel-cumpleanos-hd.jpg", tipo: "FOTO", orden: 2 },
 
   // Galería Pelotas Boom
 

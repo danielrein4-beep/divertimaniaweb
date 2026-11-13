@@ -102,7 +102,7 @@ export const ChromaGrid = ({
       gradient: "linear-gradient(145deg, #10b981, #0b0b0b)",
     },
     {
-      image: "/images/rapunzel-cumpleanos.png",
+      image: "/images/rapunzel-cumpleanos-hd.jpg",
       title: "Camila Rivas",
       subtitle: "Personajes & Animación Temática",
       handle: "@camilarivas",

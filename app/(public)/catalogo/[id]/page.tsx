@@ -70,7 +70,7 @@ export default async function ServicioPage({ params }: { params: Promise<{ id: s
         </Link>
       </nav>
 
-      <div className="grid gap-8 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] md:gap-12">
+      <div className="grid grid-cols-[minmax(0,1fr)] gap-8 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] md:gap-12">
         <div className="md:sticky md:top-24 md:self-start">
           {media.length > 0 ? (
             <FichaGaleria media={media} nombre={servicio.nombre} />
