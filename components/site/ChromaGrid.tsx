@@ -63,9 +63,9 @@ export const ChromaGrid = ({
     },
     {
       image: "/images/nano-uscategui.png",
-      title: "Nano Uscategui",
+      title: "Nano Uzcategui",
       subtitle: "Animador & Recreador Infantil / Adultos",
-      handle: "@nanouscategui",
+      handle: "@nanouzcategui",
       borderColor: "#00f0ff",
       gradient: "linear-gradient(165deg, #00f0ff, #0b0b0b)",
     },
