@@ -111,7 +111,7 @@ export const servicios: ServicioSeed[] = [
     categoria: "Personajes Infantiles",
     nombre: "Toy Story",
     descripcion: "Buzz Lightyear, Woody y Jesse.",
-    fotoUrl: "/images/toy-story-buzz.jpg",
+    fotoUrl: "/images/toy-story-dylan.jpg",
     incluye: "Visita sorpresa de los personajes al cumpleaños o al lugar de la fiesta\nShow temático de Toy Story\nTe acompañan en la hora loca (si contratas la animación)\nFotos con todos los presentes\nAcompañamiento en la torta y la piñata",
     edadIdeal: "2 a 8 años",
     duracion: "1 hora",
