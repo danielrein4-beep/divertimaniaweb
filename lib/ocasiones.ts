@@ -8,7 +8,7 @@ export const OCASIONES = [
   { slug: "boda", nombre: "Bodas", tipoEvento: "Boda", foto: "/images/boda-portada.jpg", video: "/videos/boda.mp4" },
   { slug: "corporativo", nombre: "Corporativos", tipoEvento: "Corporativo", foto: "/images/corporativo-portada.jpg", video: "/videos/corporativo.mp4" },
   { slug: "graduacion", nombre: "Graduaciones", tipoEvento: "Graduación", foto: "/images/mickey-minnie-graduacion.jpg" },
-  { slug: "navidad", nombre: "Navidad", tipoEvento: "Navidad", foto: "/images/mickey-navidad-show.png" },
+  { slug: "navidad", nombre: "Navidad", tipoEvento: "Navidad", foto: "/images/mickey-navidad-show-hd.jpg" },
 ] as const;
 
 export type OcasionSlug = (typeof OCASIONES)[number]["slug"];

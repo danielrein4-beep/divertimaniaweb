@@ -27,11 +27,11 @@ export default function FichaGaleria({ media, nombre }: { media: MediaItem[]; no
       <div
         ref={trackRef}
         onScroll={onScroll}
-        className="scrollbar-none flex aspect-[4/5] snap-x snap-mandatory overflow-x-auto overflow-y-hidden rounded-3xl bg-background-card sm:aspect-[4/5]"
+        className="scrollbar-none flex aspect-[4/5] max-h-[78svh] w-full snap-x snap-mandatory overflow-x-auto overflow-y-hidden rounded-3xl bg-background-card"
         aria-label={`Fotos y videos de ${nombre}`}
       >
         {media.map((m, i) => (
-          <div key={m.url + i} className="relative h-full w-full shrink-0 snap-center">
+          <div key={m.url + i} className="relative h-full w-full shrink-0 snap-center overflow-hidden bg-black">
             {m.tipo === "VIDEO" ? (
               <video
                 src={m.url}
@@ -40,17 +40,28 @@ export default function FichaGaleria({ media, nombre }: { media: MediaItem[]; no
                 muted
                 playsInline
                 preload="none"
-                className="h-full w-full bg-black object-cover"
+                className="h-full w-full bg-black object-contain"
               />
             ) : (
-              <Image
-                src={m.url}
-                alt={i === 0 ? nombre : `${nombre}, foto ${i + 1}`}
-                fill
-                priority={i === 0}
-                sizes="(max-width: 768px) 100vw, 560px"
-                className="object-cover"
-              />
+              <>
+                {/* Fondo: la misma foto muy desenfocada, para que no queden barras vacías */}
+                <Image
+                  src={m.url}
+                  alt=""
+                  aria-hidden
+                  fill
+                  sizes="64px"
+                  className="scale-125 object-cover opacity-60 blur-2xl"
+                />
+                <Image
+                  src={m.url}
+                  alt={i === 0 ? nombre : `${nombre}, foto ${i + 1}`}
+                  fill
+                  priority={i === 0}
+                  sizes="(max-width: 768px) 100vw, 560px"
+                  className="object-contain"
+                />
+              </>
             )}
           </div>
         ))}

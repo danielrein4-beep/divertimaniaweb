@@ -63,9 +63,9 @@ export const ChromaGrid = ({
     },
     {
       image: "/images/nano-uscategui.png",
-      title: "Nano Uscategui",
+      title: "Nano Uzcategui",
       subtitle: "Animador & Recreador Infantil / Adultos",
-      handle: "@nanouscategui",
+      handle: "@nanouzcategui",
       borderColor: "#00f0ff",
       gradient: "linear-gradient(165deg, #00f0ff, #0b0b0b)",
     },
@@ -102,7 +102,7 @@ export const ChromaGrid = ({
       gradient: "linear-gradient(145deg, #10b981, #0b0b0b)",
     },
     {
-      image: "/images/rapunzel-cumpleanos.png",
+      image: "/images/rapunzel-cumpleanos-hd.jpg",
       title: "Camila Rivas",
       subtitle: "Personajes & Animación Temática",
       handle: "@camilarivas",

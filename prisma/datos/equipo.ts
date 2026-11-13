@@ -18,7 +18,7 @@ export const recreadores = [
     activo: true,
   },
   {
-    nombre: "Nano Uscategui",
+    nombre: "Nano Uzcategui",
     cargo: "Animador & Recreador Infantil / Adultos",
     descripcion: "Animación versátil para niños y adultos, dinámicas de integración, juegos recreativos y animación musical.",
     fotoUrl: "/images/nano-uscategui.png",
