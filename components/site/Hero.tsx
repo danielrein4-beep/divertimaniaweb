@@ -12,7 +12,7 @@ import { useConexionLigera } from "@/lib/useConexionLigera";
 // Van como fotos y no como videos: detrás del degradado casi no se notaba el movimiento y
 // 6 videos a la vez ponían lenta la página en computadoras modestas y conexiones de Venezuela.
 const FONDO = [10, 5, 8, 11, 6, 9].map((n) => `/reels/posters/reel-${n}-poster.jpg`);
-// Dentro de las letras: un solo clip de 8 s (Mickey, globos y niños), 405 KB, sin audio. Con conexión
+// Dentro de las letras: mezcla de 7 s (personajes, espuma, piscina y niños), 399 KB, sin audio. Con conexión
 // lenta o ahorro de datos queda su primer cuadro como imagen fija.
 const VIDEO_TITULO = "/videos/titulo-portada.mp4";
 const POSTER_TITULO = "/videos/titulo-portada.jpg";
