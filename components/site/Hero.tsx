@@ -57,8 +57,8 @@ export default function Hero({ novedad, categorias }: { novedad: NovedadHero | n
           reveal="rise"
           trigger="load"
           drift={18}
-          brightness={1.05}
-          saturation={1.1}
+          brightness={0.8}
+          saturation={0.72}
           grayscale={false}
           duration={1.1}
           stagger={0.09}
