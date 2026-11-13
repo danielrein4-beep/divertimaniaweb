@@ -16,11 +16,11 @@ function esLigera(): boolean {
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return true;
   const c = conexion();
   if (!c) return false;
-  return Boolean(c.saveData) || ["slow-2g", "2g", "3g"].includes(c.effectiveType ?? "");
+  return Boolean(c.saveData) || ["slow-2g", "2g"].includes(c.effectiveType ?? "");
 }
 
 /**
- * true cuando conviene ahorrar datos: «ahorro de datos» activado, conexión 3G o peor, o la
+ * true cuando conviene ahorrar datos: «ahorro de datos» activado, conexión 2G, o la
  * persona pidió menos animación. En el servidor se asume true, así el HTML llega con fotos
  * livianas y los videos solo se piden en el navegador cuando la conexión los aguanta.
  */

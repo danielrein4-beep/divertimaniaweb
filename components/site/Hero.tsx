@@ -6,18 +6,22 @@ import MaskedHeading from "@/components/site/MaskedHeading";
 import { useMiFiesta } from "@/context/MiFiestaContext";
 import { INSTAGRAM_URL, PERFIL_IG } from "@/lib/site";
 import { fotoOptimizada } from "@/lib/fotoOptimizada";
+import { useConexionLigera } from "@/lib/useConexionLigera";
 
 // Fondo del hero: cuadros de 6 reels (espuma, Mickey, neón, LED, baby shower, piscina), atenuados.
 // Van como fotos y no como videos: detrás del degradado casi no se notaba el movimiento y
 // 6 videos a la vez ponían lenta la página en computadoras modestas y conexiones de Venezuela.
 const FONDO = [10, 5, 8, 11, 6, 9].map((n) => `/reels/posters/reel-${n}-poster.jpg`);
-// Lo que se ve dentro de las letras: Mickey y sus amigos (colorido y para niños).
-const FOTO_TITULO = fotoOptimizada("/images/mickey-amigos.jpg", 1080);
+// Dentro de las letras: un solo clip de 8 s (Mickey, globos y niños), 405 KB, sin audio. Con conexión
+// lenta o ahorro de datos queda su primer cuadro como imagen fija.
+const VIDEO_TITULO = "/videos/titulo-portada.mp4";
+const POSTER_TITULO = "/videos/titulo-portada.jpg";
 
 export type NovedadHero = { id: string; titulo: string; badge: string; ctaUrl: string | null };
 
 export default function Hero({ novedad, categorias }: { novedad: NovedadHero | null; categorias: string[] }) {
   const { items, openPanel } = useMiFiesta();
+  const ligera = useConexionLigera();
 
   return (
     <section className="relative isolate overflow-hidden">
@@ -50,15 +54,16 @@ export default function Hero({ novedad, categorias }: { novedad: NovedadHero | n
         <MaskedHeading
           text="DIVIERTE TUS FIESTAS"
           tag="h1"
-          mediaType="image"
-          src={FOTO_TITULO}
+          mediaType={ligera ? "image" : "video"}
+          src={ligera ? POSTER_TITULO : VIDEO_TITULO}
+          poster={POSTER_TITULO}
           fillScale={1.25}
           parallax={26}
           reveal="rise"
           trigger="load"
           drift={18}
-          brightness={0.8}
-          saturation={0.72}
+          brightness={0.75}
+          saturation={0.85}
           grayscale={false}
           duration={1.1}
           stagger={0.09}
