@@ -28,6 +28,11 @@ export type ServicioCatalogo = {
 };
 
 const MAX_POR_CATEGORIA = 4;
+
+/** Para la vista previa de cada sección: primero lo que tiene foto (sin perder el orden del panel), así
+ * los primeros cuatro lucen; en «Ver los N» se ve todo en su orden. */
+const conFotoPrimero = <T extends { fotoUrl: string | null }>(xs: T[]): T[] =>
+  [...xs.filter((x) => x.fotoUrl), ...xs.filter((x) => !x.fotoUrl)];
 /** Alto del menú fijo de arriba (la barra de categorías se pega en top-[60px]). */
 const ALTO_MENU = 60;
 
@@ -298,7 +303,7 @@ export default function CatalogoExplorer({
                     </button>
                   )}
                 </div>
-                <Grid items={items.slice(0, MAX_POR_CATEGORIA)} priority={gi === 0} />
+                <Grid items={conFotoPrimero(items).slice(0, MAX_POR_CATEGORIA)} priority={gi === 0} />
               </section>
             ))}
           </div>

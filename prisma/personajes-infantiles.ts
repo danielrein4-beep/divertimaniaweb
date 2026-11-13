@@ -1,7 +1,7 @@
 import type { PrismaClient } from "@prisma/client";
 
 // Personajes de la sección "Personajes Infantiles" en el orden en que se muestran
-// (las princesas van juntas). Cada tarjeta trae sus variantes; el equipo puede
+// (las princesas van dentro de «Princesas Disney»). Cada tarjeta trae sus variantes; el equipo puede
 // editarlas, reordenarlas y ponerles fotos desde /admin/catalogo.
 //
 // `desde`: nombre actual de una tarjeta que ya existía y se renombra (no se duplica).
@@ -26,40 +26,9 @@ interface PersonajeDef {
 const DESCRIPCION = "Elige cómo lo quieres para tu fiesta: solo, acompañado o con el show completo.";
 
 export const PERSONAJES: PersonajeDef[] = [
+  // Las princesas (Rapunzel, Cenicienta, Blancanieves, Bella, Ariel, Elsa) viven dentro de esta tarjeta,
+  // una pestaña por princesa (ver seed.ts); no van sueltas para dejar el espacio a los demás personajes.
   { nombre: "Princesas Disney", soloOrden: true },
-  {
-    nombre: "Cenicienta",
-    foto: "/images/cenicienta.jpg",
-    variantes: [{ nombre: "Cenicienta sola" }, { nombre: "Cenicienta con el Príncipe" }, { nombre: "Show de toda la película Cenicienta" }],
-  },
-  {
-    nombre: "Blancanieves",
-    variantes: [{ nombre: "Blancanieves sola" }, { nombre: "Blancanieves con el Príncipe" }, { nombre: "Show de toda la película Blancanieves" }],
-  },
-  {
-    nombre: "Bella y la Bestia",
-    foto: "/images/bella-y-bestia.png",
-    variantes: [{ nombre: "Bella sola" }, { nombre: "Bella con la Bestia", foto: "/images/bella-y-bestia.png" }, { nombre: "Show de toda la película La Bella y la Bestia" }],
-  },
-  {
-    nombre: "Rapunzel",
-    foto: "/images/princesa-rapunzel.jpg",
-    variantes: [
-      { nombre: "Rapunzel sola", foto: "/images/princesa-rapunzel.jpg" },
-      { nombre: "Rapunzel con Flynn Rider", foto: "/images/rapunzel-flynn.jpg" },
-      { nombre: "Show de toda la película Rapunzel", foto: "/images/rapunzel-cumpleanos.png" },
-    ],
-  },
-  {
-    nombre: "Ariel",
-    foto: "/images/sirenita-ursula-sebastian.jpg",
-    variantes: [{ nombre: "Ariel sola" }, { nombre: "Ariel con el Príncipe Eric" }, { nombre: "Show de toda la película La Sirenita" }],
-  },
-  {
-    nombre: "Elsa",
-    foto: "/images/frozen-olaf-elsa.jpg",
-    variantes: [{ nombre: "Elsa sola" }, { nombre: "Elsa y Anna" }, { nombre: "Elsa, Anna y Olaf" }, { nombre: "Show de toda la película Frozen" }],
-  },
   {
     nombre: "Encanto",
     variantes: [{ nombre: "Mirabel sola" }, { nombre: "Mirabel con su familia" }, { nombre: "Show de toda la película Encanto" }],
