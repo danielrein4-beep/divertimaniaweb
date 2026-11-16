@@ -1,7 +1,8 @@
 // Medición propia: visitas y toques a WhatsApp/Instagram, guardados en la base del sitio
 // para la sección "Resultados" del admin. Sin servicios externos ni datos personales.
 
-export const TIPOS_METRICA = ["VISITA", "WHATSAPP", "COTIZACION", "INSTAGRAM"] as const;
+// AGREGADO: alguien sumó un servicio (o un show exacto, como «Cenicienta sola») a «Mi fiesta».
+export const TIPOS_METRICA = ["VISITA", "WHATSAPP", "COTIZACION", "INSTAGRAM", "AGREGADO"] as const;
 export type TipoMetrica = (typeof TIPOS_METRICA)[number];
 
 export const ORIGEN_LABEL: Record<string, string> = {

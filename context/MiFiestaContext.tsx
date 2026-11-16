@@ -87,6 +87,8 @@ export function MiFiestaProvider({ children }: { children: ReactNode }) {
       }));
       // Con variante se nombra el show exacto («Cenicienta sola»), no la tarjeta («Princesas Disney»).
       const cual = item.variante ?? item.nombre;
+      // Para «Lo que más agregan a su fiesta» en Resultados (solo la primera vez, no al editarlo).
+      if (!existia) registrarMetrica("AGREGADO", { detalle: item.variante ? `${item.nombre} – ${item.variante}` : item.nombre });
       showToast(existia ? `${cual} actualizado en tu fiesta` : `${cual} agregado a tu fiesta`);
     },
     [showToast]
