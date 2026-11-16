@@ -23,6 +23,7 @@ export const mediaList: Array<{
   { servicioNombre: "Princesas Disney", url: "/images/princesa-rapunzel.jpg", tipo: "FOTO", orden: 1 },
   { servicioNombre: "Princesas Disney", url: "/images/rapunzel-cumpleanos-hd.jpg", tipo: "FOTO", orden: 2 },
 
+  { servicioNombre: "Princesas Disney", url: "/videos/blancanieves-primer-plano.mp4", tipo: "VIDEO", poster: "/videos/blancanieves-primer-plano.jpg", orden: 5 },
   // Galería Pelotas Boom
 
   // Galería Show según temática
