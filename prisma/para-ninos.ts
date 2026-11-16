@@ -52,6 +52,8 @@ const COMIDA: TarjetaDef[] = [
   {
     nombre: "Estación de Perros Calientes",
     descripcion: "Un carrito de perros calientes servidos al momento para tus invitados.",
+    foto: "/videos/estacion-perros.jpg",
+    video: "/videos/estacion-perros.mp4",
     heredaDe: "Carritos de Comida",
   },
 ];
