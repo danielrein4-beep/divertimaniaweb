@@ -40,6 +40,8 @@ const COMIDA: TarjetaDef[] = [
     nombre: "Estación de Cotufas",
     desde: "Carritos de Comida",
     descripcion: "Un carrito de cotufas recién hechas para que tus invitados disfruten durante toda la fiesta.",
+    foto: "/videos/estacion-cotufas.jpg",
+    video: "/videos/estacion-cotufas.mp4",
     heredaDe: "Carritos de Comida",
   },
   {
@@ -59,7 +61,7 @@ async function ponerVideo(prisma: PrismaClient, servicioId: string, def: Tarjeta
   if (!def.video) return;
   const ya = await prisma.servicioMedia.count({ where: { servicioId, url: def.video } });
   if (ya === 0) {
-    await prisma.servicioMedia.create({ data: { servicioId, url: def.video, tipo: "VIDEO", poster: def.foto ?? null, orden: 0 } });
+    await prisma.servicioMedia.create({ data: { servicioId, url: def.video, tipo: "VIDEO", poster: def.foto ?? null, orden: -10 } });
   }
 }
 
