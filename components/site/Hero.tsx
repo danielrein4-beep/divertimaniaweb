@@ -5,17 +5,12 @@ import { ArrowRight, Sparkles } from "lucide-react";
 import MaskedHeading from "@/components/site/MaskedHeading";
 import { useMiFiesta } from "@/context/MiFiestaContext";
 import { INSTAGRAM_URL, PERFIL_IG } from "@/lib/site";
-import { fotoOptimizada } from "@/lib/fotoOptimizada";
 import { useConexionLigera } from "@/lib/useConexionLigera";
 
-// Fondo del hero: cuadros de 6 reels (espuma, Mickey, neón, LED, baby shower, piscina), atenuados.
-// Van como fotos y no como videos: detrás del degradado casi no se notaba el movimiento y
-// 6 videos a la vez ponían lenta la página en computadoras modestas y conexiones de Venezuela.
-const FONDO = [10, 5, 8, 11, 6, 9].map((n) => `/reels/posters/reel-${n}-poster.jpg`);
-// Dentro de las letras: mezcla de 7 s (personajes, espuma, piscina y niños), 399 KB, sin audio. Con conexión
-// lenta o ahorro de datos queda su primer cuadro como imagen fija.
-const VIDEO_TITULO = "/videos/titulo-portada-mezcla.mp4";
-const POSTER_TITULO = "/videos/titulo-portada-mezcla.jpg";
+// Dentro de las letras: mezcla de 8 s con los tramos más vivos (neón, aros LED, Minnie, Candy y escenario) teñidos con los colores de la marca,
+// 743 KB, sin audio. Con conexión lenta o ahorro de datos queda su primer cuadro como imagen fija.
+const VIDEO_TITULO = "/videos/titulo-portada-neon.mp4";
+const POSTER_TITULO = "/videos/titulo-portada-neon.jpg";
 
 export type NovedadHero = { id: string; titulo: string; badge: string; ctaUrl: string | null };
 
@@ -25,15 +20,10 @@ export default function Hero({ novedad, categorias }: { novedad: NovedadHero | n
 
   return (
     <section className="relative isolate overflow-hidden">
-      <div aria-hidden className="absolute inset-0 -z-10 grid grid-cols-3 grid-rows-2 sm:grid-cols-6 sm:grid-rows-1">
-        {FONDO.map((src) => (
-          // eslint-disable-next-line @next/next/no-img-element -- fondo atenuado; agrandada desde arriba para dejar fuera la marca de agua de abajo
-          <img key={src} src={fotoOptimizada(src)} alt="" fetchPriority="high" decoding="async" className="h-full w-full origin-top scale-[1.3] object-cover object-top opacity-30" />
-        ))}
-      </div>
+      {/* Fondo limpio: negro de la marca con resplandores lima y magenta, para que el título sea lo que brille */}
       <div
         aria-hidden
-        className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_center,rgba(11,11,11,0.55)_0%,rgba(11,11,11,0.92)_70%)]"
+        className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_60%_50%_at_18%_8%,rgba(168,255,48,0.16),transparent_70%),radial-gradient(ellipse_55%_50%_at_85%_14%,rgba(255,79,216,0.16),transparent_70%),radial-gradient(ellipse_70%_45%_at_50%_72%,rgba(0,229,255,0.07),transparent_70%)]"
       />
       <div aria-hidden className="absolute inset-x-0 bottom-0 -z-10 h-32 bg-gradient-to-t from-background to-transparent" />
 
@@ -62,8 +52,8 @@ export default function Hero({ novedad, categorias }: { novedad: NovedadHero | n
           reveal="rise"
           trigger="load"
           drift={18}
-          brightness={0.75}
-          saturation={0.85}
+          brightness={1.12}
+          saturation={1.3}
           grayscale={false}
           duration={1.1}
           stagger={0.09}
@@ -72,7 +62,7 @@ export default function Hero({ novedad, categorias }: { novedad: NovedadHero | n
           tracking={-0.045}
           lineHeight={1.02}
           textScale={0.185}
-          className="font-display max-w-6xl"
+          className="font-display max-w-6xl drop-shadow-[0_0_26px_rgba(168,255,48,0.3)]"
         />
 
         <p className="max-w-xl text-lg text-foreground/85">
