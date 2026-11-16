@@ -145,7 +145,7 @@ export default function ServicioEditor({
         />
       </div>
 
-      <div className="grid items-start gap-6 xl:grid-cols-[minmax(0,1fr)_340px]">
+      <div className="grid grid-cols-[minmax(0,1fr)] items-start gap-6 xl:grid-cols-[minmax(0,1fr)_340px]">
         <div className="flex flex-col gap-6">
           <Tarjeta titulo="Información" ayuda="Lo primero que leen los clientes en la tarjeta y en la ficha.">
             <div className="grid gap-4 sm:grid-cols-2">

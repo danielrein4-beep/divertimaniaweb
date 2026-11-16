@@ -79,8 +79,8 @@ export default function RecursosManager({ iniciales }: { iniciales: Recurso[] })
 
       <div className={listaClase}>
         {recursos.map((r) => (
-          <div key={r.id} className="flex items-center justify-between gap-3 px-4 py-3">
-            <div>
+          <div key={r.id} className="flex flex-wrap items-center justify-between gap-x-3 gap-y-2 px-4 py-3">
+            <div className="min-w-0 basis-full sm:basis-auto">
               <p className="font-medium">{r.nombre}</p>
               <p className="text-xs text-muted">{TIPO_RECURSO_LABEL[r.tipo]}</p>
             </div>
@@ -98,7 +98,7 @@ export default function RecursosManager({ iniciales }: { iniciales: Recurso[] })
               <button
                 type="button"
                 onClick={() => borrar(r, "¿Eliminar este recurso?")}
-                className="rounded-md px-2.5 py-1.5 text-xs font-semibold text-muted hover:bg-red-500/10 hover:text-red-300"
+                className="min-h-9 rounded-md px-3 py-2 text-xs font-semibold text-muted hover:bg-red-500/10 hover:text-red-300"
               >
                 Eliminar
               </button>

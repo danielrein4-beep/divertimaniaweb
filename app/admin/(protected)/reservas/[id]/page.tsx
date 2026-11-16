@@ -55,7 +55,7 @@ export default async function ReservaAdmin({ params }: { params: Promise<{ id: s
         }
       />
 
-      <div className="grid items-start gap-6 xl:grid-cols-[minmax(0,1fr)_380px]">
+      <div className="grid grid-cols-[minmax(0,1fr)] items-start gap-6 xl:grid-cols-[minmax(0,1fr)_380px]">
         <div className="flex flex-col gap-6">
           <AccionesReserva
             id={r.id}

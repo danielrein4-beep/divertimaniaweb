@@ -54,7 +54,7 @@ export default function CategoriasManager({ iniciales }: { iniciales: Fila[] }) 
         descripcion="Las pestañas del catálogo, del Inicio y los capítulos del PDF, en este orden. Arrastra para ordenar; el color es la barrita de cada sección."
       />
 
-      <div className="grid items-start gap-6 xl:grid-cols-[minmax(0,1fr)_420px]">
+      <div className="grid grid-cols-[minmax(0,1fr)] items-start gap-6 xl:grid-cols-[minmax(0,1fr)_420px]">
         <div className="flex flex-col gap-5">
           {error && <Aviso tipo="error">{error}</Aviso>}
 
@@ -127,7 +127,7 @@ function FilaSeccion({
           <Trash2 className="h-4 w-4" />
         </button>
       </div>
-      <div className="pl-[4.25rem]">
+      <div className="min-w-0 sm:pl-[4.25rem]">
         <Colores valor={f.color} onElegir={(color) => onGuardar({ color })} />
       </div>
     </li>
@@ -214,7 +214,7 @@ function Colores({ valor, onElegir }: { valor: string; onElegir: (c: string) => 
             aria-checked={elegido}
             aria-label={`Color ${c}`}
             onClick={() => !elegido && onElegir(c)}
-            className={`flex h-7 w-7 items-center justify-center rounded-full ring-offset-2 ring-offset-background-card transition-transform hover:scale-110 ${
+            className={`flex h-8 w-8 items-center justify-center rounded-full ring-offset-2 ring-offset-background-card transition-transform hover:scale-110 ${
               elegido ? "ring-2 ring-white" : ""
             }`}
             style={{ background: c }}

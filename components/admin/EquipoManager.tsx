@@ -138,7 +138,7 @@ export default function EquipoManager({ iniciales }: { iniciales: Recreador[] })
               </div>
             </div>
           ) : (
-            <div key={r.id} className="flex items-center justify-between gap-3 px-4 py-3">
+            <div key={r.id} className="flex flex-wrap items-start gap-3 px-4 py-3 sm:flex-nowrap sm:items-center sm:justify-between">
               <div className="relative h-16 w-[52px] shrink-0 overflow-hidden rounded-lg bg-black/40">
                 {r.fotoUrl && <Image src={r.fotoUrl} alt="" fill sizes="52px" className="object-cover" />}
               </div>
@@ -149,25 +149,25 @@ export default function EquipoManager({ iniciales }: { iniciales: Recreador[] })
                 <p className="text-xs text-neon-green">{r.cargo}</p>
                 <p className="mt-1 text-xs text-muted">{r.descripcion}</p>
               </div>
-              <div className="flex flex-none items-center gap-2">
+              <div className="flex w-full flex-none items-center justify-end gap-2 sm:w-auto">
                 <button
                   type="button"
                   onClick={() => actualizar(r, { activo: !r.activo })}
-                  className="rounded-full border border-border px-3 py-1.5 text-xs text-muted hover:border-neon-green hover:text-neon-green"
+                  className="min-h-9 rounded-full border border-border px-3.5 py-2 text-xs text-muted hover:border-neon-green hover:text-neon-green"
                 >
                   {r.activo ? "Ocultar" : "Mostrar"}
                 </button>
                 <button
                   type="button"
                   onClick={() => setEditandoId(r.id)}
-                  className="rounded-full border border-border px-3 py-1.5 text-xs text-muted hover:border-neon-green hover:text-neon-green"
+                  className="min-h-9 rounded-full border border-border px-3.5 py-2 text-xs text-muted hover:border-neon-green hover:text-neon-green"
                 >
                   Editar
                 </button>
                 <button
                   type="button"
                   onClick={() => borrar(r, "¿Eliminar este recreador del equipo?")}
-                  className="rounded-md px-2.5 py-1.5 text-xs font-semibold text-muted hover:bg-red-500/10 hover:text-red-300"
+                  className="min-h-9 rounded-md px-3 py-2 text-xs font-semibold text-muted hover:bg-red-500/10 hover:text-red-300"
                 >
                   Eliminar
                 </button>
