@@ -10,6 +10,8 @@ interface TarjetaDef {
   nombre: string;
   desde?: string;
   descripcion?: string;
+  foto?: string; // portada; si hay video, es su fotograma
+  video?: string; // video corto que se reproduce en la tarjeta
   heredaDe?: string; // copia incluye/edad/duración/ocasiones de una tarjeta existente (datos reales del catálogo)
 }
 
@@ -18,6 +20,8 @@ const NINOS: TarjetaDef[] = [
   {
     nombre: "Estación de Pulseras",
     descripcion: "Los niños diseñan y elaboran su propia pulsera para llevarse de recuerdo de la fiesta.",
+    foto: "/videos/estacion-pulseras.jpg",
+    video: "/videos/estacion-pulseras.mp4",
   },
   {
     nombre: "Estación de Galletas",
@@ -36,6 +40,8 @@ const COMIDA: TarjetaDef[] = [
     nombre: "Estación de Cotufas",
     desde: "Carritos de Comida",
     descripcion: "Un carrito de cotufas recién hechas para que tus invitados disfruten durante toda la fiesta.",
+    foto: "/videos/estacion-cotufas.jpg",
+    video: "/videos/estacion-cotufas.mp4",
     heredaDe: "Carritos de Comida",
   },
   {
@@ -46,9 +52,20 @@ const COMIDA: TarjetaDef[] = [
   {
     nombre: "Estación de Perros Calientes",
     descripcion: "Un carrito de perros calientes servidos al momento para tus invitados.",
+    foto: "/videos/estacion-perros.jpg",
+    video: "/videos/estacion-perros.mp4",
     heredaDe: "Carritos de Comida",
   },
 ];
+
+/** Agrega el video de la tarjeta (con su portada) a la galería si todavía no lo tiene. */
+async function ponerVideo(prisma: PrismaClient, servicioId: string, def: TarjetaDef) {
+  if (!def.video) return;
+  const ya = await prisma.servicioMedia.count({ where: { servicioId, url: def.video } });
+  if (ya === 0) {
+    await prisma.servicioMedia.create({ data: { servicioId, url: def.video, tipo: "VIDEO", poster: def.foto ?? null, orden: -10 } });
+  }
+}
 
 async function aplicarGrupo(prisma: PrismaClient, categoria: string, lista: TarjetaDef[], base: number) {
   let creados = 0;
@@ -65,19 +82,22 @@ async function aplicarGrupo(prisma: PrismaClient, categoria: string, lista: Tarj
           categoria,
           orden: base + i,
           ...(def.desde && def.descripcion ? { descripcion: def.descripcion } : {}),
+          ...(!existente.fotoUrl && def.foto ? { fotoUrl: def.foto } : {}),
         },
       });
+      await ponerVideo(prisma, existente.id, def);
       continue;
     }
 
     const molde = def.heredaDe
       ? await prisma.servicio.findFirst({ where: { OR: [{ nombre: def.heredaDe }, { nombre: COMIDA_INICIAL }] } })
       : null;
-    await prisma.servicio.create({
+    const nuevo = await prisma.servicio.create({
       data: {
         categoria,
         nombre: def.nombre,
         descripcion: def.descripcion ?? "",
+        fotoUrl: def.foto ?? null,
         orden: base + i,
         incluye: molde?.incluye ?? null,
         edadIdeal: molde?.edadIdeal ?? null,
@@ -85,6 +105,7 @@ async function aplicarGrupo(prisma: PrismaClient, categoria: string, lista: Tarj
         ocasiones: molde?.ocasiones ?? "cumpleanos",
       },
     });
+    await ponerVideo(prisma, nuevo.id, def);
     creados++;
   }
   return creados;
