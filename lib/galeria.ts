@@ -20,7 +20,7 @@ export const FOTOS = [
   { label: "Show según temática", src: "/images/show-led-hoop.jpg" },
   { label: "Espumanía", src: "/images/espumania-foam.png" },
   { label: "Baby Shower", src: "/images/baby-shower.png" },
-  { label: "Estación Creativa", src: "/images/diverti-artistas.png" },
+  { label: "Diverti Artistas", src: "/images/diverti-artistas.png" },
   { label: "Atracciones", src: "/images/pelotas-boom-rooftop.png" },
   { label: "Atracciones", src: "/images/pelotas-boom-piscina.png" },
 ];

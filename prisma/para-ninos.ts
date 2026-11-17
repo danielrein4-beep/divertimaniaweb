@@ -16,7 +16,6 @@ interface TarjetaDef {
 }
 
 const NINOS: TarjetaDef[] = [
-  { nombre: "Estación Creativa" },
   {
     nombre: "Estación de Pulseras",
     descripcion: "Los niños diseñan y elaboran su propia pulsera para llevarse de recuerdo de la fiesta.",

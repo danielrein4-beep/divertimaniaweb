@@ -60,11 +60,11 @@ async function main() {
     "Animación Infantil": ["Casa de Mickey Mouse", "Castillos Inflables", "Espumanía"],
     "Día de Piscina Infantil": ["Espumanía", "Pelotas Boom", "Animación Infantil"],
     "Espumanía": ["Día de Piscina Infantil", "Bolas Disco", "Pelotas Boom"],
-    "Princesas Disney": ["Animación Infantil", "Estación Creativa", "Castillos Inflables"],
+    "Princesas Disney": ["Animación Infantil", "Diverti Artistas", "Castillos Inflables"],
     "Súper Mario": ["Animación Infantil", "Castillos Inflables", "Pelotas Boom"],
     "Bolas Disco": ["Show LED", "El Chacal de la Trompeta", "Espumanía"],
     "Show LED": ["Bolas Disco", "Show según temática", "El Chacal de la Trompeta"],
-    "Baby Shower o Revelación de Género": ["Estación Creativa", "Carritos de Comida"],
+    "Baby Shower o Revelación de Género": ["Diverti Artistas", "Carritos de Comida"],
     "Pelotas Boom": ["Espumanía", "Castillos Inflables", "Día de Piscina Infantil"],
   };
 

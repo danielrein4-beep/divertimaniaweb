@@ -356,22 +356,6 @@ export const servicios: ServicioSeed[] = [
     ocasiones: "quince,boda,corporativo",
   },
 
-  // Estación Creativa
-  {
-    categoria: "Para Niños",
-    nombre: "Estación Creativa",
-    descripcion:
-      "Elaboración de pulseras, decoración de galletas y decoración de perfumes. Espacio preparado para 8 puestos.",
-    fotoUrl: "/images/diverti-artistas.png",
-    incluye: "Mobiliario y mantelería para 8 puestos de trabajo\nMateriales premium de bisutería, repostería o perfumería\nRecreadora especialista a cargo del taller\nCajas o empaques de regalo para cada creación",
-    edadIdeal: "4 a 14 años",
-    duracion: "2 horas",
-    masPedido: false,
-    destacado: false,
-    soloAdultos: false,
-    ocasiones: "cumpleanos,baby-shower,corporativo",
-  },
-
   // Atracciones
   {
     categoria: "Para Niños",
