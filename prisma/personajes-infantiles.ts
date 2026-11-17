@@ -77,9 +77,9 @@ export const PERSONAJES: PersonajeDef[] = [
     nombre: "Peppa y George",
     variantes: [{ nombre: "Peppa Pig sola" }, { nombre: "Peppa y George" }, { nombre: "Show completo de Peppa Pig" }],
   },
-  { nombre: "Mickey Mouse", descripcion: "Mickey Mouse en persona para tu fiesta: baile, fotos con los invitados y el momento de la torta. Tiene distintos trajes temáticos: casual, Halloween, navideño y de graduación; dinos cuál quieres para tu fiesta." },
-  { nombre: "Mickey y Minnie Mouse", descripcion: "Mickey y Minnie Mouse juntos en tu fiesta: baile, fotos y el momento de la torta. Ambos tienen distintos trajes temáticos: casual, Halloween, navideño y de graduación; dinos cuáles quieres para tu fiesta." },
-  { nombre: "Minnie Mouse", foto: "/images/minnie.jpg", descripcion: "Minnie Mouse en persona para tu fiesta: baile, fotos con los invitados y el momento de la torta. Tiene distintos trajes temáticos: casual, Halloween, navideño y de graduación; dinos cuál quieres para tu fiesta." },
+  { nombre: "Mickey Mouse", descripcion: "Trajes temáticos: casual, Halloween, navideño y graduación. Mickey en persona para tu fiesta, con baile, fotos y el momento de la torta. Dinos qué traje quieres." },
+  { nombre: "Mickey y Minnie Mouse", descripcion: "Ambos con trajes temáticos: casual, Halloween, navideño y graduación. Mickey y Minnie juntos en tu fiesta, con baile, fotos y el momento de la torta. Dinos qué trajes quieres." },
+  { nombre: "Minnie Mouse", foto: "/images/minnie.jpg", descripcion: "Con distintos trajes temáticos: casual, Halloween, navideño y de graduación. Minnie en persona para tu fiesta, con baile, fotos y el momento de la torta. Dinos qué traje quieres." },
   {
     nombre: "Casa de Mickey Mouse",
     variantes: [{ nombre: "Show completo de la Casa de Mickey Mouse" }],

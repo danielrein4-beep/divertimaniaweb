@@ -41,6 +41,7 @@ export default function ServicioCard({
   id,
   nombre,
   categoria,
+  descripcion,
   fotoUrl,
   videos = [],
   edadIdeal,
@@ -53,6 +54,8 @@ export default function ServicioCard({
   const { isInFiesta, toggleItem } = useMiFiesta();
   const router = useRouter();
   const added = isInFiesta(id);
+  // El texto de ejemplo («Elige cómo lo quieres…») no dice nada del servicio: no se muestra en la tarjeta.
+  const textoVisible = !!descripcion && !descripcion.startsWith("Elige cómo lo quieres");
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const ligera = useConexionLigera();
@@ -194,6 +197,7 @@ export default function ServicioCard({
       </Link>
 
       <div className="flex flex-1 flex-col gap-2.5 p-2.5 sm:p-3">
+        {textoVisible && <p className="line-clamp-5 text-xs leading-snug text-foreground/75">{descripcion}</p>}
         {(edadIdeal || duracion) && (
           <p className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-foreground/75">
             {edadIdeal && (

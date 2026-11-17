@@ -1,0 +1,4 @@
+-- Textos de Mickey y Minnie: lo de los trajes temáticos va primero para que se lea completo en la tarjeta del catálogo.
+UPDATE "Servicio" SET "descripcion" = 'Trajes temáticos: casual, Halloween, navideño y graduación. Mickey en persona para tu fiesta, con baile, fotos y el momento de la torta. Dinos qué traje quieres.' WHERE "nombre" = 'Mickey Mouse';
+UPDATE "Servicio" SET "descripcion" = 'Ambos con trajes temáticos: casual, Halloween, navideño y graduación. Mickey y Minnie juntos en tu fiesta, con baile, fotos y el momento de la torta. Dinos qué trajes quieres.' WHERE "nombre" = 'Mickey y Minnie Mouse';
+UPDATE "Servicio" SET "descripcion" = 'Con distintos trajes temáticos: casual, Halloween, navideño y de graduación. Minnie en persona para tu fiesta, con baile, fotos y el momento de la torta. Dinos qué traje quieres.' WHERE "nombre" = 'Minnie Mouse';
