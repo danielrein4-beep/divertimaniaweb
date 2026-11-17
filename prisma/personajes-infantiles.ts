@@ -94,6 +94,11 @@ export const PERSONAJES: PersonajeDef[] = [
   { nombre: "Bright Monsters", descripcion: "Monstruos brillantes en cuatro colores: uno plateado, uno dorado, uno azul y uno morado." },
   { nombre: "Diverticandy", descripcion: "Diverticandy acompaña a tus niños durante toda la fiesta y les da los mejores caramelos. ¡Diversión y dulzura en un solo show!" },
   { nombre: "Space Glitter", descripcion: "Space Glitter son nuestras chicas que van a tu evento y le llenan de brillo la noche." },
+  { nombre: "Guerreras K-Pop", descripcion: "Guerreras K-Pop para tu fiesta." },
+  { nombre: "Catrinas", descripcion: "Catrinas para tu fiesta." },
+  { nombre: "Robots", descripcion: "Robots para tu fiesta." },
+  { nombre: "Daft Punk", descripcion: "Daft Punk para tu fiesta." },
+  { nombre: "La Casa de Papel", descripcion: "La Casa de Papel para tu fiesta." },
   { nombre: "Cristiano Ronaldo", descripcion: "Cristiano Ronaldo en persona, para jugar fútbol con los invitados y tomarse fotos en tu fiesta." },
   { nombre: "Messi", descripcion: "Messi en persona, para jugar fútbol con los invitados y tomarse fotos en tu fiesta." },
 ];
