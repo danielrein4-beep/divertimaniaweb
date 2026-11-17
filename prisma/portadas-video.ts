@@ -2,7 +2,18 @@ import type { PrismaClient } from "@prisma/client";
 
 // Portada (fotograma del video) y video corto en bucle de las tarjetas del catálogo.
 // Para sumar una tarjeta: agregar su fila aquí y una migración igual a la de 20261117120000 (id = "pv_" + clave).
-export const PORTADAS_VIDEO = [
+interface PortadaVideo {
+  clave: string;
+  nombre: string;
+  foto: string;
+  video?: string;
+  /** Varios videos: se reproducen en este orden, en bucle. Cada uno tiene su fotograma con el mismo nombre en .jpg. */
+  videos?: string[];
+  /** Quita las fotos que tenía la tarjeta y deja solo los videos. */
+  reemplazar?: boolean;
+}
+
+export const PORTADAS_VIDEO: PortadaVideo[] = [
   { clave: "galletas", nombre: "Estación de Galletas", foto: "/videos/estacion-galletas.jpg", video: "/videos/estacion-galletas.mp4" },
   { clave: "encanto", nombre: "Encanto", foto: "/videos/encanto-show.jpg", video: "/videos/encanto-show.mp4" },
   { clave: "campanita", nombre: "Campanita (Tinkerbell)", foto: "/videos/campanita-show.jpg", video: "/videos/campanita-show.mp4" },
@@ -11,18 +22,28 @@ export const PORTADAS_VIDEO = [
   { clave: "zootopia", nombre: "Zootopia", foto: "/videos/zootopia-show.jpg", video: "/videos/zootopia-show.mp4" },
   { clave: "sonic", nombre: "Show de Sonic", foto: "/videos/sonic-show.jpg", video: "/videos/sonic-show.mp4" },
   { clave: "minecraft", nombre: "Minecraft", foto: "/videos/minecraft-show.jpg", video: "/videos/minecraft-show.mp4" },
-] as const;
+  { clave: "toy", nombre: "Toy Story", foto: "/videos/toy-story-1.jpg", videos: ["/videos/toy-story-1.mp4", "/videos/toy-story-2.mp4"], reemplazar: true },
+];
 
-/** Idempotente: pone la portada si falta y deja el video primero en la galería de la tarjeta. */
+/** Idempotente: pone la portada si falta (o siempre, si reemplaza) y deja los videos primero en la galería de la tarjeta. */
 export async function aplicarPortadasVideo(prisma: PrismaClient) {
   let n = 0;
   for (const p of PORTADAS_VIDEO) {
     const s = await prisma.servicio.findFirst({ where: { nombre: p.nombre } });
     if (!s) continue;
-    if (!s.fotoUrl) await prisma.servicio.update({ where: { id: s.id }, data: { fotoUrl: p.foto } });
-    const ya = await prisma.servicioMedia.count({ where: { servicioId: s.id, url: p.video } });
-    if (ya === 0) {
-      await prisma.servicioMedia.create({ data: { id: `pv_${p.clave}`, servicioId: s.id, url: p.video, tipo: "VIDEO", poster: p.foto, orden: -10 } });
+    if (p.reemplazar) {
+      await prisma.servicio.update({ where: { id: s.id }, data: { fotoUrl: p.foto } });
+      await prisma.servicioMedia.deleteMany({ where: { servicioId: s.id, tipo: "FOTO" } });
+    } else if (!s.fotoUrl) {
+      await prisma.servicio.update({ where: { id: s.id }, data: { fotoUrl: p.foto } });
+    }
+    const lista = p.videos ?? (p.video ? [p.video] : []);
+    for (const [i, url] of lista.entries()) {
+      const ya = await prisma.servicioMedia.count({ where: { servicioId: s.id, url } });
+      if (ya > 0) continue;
+      await prisma.servicioMedia.create({
+        data: { id: i === 0 ? `pv_${p.clave}` : `pv_${p.clave}_${i + 1}`, servicioId: s.id, url, tipo: "VIDEO", poster: url.replace(/.mp4$/, ".jpg"), orden: -10 + i },
+      });
       n++;
     }
   }
