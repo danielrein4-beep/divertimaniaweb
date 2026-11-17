@@ -379,18 +379,6 @@ export const servicios: ServicioSeed[] = [
     soloAdultos: false,
     ocasiones: "quince,boda,corporativo",
   },
-  {
-    categoria: "Show para Adultos",
-    nombre: "Stripper",
-    descripcion: "Show sorpresa para despedidas y celebraciones entre adultos.",
-    incluye: "Bailarín profesional\nCoreografía y música temática\nInteracción cuidada y respetuosa según el evento",
-    edadIdeal: "Exclusivo +18",
-    duracion: "45 minutos",
-    masPedido: false,
-    destacado: false,
-    soloAdultos: true,
-    ocasiones: "",
-  },
 
   // Estación Creativa
   {
