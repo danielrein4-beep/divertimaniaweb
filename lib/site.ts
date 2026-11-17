@@ -27,14 +27,7 @@ export const NAV_LINKS = [
   { href: "/contacto", label: "Contacto" },
 ];
 
-export const CATEGORIAS = [
-  "Fiestas Infantiles",
-  "Para Niños",
-  "Baby Shower",
-  "Personajes Infantiles",
-  "Show para Adultos",
-  "Estaciones de Comida",
-] as const;
+export const CATEGORIAS = ["Personajes", "Servicios para tu fiesta", "Celebraciones"] as const;
 
 export type Categoria = (typeof CATEGORIAS)[number];
 

@@ -4,6 +4,7 @@ import { aplicarPersonajesInfantiles } from "./personajes-infantiles";
 import { aplicarParaNinos } from "./para-ninos";
 import { ocultarTarjetas } from "./ocultos";
 import { aplicarPortadasVideo } from "./portadas-video";
+import { organizarCatalogo } from "./organizacion";
 import { servicios } from "./datos/servicios";
 import { recursos } from "./datos/recursos";
 import { recreadores } from "./datos/equipo";
@@ -113,6 +114,9 @@ async function main() {
 
   // Portada y video en bucle de las tarjetas que los han recibido
   await aplicarPortadasVideo(prisma);
+
+  // Catálogo en 3 secciones (Personajes · Servicios para tu fiesta · Celebraciones)
+  await organizarCatalogo(prisma);
 
   // Dinámicas de Baby Shower
   const babyShowerId = createdServices["Baby Shower o Revelación de Género"];

@@ -51,6 +51,7 @@ model Categoria {
 model Servicio {
   id          String   @id @default(cuid())
   categoria   String
+  subcategoria String? // dentro de Personajes: Infantiles | Adultos (vacío = infantil)
   activo      Boolean  @default(true) // false = oculto en el sitio, sin borrarlo
   nombre      String
   descripcion String

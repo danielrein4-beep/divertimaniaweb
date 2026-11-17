@@ -13,6 +13,16 @@ export const metadata: Metadata = {
     "Personajes, shows, animación infantil, baby showers y atracciones en toda Venezuela. Descarga el catálogo en PDF o arma tu fiesta y pide tu cotización por WhatsApp.",
 };
 
+// Nombres viejos de sección (enlaces ya compartidos) → las 3 nuevas.
+const SECCION_ANTIGUA: Record<string, string> = {
+  "Personajes Infantiles": "Personajes",
+  "Show para Adultos": "Personajes",
+  "Fiestas Infantiles": "Servicios para tu fiesta",
+  "Para Niños": "Servicios para tu fiesta",
+  "Estaciones de Comida": "Servicios para tu fiesta",
+  "Baby Shower": "Celebraciones",
+};
+
 export default async function CatalogoPage({
   searchParams,
 }: {
@@ -35,6 +45,7 @@ export default async function CatalogoPage({
     id: s.id,
     nombre: s.nombre,
     categoria: s.categoria,
+    subcategoria: s.subcategoria,
     descripcion: s.descripcion,
     fotoUrl: s.fotoUrl,
     videos: s.media.map((m) => clipDeTarjeta(m.url, m.poster)),
@@ -51,7 +62,7 @@ export default async function CatalogoPage({
       <CatalogoExplorer
         servicios={data}
         categorias={categorias}
-        categoriaInicial={categoria ?? null}
+        categoriaInicial={categoria ? (SECCION_ANTIGUA[categoria] ?? categoria) : null}
         ocasionInicial={ocasion ?? null}
         busquedaInicial={q ?? ""}
       />

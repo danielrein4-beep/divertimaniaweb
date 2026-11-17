@@ -16,6 +16,7 @@ export type ServicioCatalogo = {
   id: string;
   nombre: string;
   categoria: string;
+  subcategoria: string | null;
   descripcion: string;
   fotoUrl: string | null;
   videos: ClipTarjeta[];
@@ -73,6 +74,8 @@ export default function CatalogoExplorer({
   );
   const [ocasion, setOcasion] = useState<string | null>(getOcasion(ocasionInicial)?.slug ?? null);
   const [busqueda, setBusqueda] = useState(busquedaInicial);
+  // Dentro de Personajes: todos · infantiles · adultos (sin marca = infantil).
+  const [subfiltro, setSubfiltro] = useState<"Infantiles" | "Adultos" | null>(null);
   const whatsapp = useWhatsApp();
 
   // Marca dónde empieza la barra de categorías (la barra misma es sticky y no sirve de referencia).
@@ -80,6 +83,7 @@ export default function CatalogoExplorer({
 
   const elegirCategoria = (c: string | null) => {
     setCategoria(c);
+    setSubfiltro(null);
     syncUrl({ categoria: c, ocasion });
     // Si ya bajó más allá de la barra, se vuelve justo a ella (no hasta la cabecera);
     // si todavía está en la cabecera, no se mueve.
@@ -105,11 +109,12 @@ export default function CatalogoExplorer({
         // El contenido +18 solo aparece dentro de su categoría, nunca en "Todas" ni en la búsqueda.
         if (s.soloAdultos && (categoria !== s.categoria || buscando)) return false;
         if (!buscando && categoria && s.categoria !== categoria) return false;
+        if (!buscando && categoria === "Personajes" && subfiltro && (subfiltro === "Adultos") !== (s.subcategoria === "Adultos")) return false;
         if (ocasion && !s.ocasiones.includes(ocasion)) return false;
         if (buscando) return normalizar(`${s.nombre} ${s.descripcion} ${s.categoria}`).includes(termino);
         return true;
       }),
-    [servicios, categoria, ocasion, buscando, termino]
+    [servicios, categoria, subfiltro, ocasion, buscando, termino]
   );
 
   const porCategoria = nombres
@@ -247,6 +252,23 @@ export default function CatalogoExplorer({
       </div>
 
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
+        {categoria === "Personajes" && !buscando && (
+          <div className="mt-5 flex flex-wrap gap-2" role="group" aria-label="Tipo de personajes">
+            {([[null, "Todos"], ["Infantiles", "Infantiles"], ["Adultos", "Adultos"]] as const).map(([v, etiqueta]) => (
+              <button
+                key={etiqueta}
+                type="button"
+                aria-pressed={subfiltro === v}
+                onClick={() => setSubfiltro(v)}
+                className={`min-h-[40px] rounded-full border px-4 text-sm font-semibold transition-colors ${
+                  subfiltro === v ? "border-neon-green bg-neon-green/15 text-neon-green" : "border-border text-muted hover:text-foreground"
+                }`}
+              >
+                {etiqueta}
+              </button>
+            ))}
+          </div>
+        )}
         {ocasionActual && (
           <button
             type="button"
