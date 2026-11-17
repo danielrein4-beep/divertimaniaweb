@@ -38,5 +38,3 @@ export const CATEGORIAS = [
 
 export type Categoria = (typeof CATEGORIAS)[number];
 
-/** Secciones cuyas tarjetas reproducen su video solas (en bucle y sin sonido), sin pasar el mouse. */
-export const CATEGORIAS_VIDEO_AUTO: readonly string[] = ["Estaciones de Comida"];

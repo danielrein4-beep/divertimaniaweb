@@ -1,5 +1,6 @@
 "use client";
 
+import type { ClipTarjeta } from "@/lib/clipTarjeta";
 import { useMemo, useRef, useState } from "react";
 import { ChevronDown, Search, X } from "lucide-react";
 import ServicioCard from "@/components/ui/ServicioCard";
@@ -17,8 +18,7 @@ export type ServicioCatalogo = {
   categoria: string;
   descripcion: string;
   fotoUrl: string | null;
-  videoUrl: string | null;
-  posterUrl: string | null;
+  videos: ClipTarjeta[];
   edadIdeal: string | null;
   duracion: string | null;
   masPedido: boolean;

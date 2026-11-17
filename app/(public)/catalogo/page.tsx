@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { clipDeTarjeta } from "@/lib/clipTarjeta";
 import { prisma } from "@/lib/db";
 import { getCategorias } from "@/lib/categorias";
 import DescargarCatalogoPdf from "@/components/site/DescargarCatalogoPdf";
@@ -23,7 +24,7 @@ export default async function CatalogoPage({
       where: { activo: true },
       orderBy: { orden: "asc" },
       include: {
-        media: { where: { tipo: "VIDEO" }, orderBy: { orden: "asc" }, take: 1 },
+        media: { where: { tipo: "VIDEO" }, orderBy: { orden: "asc" }, take: 4 },
         _count: { select: { opciones: true } },
       },
     }),
@@ -36,8 +37,7 @@ export default async function CatalogoPage({
     categoria: s.categoria,
     descripcion: s.descripcion,
     fotoUrl: s.fotoUrl,
-    videoUrl: s.media[0]?.url ?? null,
-    posterUrl: s.media[0]?.poster ?? null,
+    videos: s.media.map((m) => clipDeTarjeta(m.url, m.poster)),
     edadIdeal: s.edadIdeal,
     duracion: s.duracion,
     masPedido: s.masPedido,

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { clipDeTarjeta } from "@/lib/clipTarjeta";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/db";
@@ -101,7 +102,7 @@ export default async function PaginaFiesta({ params }: Props) {
           <p className="mt-3 text-muted">Agrégalos a tu fiesta y te cotizamos todo junto.</p>
           <div className="mt-8 grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-4">
             {servicios.slice(0, 8).map((s, i) => {
-              const video = s.media.find((m) => m.tipo === "VIDEO");
+              const videos = s.media.filter((m) => m.tipo === "VIDEO").slice(0, 4).map((m) => clipDeTarjeta(m.url, m.poster));
               return (
                 <ServicioCard
                   key={s.id}
@@ -109,8 +110,7 @@ export default async function PaginaFiesta({ params }: Props) {
                   nombre={s.nombre}
                   categoria={s.categoria}
                   fotoUrl={s.fotoUrl}
-                  videoUrl={video?.url ?? null}
-                  posterUrl={video?.poster ?? null}
+                  videos={videos}
                   edadIdeal={s.edadIdeal}
                   duracion={s.duracion}
                   masPedido={s.masPedido}

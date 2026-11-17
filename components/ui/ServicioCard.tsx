@@ -8,7 +8,7 @@ import { Check, ChevronRight, Clock, Plus, Users } from "lucide-react";
 import { useMiFiesta } from "@/context/MiFiestaContext";
 import PlaceholderImage from "@/components/site/PlaceholderImage";
 import { fotoOptimizada } from "@/lib/fotoOptimizada";
-import { CATEGORIAS_VIDEO_AUTO } from "@/lib/site";
+import type { ClipTarjeta } from "@/lib/clipTarjeta";
 import { useConexionLigera } from "@/lib/useConexionLigera";
 
 const CONSULTA_SIN_MOVIMIENTO = "(prefers-reduced-motion: reduce)";
@@ -25,8 +25,8 @@ export interface ServicioCardProps {
   categoria: string;
   descripcion?: string;
   fotoUrl?: string | null;
-  videoUrl?: string | null;
-  posterUrl?: string | null;
+  /** Videos cortos de la tarjeta: corren solos y, si son varios, uno tras otro en bucle. */
+  videos?: ClipTarjeta[];
   edadIdeal?: string | null;
   duracion?: string | null;
   masPedido?: boolean;
@@ -42,8 +42,7 @@ export default function ServicioCard({
   nombre,
   categoria,
   fotoUrl,
-  videoUrl,
-  posterUrl,
+  videos = [],
   edadIdeal,
   duracion,
   masPedido,
@@ -58,21 +57,25 @@ export default function ServicioCard({
   const [isPlaying, setIsPlaying] = useState(false);
   const ligera = useConexionLigera();
 
-  // Estaciones de comida: el video corre solo, en bucle y sin sonido, mientras la tarjeta se ve en pantalla.
-  // Se respeta "reducir movimiento" y el ahorro de datos; ahí queda el video de muestra con mouse.
+  // Todas las tarjetas con video lo reproducen solas (sin mouse ni toque), en bucle y sin sonido, mientras se ven
+  // en pantalla; si tienen varios, uno tras otro. Se respeta "reducir movimiento" y el ahorro de datos:
+  // ahí queda la foto, con el video de muestra al pasar el mouse.
   const sinMovimiento = useSyncExternalStore(suscribirSinMovimiento, leerSinMovimiento, () => false);
-  const automatico = Boolean(videoUrl) && CATEGORIAS_VIDEO_AUTO.includes(categoria) && !ligera && !sinMovimiento;
+  const [indice, setIndice] = useState(0);
+  const varios = videos.length > 1;
+  const clip = videos.length ? videos[indice % videos.length] : null;
+  const automatico = Boolean(clip) && !ligera && !sinMovimiento;
+  const enPantalla = useRef(false);
+  const primeraCarga = useRef(true);
 
   useEffect(() => {
     const video = videoRef.current;
     if (!automatico || !video) return;
     const io = new IntersectionObserver(
       ([e]) => {
-        if (e.isIntersecting) {
-          video.play().then(() => setIsPlaying(true)).catch(() => {});
-        } else {
-          video.pause();
-        }
+        enPantalla.current = e.isIntersecting;
+        if (e.isIntersecting) video.play().catch(() => {});
+        else video.pause();
       },
       { threshold: 0.35 }
     );
@@ -80,7 +83,19 @@ export default function ServicioCard({
     return () => io.disconnect();
   }, [automatico]);
 
-  // Video de muestra solo con mouse (en celular no se descarga).
+  // Al pasar al siguiente video de la tarjeta se carga y, si la tarjeta se ve, arranca.
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!automatico || !video) return;
+    if (primeraCarga.current) {
+      primeraCarga.current = false;
+      return;
+    }
+    video.load();
+    if (enPantalla.current) video.play().catch(() => {});
+  }, [indice, automatico]);
+
+  // Video de muestra con mouse cuando no corre solo.
   const startVideo = () => {
     videoRef.current
       ?.play()
@@ -104,40 +119,58 @@ export default function ServicioCard({
 
   return (
     <div
-      onMouseEnter={videoUrl && !automatico ? startVideo : undefined}
-      onMouseLeave={videoUrl && !automatico ? stopVideo : undefined}
+      onMouseEnter={clip && !automatico ? startVideo : undefined}
+      onMouseLeave={clip && !automatico ? stopVideo : undefined}
       className={`group relative flex flex-col overflow-hidden rounded-xl border bg-background-card transition-colors ${
         added ? "border-neon-green/70" : "border-white/10 hover:border-white/25"
       }`}
     >
       <Link href={`/catalogo/${id}`} className="relative block aspect-[4/5] w-full overflow-hidden">
-        {fotoUrl ? (
-          <Image
-            src={fotoUrl}
-            alt=""
-            fill
-            priority={priority}
-            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-            className="object-cover transition-transform duration-500 ease-out group-hover:scale-105"
-          />
-        ) : (
-          <PlaceholderImage label={nombre} categoria={categoria} compact className="h-full w-full" />
-        )}
-
-        {videoUrl && (
+        {automatico && clip ? (
+          // Con el video corriendo solo se ve un único medio: el video (con su fotograma mientras carga).
           <video
             ref={videoRef}
-            src={videoUrl}
-            poster={posterUrl ? fotoOptimizada(posterUrl) : undefined}
+            src={clip.url}
+            poster={clip.poster ?? fotoUrl ? fotoOptimizada((clip.poster ?? fotoUrl) as string) : undefined}
             muted
-            loop
+            loop={!varios}
+            onEnded={varios ? () => setIndice((i) => (i + 1) % videos.length) : undefined}
             playsInline
-            preload={automatico ? "metadata" : "none"}
+            preload="none"
             aria-hidden
-            className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-300 ${
-              isPlaying ? "opacity-100" : "opacity-0"
-            }`}
+            className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
           />
+        ) : (
+          <>
+            {fotoUrl ? (
+              <Image
+                src={fotoUrl}
+                alt=""
+                fill
+                priority={priority}
+                sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                className="object-cover transition-transform duration-500 ease-out group-hover:scale-105"
+              />
+            ) : (
+              <PlaceholderImage label={nombre} categoria={categoria} compact className="h-full w-full" />
+            )}
+
+            {clip && (
+              <video
+                ref={videoRef}
+                src={clip.url}
+                poster={clip.poster ? fotoOptimizada(clip.poster) : undefined}
+                muted
+                loop
+                playsInline
+                preload="none"
+                aria-hidden
+                className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-300 ${
+                  isPlaying ? "opacity-100" : "opacity-0"
+                }`}
+              />
+            )}
+          </>
         )}
 
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/85 via-black/10 to-transparent" />

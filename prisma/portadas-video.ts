@@ -6,6 +6,7 @@ export const PORTADAS_VIDEO = [
   { clave: "galletas", nombre: "Estación de Galletas", foto: "/videos/estacion-galletas.jpg", video: "/videos/estacion-galletas.mp4" },
   { clave: "encanto", nombre: "Encanto", foto: "/videos/encanto-show.jpg", video: "/videos/encanto-show.mp4" },
   { clave: "campanita", nombre: "Campanita (Tinkerbell)", foto: "/videos/campanita-show.jpg", video: "/videos/campanita-show.mp4" },
+  { clave: "lilo", nombre: "Lilo y Stitch", foto: "/videos/lilo-stitch-show.jpg", video: "/videos/lilo-stitch-show.mp4" },
 ] as const;
 
 /** Idempotente: pone la portada si falta y deja el video primero en la galería de la tarjeta. */

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { clipDeTarjeta } from "@/lib/clipTarjeta";
 import { ArrowRight } from "lucide-react";
 import Hero from "@/components/site/Hero";
 import QueCelebras from "@/components/site/QueCelebras";
@@ -40,7 +41,7 @@ export default async function Home() {
     prisma.servicio.findMany({
       where: { activo: true, destacado: true, soloAdultos: false, fotoUrl: { not: null } },
       include: {
-        media: { where: { tipo: "VIDEO" }, orderBy: { orden: "asc" }, take: 1 },
+        media: { where: { tipo: "VIDEO" }, orderBy: { orden: "asc" }, take: 4 },
         _count: { select: { opciones: true } },
       },
       orderBy: { orden: "asc" },
@@ -60,8 +61,7 @@ export default async function Home() {
       <ShowsEstrella
         shows={destacados.map((s) => ({
           ...s,
-          videoUrl: s.media[0]?.url ?? null,
-          posterUrl: s.media[0]?.poster ?? null,
+          videos: s.media.map((m) => clipDeTarjeta(m.url, m.poster)),
           tieneOpciones: s._count.opciones > 0,
         }))}
       />

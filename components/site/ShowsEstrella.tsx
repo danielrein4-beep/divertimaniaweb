@@ -1,4 +1,5 @@
 import React from "react";
+import type { ClipTarjeta } from "@/lib/clipTarjeta";
 import SectionHeader from "@/components/ui/SectionHeader";
 import ServicioCard from "@/components/ui/ServicioCard";
 
@@ -8,8 +9,7 @@ export interface ShowEstrellaData {
   categoria: string;
   descripcion: string;
   fotoUrl: string | null;
-  videoUrl?: string | null;
-  posterUrl?: string | null;
+  videos?: ClipTarjeta[];
   edadIdeal?: string | null;
   duracion?: string | null;
   masPedido: boolean;
@@ -43,8 +43,7 @@ export default function ShowsEstrella({ shows }: { shows: ShowEstrellaData[] }) 
             categoria={show.categoria}
             descripcion={show.descripcion}
             fotoUrl={show.fotoUrl}
-            videoUrl={show.videoUrl}
-            posterUrl={show.posterUrl}
+            videos={show.videos}
             edadIdeal={show.edadIdeal}
             duracion={show.duracion}
             masPedido={show.masPedido}

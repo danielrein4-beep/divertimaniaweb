@@ -1,10 +1,29 @@
 "use client";
 
 import { fotoOptimizada } from "@/lib/fotoOptimizada";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 
 export type MediaItem = { url: string; tipo: "FOTO" | "VIDEO"; poster?: string | null };
+
+/** Video de la galería: corre solo, en bucle y sin sonido mientras su diapositiva se ve (con controles por si se quiere sonido). */
+function VideoAuto({ src, poster }: { src: string; poster?: string }) {
+  const ref = useRef<HTMLVideoElement>(null);
+  useEffect(() => {
+    const video = ref.current;
+    if (!video || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const io = new IntersectionObserver(
+      ([e]) => {
+        if (e.isIntersecting) video.play().catch(() => {});
+        else video.pause();
+      },
+      { threshold: 0.6 }
+    );
+    io.observe(video);
+    return () => io.disconnect();
+  }, []);
+  return <video ref={ref} src={src} poster={poster} controls muted loop playsInline preload="none" className="h-full w-full bg-black object-contain" />;
+}
 
 /** Galería deslizable (scroll-snap) con fotos y reels. */
 export default function FichaGaleria({ media, nombre }: { media: MediaItem[]; nombre: string }) {
@@ -33,15 +52,7 @@ export default function FichaGaleria({ media, nombre }: { media: MediaItem[]; no
         {media.map((m, i) => (
           <div key={m.url + i} className="relative h-full w-full shrink-0 snap-center overflow-hidden bg-black">
             {m.tipo === "VIDEO" ? (
-              <video
-                src={m.url}
-                poster={m.poster ? fotoOptimizada(m.poster, 1080) : undefined}
-                controls
-                muted
-                playsInline
-                preload="none"
-                className="h-full w-full bg-black object-contain"
-              />
+              <VideoAuto src={m.url} poster={m.poster ? fotoOptimizada(m.poster, 1080) : undefined} />
             ) : (
               <>
                 {/* Fondo: la misma foto muy desenfocada, para que no queden barras vacías */}
