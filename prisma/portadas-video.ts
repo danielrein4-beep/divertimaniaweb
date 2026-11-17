@@ -23,6 +23,9 @@ export const PORTADAS_VIDEO: PortadaVideo[] = [
   { clave: "sonic", nombre: "Show de Sonic", foto: "/videos/sonic-show.jpg", video: "/videos/sonic-show.mp4" },
   { clave: "minecraft", nombre: "Minecraft", foto: "/videos/minecraft-show.jpg", video: "/videos/minecraft-show.mp4" },
   { clave: "luli", nombre: "Luli Pampin", foto: "/videos/luli-pampin-show.jpg", video: "/videos/luli-pampin-show.mp4" },
+  { clave: "cristiano", nombre: "Cristiano Ronaldo", foto: "/videos/cristiano-ronaldo-show.jpg", video: "/videos/cristiano-ronaldo-show.mp4" },
+  { clave: "messi", nombre: "Messi", foto: "/videos/messi-show.jpg", video: "/videos/messi-show.mp4" },
+  { clave: "spiderman", nombre: "Spider-Man", foto: "/videos/spiderman-show.jpg", video: "/videos/spiderman-show.mp4", reemplazar: true },
   { clave: "mario", nombre: "Super Mario Bros", foto: "/videos/mario-bros-show.jpg", video: "/videos/mario-bros-show.mp4", reemplazar: true },
   { clave: "toy", nombre: "Toy Story", foto: "/videos/toy-story-1.jpg", videos: ["/videos/toy-story-1.mp4", "/videos/toy-story-2.mp4"], reemplazar: true },
 ];

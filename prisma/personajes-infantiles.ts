@@ -18,6 +18,7 @@ interface PersonajeDef {
   nombre: string;
   desde?: string;
   grupo?: string;
+  descripcion?: string;
   foto?: string;
   soloOrden?: boolean;
   variantes?: Variante[];
@@ -107,6 +108,8 @@ export const PERSONAJES: PersonajeDef[] = [
     desde: "Súper Mario",
     variantes: [{ nombre: "Mario solo" }, { nombre: "Mario y Luigi" }, { nombre: "Show completo de Super Mario Bros" }],
   },
+  { nombre: "Cristiano Ronaldo", descripcion: "Cristiano Ronaldo en persona, para jugar fútbol con los invitados y tomarse fotos en tu fiesta." },
+  { nombre: "Messi", descripcion: "Messi en persona, para jugar fútbol con los invitados y tomarse fotos en tu fiesta." },
 ];
 
 /** Idempotente: crea lo que falta, renombra lo que ya existía y solo pone variantes a las tarjetas que no tienen. */
@@ -136,7 +139,7 @@ export async function aplicarPersonajesInfantiles(prisma: PrismaClient) {
         data: {
           categoria: CATEGORIA_PERSONAJES,
           nombre: def.nombre,
-          descripcion: DESCRIPCION,
+          descripcion: def.descripcion ?? DESCRIPCION,
           fotoUrl: def.foto ?? null,
           orden,
           ocasiones: "cumpleanos",
