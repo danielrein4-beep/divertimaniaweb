@@ -47,6 +47,8 @@ const COMIDA: TarjetaDef[] = [
   {
     nombre: "Estación de Algodón de Azúcar",
     descripcion: "Un carrito de algodón de azúcar para endulzar la fiesta de grandes y chicos.",
+    foto: "/videos/estacion-algodon.jpg",
+    video: "/videos/estacion-algodon.mp4",
     heredaDe: "Carritos de Comida",
   },
   {

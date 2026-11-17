@@ -52,7 +52,6 @@ export const mediaList: Array<{
   { servicioNombre: "Espumanía", url: "/reels/reel-10.mp4", tipo: "VIDEO", poster: "/reels/posters/reel-10-poster.jpg", orden: 0 },
 
   // Video Reel Carritos de Comida / Diverti Candy
-  { servicioNombre: "Carritos de Comida", url: "/reels/reel-12.mp4", tipo: "VIDEO", poster: "/reels/posters/reel-12-poster.jpg", orden: 0 },
 
   // Fotos de eventos reales (WhatsApp, octubre 2026)
   ...galeria("Casa de Mickey Mouse", ["mickey-amigos", "mickey-minnie", "minnie-evento", "mickey-minnie-cumple", "pluto-evento"]),
@@ -70,5 +69,4 @@ export const mediaList: Array<{
   ...galeria("Show LED", ["show-led-pareja", "show-led-astronautas-2"], 20),
   { servicioNombre: "Show según temática", url: "/reels/reel-13.mp4", tipo: "VIDEO", poster: "/reels/posters/reel-13-poster.jpg", orden: 30 },
   { servicioNombre: "Show LED", url: "/reels/reel-14.mp4", tipo: "VIDEO", poster: "/reels/posters/reel-14-poster.jpg", orden: 30 },
-  { servicioNombre: "Carritos de Comida", url: "/reels/reel-15.mp4", tipo: "VIDEO", poster: "/reels/posters/reel-15-poster.jpg", orden: 30 },
 ];

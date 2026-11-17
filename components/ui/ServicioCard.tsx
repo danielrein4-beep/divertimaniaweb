@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -8,6 +8,16 @@ import { Check, ChevronRight, Clock, Plus, Users } from "lucide-react";
 import { useMiFiesta } from "@/context/MiFiestaContext";
 import PlaceholderImage from "@/components/site/PlaceholderImage";
 import { fotoOptimizada } from "@/lib/fotoOptimizada";
+import { CATEGORIAS_VIDEO_AUTO } from "@/lib/site";
+import { useConexionLigera } from "@/lib/useConexionLigera";
+
+const CONSULTA_SIN_MOVIMIENTO = "(prefers-reduced-motion: reduce)";
+const suscribirSinMovimiento = (aviso: () => void) => {
+  const mq = window.matchMedia(CONSULTA_SIN_MOVIMIENTO);
+  mq.addEventListener("change", aviso);
+  return () => mq.removeEventListener("change", aviso);
+};
+const leerSinMovimiento = () => window.matchMedia(CONSULTA_SIN_MOVIMIENTO).matches;
 
 export interface ServicioCardProps {
   id: string;
@@ -46,6 +56,29 @@ export default function ServicioCard({
   const added = isInFiesta(id);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
+  const ligera = useConexionLigera();
+
+  // Estaciones de comida: el video corre solo, en bucle y sin sonido, mientras la tarjeta se ve en pantalla.
+  // Se respeta "reducir movimiento" y el ahorro de datos; ahí queda el video de muestra con mouse.
+  const sinMovimiento = useSyncExternalStore(suscribirSinMovimiento, leerSinMovimiento, () => false);
+  const automatico = Boolean(videoUrl) && CATEGORIAS_VIDEO_AUTO.includes(categoria) && !ligera && !sinMovimiento;
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!automatico || !video) return;
+    const io = new IntersectionObserver(
+      ([e]) => {
+        if (e.isIntersecting) {
+          video.play().then(() => setIsPlaying(true)).catch(() => {});
+        } else {
+          video.pause();
+        }
+      },
+      { threshold: 0.35 }
+    );
+    io.observe(video);
+    return () => io.disconnect();
+  }, [automatico]);
 
   // Video de muestra solo con mouse (en celular no se descarga).
   const startVideo = () => {
@@ -71,8 +104,8 @@ export default function ServicioCard({
 
   return (
     <div
-      onMouseEnter={videoUrl ? startVideo : undefined}
-      onMouseLeave={videoUrl ? stopVideo : undefined}
+      onMouseEnter={videoUrl && !automatico ? startVideo : undefined}
+      onMouseLeave={videoUrl && !automatico ? stopVideo : undefined}
       className={`group relative flex flex-col overflow-hidden rounded-xl border bg-background-card transition-colors ${
         added ? "border-neon-green/70" : "border-white/10 hover:border-white/25"
       }`}
@@ -99,7 +132,7 @@ export default function ServicioCard({
             muted
             loop
             playsInline
-            preload="none"
+            preload={automatico ? "metadata" : "none"}
             aria-hidden
             className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-300 ${
               isPlaying ? "opacity-100" : "opacity-0"
