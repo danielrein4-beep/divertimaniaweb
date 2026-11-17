@@ -200,7 +200,7 @@ export const servicios: ServicioSeed[] = [
     categoria: "Personajes Infantiles",
     nombre: "Súper Mario",
     descripcion: "Mario, Luigi, Peach y Toad.",
-    fotoUrl: "/images/fiestas-infantiles-mario.jpg",
+    fotoUrl: "/videos/mario-bros-show.jpg",
     incluye: "Visita sorpresa de los personajes al cumpleaños o al lugar de la fiesta\nShow temático de Súper Mario\nTe acompañan en la hora loca (si contratas la animación)\nFotos con todos los presentes\nAcompañamiento en la torta y la piñata",
     edadIdeal: "3 a 12 años",
     duracion: "1 hora",

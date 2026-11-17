@@ -47,8 +47,10 @@ export default async function ServicioPage({ params }: { params: Promise<{ id: s
       })
     : [];
 
+  // Si la portada es el fotograma de uno de sus videos, no se repite como foto antes del video.
+  const portadaEsDeUnVideo = servicio.media.some((m) => m.tipo === "VIDEO" && m.poster === servicio.fotoUrl);
   const media: MediaItem[] = [
-    ...(servicio.fotoUrl ? [{ url: servicio.fotoUrl, tipo: "FOTO" as const }] : []),
+    ...(servicio.fotoUrl && !portadaEsDeUnVideo ? [{ url: servicio.fotoUrl, tipo: "FOTO" as const }] : []),
     ...servicio.media
       .filter((m) => m.url !== servicio.fotoUrl)
       .map((m) => ({ url: m.url, tipo: m.tipo === "VIDEO" ? ("VIDEO" as const) : ("FOTO" as const), poster: m.poster })),

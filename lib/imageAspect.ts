@@ -8,7 +8,6 @@ export const IMAGE_ASPECT: Record<string, number> = {
   "/images/bolas-disco-equipo.jpg": 1.197,
   "/images/diverti-artistas.png": 0.737,
   "/images/espumania-foam.png": 0.753,
-  "/images/fiestas-infantiles-mario.jpg": 1.171,
   "/images/frozen-olaf-elsa.jpg": 0.75,
   "/images/mickey-minnie-graduacion.jpg": 0.933,
   "/images/mickey-racer.jpg": 1.193,

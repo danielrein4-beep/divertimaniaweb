@@ -59,7 +59,6 @@ export const mediaList: Array<{
   ...galeria("Superhéroes", ["superheroes-equipo", "spiderman", "mujer-maravilla", "capitan-america"]),
   ...galeria("Show de Paw Patrol", ["paw-patrol-equipo", "paw-patrol-marshall", "paw-patrol-rubble"]),
   ...galeria("Show Granja de Zenón", ["granja-zenon-leon"]),
-  ...galeria("Súper Mario", ["princesa-peach"]),
   ...galeria("Plim Plim", ["plim-plim-evento"]),
   ...galeria("Show según temática", ["show-tematico-robots", "show-tematico-retro", "show-tematico-casa-papel", "show-tematico-terror", "show-tematico-neon"]),
   ...galeria("Show LED", ["show-led-astronautas", "show-led-bailarina"]),

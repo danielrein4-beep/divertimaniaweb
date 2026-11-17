@@ -2,7 +2,6 @@
 export const FOTOS = [
   { label: "Animación Infantil", src: "/images/animacion-infantil-conejos.png" },
   { label: "Día de Piscina Infantil", src: "/images/dia-piscina-espuma.png" },
-  { label: "Súper Mario", src: "/images/fiestas-infantiles-mario.jpg" },
   { label: "Frozen", src: "/images/frozen-olaf-elsa.jpg" },
   { label: "Casa de Mickey Mouse", src: "/images/mickey-racer.jpg" },
   { label: "Superhéroes", src: "/images/superheroes.jpg" },
