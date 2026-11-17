@@ -25,7 +25,7 @@ export const servicios: ServicioSeed[] = [
     nombre: "Animación Infantil",
     descripcion:
       "Incluye sonido e iluminación (2 cornetas, DJ, micrófono y luces LED), 2 animadores, set de pintacaritas con glitter y Divertidance (hora loca, espuma y globos mil figuras).",
-    fotoUrl: "/images/animacion-infantil-conejos.png",
+    fotoUrl: "/videos/animacion-infantil-show.jpg",
     incluye: "Sonido profesional e iluminación con DJ en vivo\n2 animadores dinámicos\nSet completo de pintacaritas con glitter\nDivertidance con hora loca, espuma y globos mil figuras\nJuegos de integración y concursos por edades",
     edadIdeal: "3 a 12 años",
     duracion: "3 horas",

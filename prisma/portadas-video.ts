@@ -26,6 +26,7 @@ export const PORTADAS_VIDEO: PortadaVideo[] = [
   { clave: "cristiano", nombre: "Cristiano Ronaldo", foto: "/videos/cristiano-ronaldo-show.jpg", video: "/videos/cristiano-ronaldo-show.mp4" },
   { clave: "messi", nombre: "Messi", foto: "/videos/messi-show.jpg", video: "/videos/messi-show.mp4" },
   { clave: "spiderman", nombre: "Spider-Man", foto: "/videos/spiderman-show.jpg", video: "/videos/spiderman-show.mp4", reemplazar: true },
+  { clave: "animacion", nombre: "Animación Infantil", foto: "/videos/animacion-infantil-show.jpg", video: "/videos/animacion-infantil-show.mp4", reemplazar: true },
   { clave: "mario", nombre: "Super Mario Bros", foto: "/videos/mario-bros-show.jpg", video: "/videos/mario-bros-show.mp4", reemplazar: true },
   { clave: "toy", nombre: "Toy Story", foto: "/videos/toy-story-1.jpg", videos: ["/videos/toy-story-1.mp4", "/videos/toy-story-2.mp4"], reemplazar: true },
 ];
