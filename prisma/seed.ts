@@ -2,6 +2,7 @@ import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcryptjs";
 import { aplicarPersonajesInfantiles } from "./personajes-infantiles";
 import { aplicarParaNinos } from "./para-ninos";
+import { ocultarTarjetas } from "./ocultos";
 import { servicios } from "./datos/servicios";
 import { recursos } from "./datos/recursos";
 import { recreadores } from "./datos/equipo";
@@ -105,6 +106,9 @@ async function main() {
 
   // Para Niños y Estaciones de Comida: estaciones separadas y carritos de comida
   await aplicarParaNinos(prisma);
+
+  // Tarjetas que se quitaron del sitio
+  await ocultarTarjetas(prisma);
 
   // Dinámicas de Baby Shower
   const babyShowerId = createdServices["Baby Shower o Revelación de Género"];
