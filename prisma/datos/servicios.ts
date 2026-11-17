@@ -67,7 +67,7 @@ export const servicios: ServicioSeed[] = [
     nombre: "Espumanía",
     descripcion:
       "Único en la ciudad: cañón de espuma con 2 lanzamientos, 2 operadores y líquido especial. Ideal para días de piscina (requiere buen servicio eléctrico).",
-    fotoUrl: "/images/espumania-foam.png",
+    fotoUrl: "/videos/espumania-show.jpg",
     incluye: "Cañón de alta potencia Divertimania\n2 lanzamientos masivos de espuma blanca hipoalergénica\n2 operadores técnicos en sitio\nLíquido especial biodegradable y no irritante\nMusicalización especial durante la descarga",
     edadIdeal: "Todas las edades",
     duracion: "45 minutos",
