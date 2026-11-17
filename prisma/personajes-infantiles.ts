@@ -90,9 +90,10 @@ export const PERSONAJES: PersonajeDef[] = [
     nombre: "Super Mario Bros",
     desde: "Súper Mario",
   },
-  { nombre: "Neon Party", descripcion: "Neon Party para tu fiesta." },
+  { nombre: "Neon Party", descripcion: "La diversión más vibrante y brillante para cualquier evento corporativo o evento de adultos." },
   { nombre: "Bright Monsters", descripcion: "Monstruos brillantes en cuatro colores: uno plateado, uno dorado, uno azul y uno morado." },
-  { nombre: "Diverticandi", descripcion: "Diverticandi para tu fiesta." },
+  { nombre: "Diverticandy", descripcion: "Diverticandy acompaña a tus niños durante toda la fiesta y les da los mejores caramelos. ¡Diversión y dulzura en un solo show!" },
+  { nombre: "Space Glitter", descripcion: "Space Glitter son nuestras chicas que van a tu evento y le llenan de brillo la noche." },
   { nombre: "Cristiano Ronaldo", descripcion: "Cristiano Ronaldo en persona, para jugar fútbol con los invitados y tomarse fotos en tu fiesta." },
   { nombre: "Messi", descripcion: "Messi en persona, para jugar fútbol con los invitados y tomarse fotos en tu fiesta." },
 ];

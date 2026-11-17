@@ -24,10 +24,10 @@ export const PERSONAJES_INFANTILES = [
   "Show de Sonic", "Minecraft",
   "Messi", "Cristiano Ronaldo",
   "Luli Pampin", "Conejo de Pascua",
-  "Neon Party", "Bright Monsters", "Diverticandi",
+  "Bright Monsters", "Diverticandy",
 ];
 
-export const PERSONAJES_ADULTOS = ["Bolas Disco", "Show LED", "Show según temática", "El Chacal de la Trompeta"];
+export const PERSONAJES_ADULTOS = ["Bolas Disco", "Show LED", "Show según temática", "El Chacal de la Trompeta", "Neon Party", "Space Glitter"];
 
 export const SERVICIOS = [
   "Animación Infantil", "Espumanía", "Día de Piscina Infantil", "Diverti Artistas",
