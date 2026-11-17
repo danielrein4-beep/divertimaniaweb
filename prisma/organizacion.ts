@@ -17,8 +17,8 @@ export const SECCIONES = [
 
 /** Lo más pedido primero y luego por familia (Disney, superhéroes, TV, videojuegos, fútbol, otros). */
 export const PERSONAJES_INFANTILES = [
-  "Princesas Disney", "Super Mario Bros", "Casa de Mickey Mouse", "Show de Superhéroes",
-  "Encanto", "Campanita (Tinkerbell)", "Hada", "Lilo y Stitch", "Zootopia", "Minnie Mouse", "Toy Story",
+  "Princesas Disney", "Super Mario Bros", "Mickey Mouse", "Mickey y Minnie Mouse", "Minnie Mouse", "Casa de Mickey Mouse", "Show de Superhéroes",
+  "Encanto", "Campanita (Tinkerbell)", "Hada", "Lilo y Stitch", "Zootopia", "Toy Story",
   "Spider-Man", "La Mujer Maravilla",
   "Show de Paw Patrol", "Peppa y George", "Plim Plim", "Show Granja de Zenón", "Blippi", "Muñecas LOL",
   "Show de Sonic", "Minecraft",

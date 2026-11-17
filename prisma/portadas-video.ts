@@ -30,6 +30,8 @@ export const PORTADAS_VIDEO: PortadaVideo[] = [
   { clave: "espumania", nombre: "Espumanía", foto: "/videos/espumania-show.jpg", video: "/videos/espumania-show.mp4", reemplazar: true },
   { clave: "mario", nombre: "Super Mario Bros", foto: "/videos/mario-bros-show.jpg", video: "/videos/mario-bros-show.mp4", reemplazar: true },
   { clave: "hamster", nombre: "Pelotas Hámster", foto: "/videos/pelotas-hamster-show.jpg", video: "/videos/pelotas-hamster-show.mp4" },
+  { clave: "mickey", nombre: "Mickey Mouse", foto: "/videos/mickey-show.jpg", video: "/videos/mickey-show.mp4", reemplazar: true },
+  { clave: "mickey_minnie", nombre: "Mickey y Minnie Mouse", foto: "/videos/mickey-minnie-show.jpg", video: "/videos/mickey-minnie-show.mp4", reemplazar: true },
   { clave: "minnie", nombre: "Minnie Mouse", foto: "/videos/minnie-show.jpg", video: "/videos/minnie-show.mp4", reemplazar: true },
   { clave: "toy", nombre: "Toy Story", foto: "/videos/toy-story-1.jpg", videos: ["/videos/toy-story-1.mp4", "/videos/toy-story-2.mp4"], reemplazar: true },
 ];
