@@ -59,7 +59,7 @@ export default function VistaPreviaSecciones({ secciones, version }: { secciones
             className="hidden h-[640px] w-full bg-white md:block"
           />
           <div className="flex items-center justify-between gap-3 border-t border-white/[0.07] px-4 py-3">
-            <p className="text-xs text-muted">Se actualiza solo con cada cambio que guardas.</p>
+            <p className="text-xs text-muted">Catálogo diseñado 2026. Los cambios que guardas salen al momento en la web; el PDF se renueva cuando se pide un diseño nuevo.</p>
             <a
               href="/catalogo/pdf"
               target="_blank"
