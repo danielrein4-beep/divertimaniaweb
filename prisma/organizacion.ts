@@ -24,6 +24,7 @@ export const PERSONAJES_INFANTILES = [
   "Show de Sonic", "Minecraft",
   "Messi", "Cristiano Ronaldo",
   "Luli Pampin", "Conejo de Pascua",
+  "Neon Party", "Bright Monsters", "Diverticandi",
 ];
 
 export const PERSONAJES_ADULTOS = ["Bolas Disco", "Show LED", "Show según temática", "El Chacal de la Trompeta"];

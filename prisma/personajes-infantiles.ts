@@ -90,6 +90,9 @@ export const PERSONAJES: PersonajeDef[] = [
     nombre: "Super Mario Bros",
     desde: "Súper Mario",
   },
+  { nombre: "Neon Party", descripcion: "Neon Party para tu fiesta." },
+  { nombre: "Bright Monsters", descripcion: "Monstruos brillantes en cuatro colores: uno plateado, uno dorado, uno azul y uno morado." },
+  { nombre: "Diverticandi", descripcion: "Diverticandi para tu fiesta." },
   { nombre: "Cristiano Ronaldo", descripcion: "Cristiano Ronaldo en persona, para jugar fútbol con los invitados y tomarse fotos en tu fiesta." },
   { nombre: "Messi", descripcion: "Messi en persona, para jugar fútbol con los invitados y tomarse fotos en tu fiesta." },
 ];
