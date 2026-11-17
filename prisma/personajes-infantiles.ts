@@ -57,7 +57,6 @@ export const PERSONAJES: PersonajeDef[] = [
   {
     nombre: "Spider-Man",
     foto: "/images/spiderman.jpg",
-    variantes: [{ nombre: "Spider-Man solo" }, { nombre: "Spider-Man con otros superhéroes" }, { nombre: "Show de superhéroes" }],
   },
   {
     nombre: "La Mujer Maravilla",
