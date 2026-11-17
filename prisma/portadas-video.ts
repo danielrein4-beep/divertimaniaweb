@@ -35,6 +35,8 @@ export const PORTADAS_VIDEO: PortadaVideo[] = [
   { clave: "minnie", nombre: "Minnie Mouse", foto: "/videos/minnie-show.jpg", video: "/videos/minnie-show.mp4", reemplazar: true },
   { clave: "arabes", nombre: "Bailarinas Árabes", foto: "/videos/bailarinas-arabes-show.jpg", video: "/videos/bailarinas-arabes-show.mp4" },
   { clave: "diverticandy", nombre: "Diverticandy", foto: "/videos/diverticandy-show.jpg", video: "/videos/diverticandy-show.mp4", reemplazar: true },
+  { clave: "neon", nombre: "Neon Party", foto: "/videos/neon-party-show.jpg", video: "/videos/neon-party-show.mp4", reemplazar: true },
+  { clave: "glitter", nombre: "Space Glitter", foto: "/videos/space-glitter-show.jpg", video: "/videos/space-glitter-show.mp4", reemplazar: true },
   { clave: "toy", nombre: "Toy Story", foto: "/videos/toy-story-1.jpg", videos: ["/videos/toy-story-1.mp4", "/videos/toy-story-2.mp4"], reemplazar: true },
 ];
 
