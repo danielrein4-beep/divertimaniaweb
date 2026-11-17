@@ -26,7 +26,13 @@ const NINOS: TarjetaDef[] = [
     nombre: "Estación de Galletas",
     descripcion: "Los niños decoran sus propias galletas y se las llevan de recuerdo de la fiesta.",
   },
-  { nombre: "Pelotas Boom (Bolas de Hámster)", desde: "Pelotas Boom" },
+  { nombre: "Pelotas Boom", desde: "Pelotas Boom (Bolas de Hámster)" },
+  {
+    nombre: "Pelotas Hámster",
+    descripcion: "Los niños caminan y ruedan sobre el agua dentro de pelotas transparentes gigantes, en la piscina de tu fiesta.",
+    foto: "/videos/pelotas-hamster-show.jpg",
+    video: "/videos/pelotas-hamster-show.mp4",
+  },
   { nombre: "Castillos Inflables" },
   { nombre: "Trampolines" },
 ];

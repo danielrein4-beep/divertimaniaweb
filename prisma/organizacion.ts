@@ -30,7 +30,7 @@ export const PERSONAJES_ADULTOS = ["Bolas Disco", "Show LED", "Show según temá
 
 export const SERVICIOS = [
   "Animación Infantil", "Espumanía", "Día de Piscina Infantil", "Diverti Artistas",
-  "Pelotas Boom (Bolas de Hámster)", "Castillos Inflables", "Estación de Pulseras", "Estación de Galletas",
+  "Pelotas Boom", "Pelotas Hámster", "Castillos Inflables", "Estación de Pulseras", "Estación de Galletas",
   "Estación de Cotufas", "Estación de Algodón de Azúcar", "Estación de Perros Calientes",
 ];
 
