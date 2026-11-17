@@ -42,7 +42,7 @@ export default async function ServicioPage({ params }: { params: Promise<{ id: s
   const relacionados = relacionadosIds.length
     ? await prisma.servicio.findMany({
         where: { id: { in: relacionadosIds }, soloAdultos: false, activo: true },
-        include: { _count: { select: { opciones: true } } },
+        include: { _count: { select: { opciones: { where: { tipo: "VARIANTE" } } } } },
         take: 3,
       })
     : [];

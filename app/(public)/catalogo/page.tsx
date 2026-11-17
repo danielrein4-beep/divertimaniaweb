@@ -35,7 +35,7 @@ export default async function CatalogoPage({
       orderBy: { orden: "asc" },
       include: {
         media: { where: { tipo: "VIDEO" }, orderBy: { orden: "asc" }, take: 4 },
-        _count: { select: { opciones: true } },
+        _count: { select: { opciones: { where: { tipo: "VARIANTE" } } } },
       },
     }),
     getCategorias(),

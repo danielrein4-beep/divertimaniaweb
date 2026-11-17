@@ -48,7 +48,7 @@ export default async function PaginaFiesta({ params }: Props) {
       orderBy: [{ masPedido: "desc" }, { orden: "asc" }],
       include: {
         media: { orderBy: { orden: "asc" } },
-        _count: { select: { opciones: true } },
+        _count: { select: { opciones: { where: { tipo: "VARIANTE" } } } },
       },
     }),
     prisma.configuracionSitio.findUnique({ where: { id: "principal" }, select: { preciosPaquetes: true } }),

@@ -42,7 +42,7 @@ export default async function Home() {
       where: { activo: true, destacado: true, soloAdultos: false, fotoUrl: { not: null } },
       include: {
         media: { where: { tipo: "VIDEO" }, orderBy: { orden: "asc" }, take: 4 },
-        _count: { select: { opciones: true } },
+        _count: { select: { opciones: { where: { tipo: "VARIANTE" } } } },
       },
       orderBy: { orden: "asc" },
       take: 4,
