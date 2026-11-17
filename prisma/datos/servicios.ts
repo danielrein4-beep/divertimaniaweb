@@ -274,18 +274,6 @@ export const servicios: ServicioSeed[] = [
   },
   {
     categoria: "Personajes Infantiles",
-    nombre: "Barbie",
-    descripcion: "La muñeca más famosa del mundo, en persona.",
-    incluye: "Visita sorpresa de los personajes al cumpleaños o al lugar de la fiesta\nShow temático de Barbie\nTe acompañan en la hora loca (si contratas la animación)\nFotos con todos los presentes\nAcompañamiento en la torta y la piñata",
-    edadIdeal: "4 a 10 años",
-    duracion: "1 hora",
-    masPedido: false,
-    destacado: false,
-    soloAdultos: false,
-    ocasiones: "cumpleanos",
-  },
-  {
-    categoria: "Personajes Infantiles",
     nombre: "Princesas Disney",
     descripcion:
       "Sirenita (Ariel, Sebastián, Úrsula), Aladdín (Jazmín, Genio, Jafar), Frozen (Elsa, Ana, Olaf), Aurora, Maléfica, Cenicienta, Blanca Nieves y Moana.",

@@ -162,7 +162,7 @@ export async function aplicarPersonajesInfantiles(prisma: PrismaClient) {
     conVariantes++;
   }
 
-  // El resto de personajes de la sección (Toy Story, Sonic, Barbie…) queda después, en su orden.
+  // El resto de personajes de la sección (Toy Story, Sonic…) queda después, en su orden.
   const resto = await prisma.servicio.findMany({
     where: { categoria: CATEGORIA_PERSONAJES, id: { notIn: usados } },
     orderBy: { orden: "asc" },
