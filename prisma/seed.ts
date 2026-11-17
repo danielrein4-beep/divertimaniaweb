@@ -63,7 +63,7 @@ async function main() {
     "Súper Mario": ["Animación Infantil", "Castillos Inflables", "Pelotas Boom"],
     "Bolas Disco": ["Show LED", "El Chacal de la Trompeta", "Espumanía"],
     "Show LED": ["Bolas Disco", "Show según temática", "El Chacal de la Trompeta"],
-    "Baby Shower o Revelación de Género": ["Estación Creativa", "Carritos de Comida", "Oso Cariñoso"],
+    "Baby Shower o Revelación de Género": ["Estación Creativa", "Carritos de Comida"],
     "Pelotas Boom": ["Espumanía", "Castillos Inflables", "Día de Piscina Infantil"],
   };
 

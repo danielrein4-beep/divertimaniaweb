@@ -185,18 +185,6 @@ export const servicios: ServicioSeed[] = [
   },
   {
     categoria: "Personajes Infantiles",
-    nombre: "Oso Cariñoso",
-    descripcion: "El clásico Oso Cariñoso para tu evento.",
-    incluye: "Visita sorpresa de los personajes al cumpleaños o al lugar de la fiesta\nShow temático del Oso Cariñoso\nTe acompañan en la hora loca (si contratas la animación)\nFotos con todos los presentes\nAcompañamiento en la torta y la piñata",
-    edadIdeal: "1 a 5 años",
-    duracion: "1 hora",
-    masPedido: false,
-    destacado: false,
-    soloAdultos: false,
-    ocasiones: "cumpleanos,baby-shower",
-  },
-  {
-    categoria: "Personajes Infantiles",
     nombre: "Conejo de Pascua",
     descripcion: "Perfecto para celebraciones de Semana Santa y eventos primaverales.",
     fotoUrl: "/images/pascua-conejos-recreacion.png",
