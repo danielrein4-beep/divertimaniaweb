@@ -39,6 +39,7 @@ export const PORTADAS_VIDEO: PortadaVideo[] = [
   { clave: "glitter", nombre: "Space Glitter", foto: "/videos/space-glitter-show.jpg", video: "/videos/space-glitter-show.mp4", reemplazar: true },
   { clave: "toy", nombre: "Toy Story", foto: "/videos/toy-story-1.jpg", videos: ["/videos/toy-story-1.mp4", "/videos/toy-story-2.mp4"], reemplazar: true },
   { clave: "bright", nombre: "Bright Monsters", foto: "/videos/bright-monsters-1.jpg", videos: ["/videos/bright-monsters-1.mp4", "/videos/bright-monsters-2.mp4", "/videos/bright-monsters-3.mp4"], reemplazar: true },
+  { clave: "kpop", nombre: "Guerreras K-Pop", foto: "/videos/guerreras-kpop-show.jpg", video: "/videos/guerreras-kpop-show.mp4", reemplazar: true },
 ];
 
 /** Idempotente: pone la portada si falta (o siempre, si reemplaza) y deja los videos primero en la galería de la tarjeta. */
