@@ -6,7 +6,7 @@ import sharp from "sharp";
 import QRCode from "qrcode";
 import { prisma } from "@/lib/db";
 import { getCategorias } from "@/lib/categorias";
-import { getConfigSitio } from "@/lib/configSitio";
+import { getConfigSitio, numerosWhatsApp } from "@/lib/configSitio";
 import { buildWhatsAppLink, formatTelefono } from "@/lib/telefono";
 import { UPLOADS_DIR } from "@/lib/uploads";
 
@@ -27,6 +27,8 @@ export type SeccionPdf = { nombre: string; color: string; servicios: ServicioPdf
 export type CatalogoPdf = {
   secciones: SeccionPdf[];
   whatsappTexto: string;
+  /** Todos los números de WhatsApp, separados por « · » (el catálogo en PDF no puede preguntar a cuál escribir). */
+  whatsappTextoTodos: string;
   whatsappQr: Buffer;
   logo: Buffer;
 };
@@ -61,11 +63,11 @@ export async function leerFilas() {
     }),
     getConfigSitio(),
   ]);
-  return { categorias, servicios, whatsapp: config.whatsapp };
+  return { categorias, servicios, whatsapp: config.whatsapp, numeros: numerosWhatsApp(config) };
 }
 
 export async function armarCatalogo(filas: Awaited<ReturnType<typeof leerFilas>>): Promise<CatalogoPdf> {
-  const { categorias, servicios, whatsapp } = filas;
+  const { categorias, servicios, whatsapp, numeros } = filas;
   const fotos = await Promise.all(servicios.map((s) => fotoLiviana(s.fotoUrl)));
   const porId = new Map(servicios.map((s, i) => [s.id, fotos[i]]));
 
@@ -95,6 +97,7 @@ export async function armarCatalogo(filas: Awaited<ReturnType<typeof leerFilas>>
   return {
     secciones,
     whatsappTexto: formatTelefono(whatsapp),
+    whatsappTextoTodos: numeros.map(formatTelefono).join("  ·  "),
     whatsappQr: await QRCode.toBuffer(enlace, { margin: 1, width: 360, color: { dark: "#0b0b0b", light: "#ffffff" } }),
     logo: await readFile(path.join(process.cwd(), "public", "logo.png")),
   };

@@ -20,7 +20,7 @@ export default async function AjustesPage() {
     <div>
       <Encabezado grupo="Sitio" titulo="Ajustes" descripcion="Datos de contacto del sitio y acceso al panel. Los cambios se ven apenas guardas." />
       <div className="flex max-w-2xl flex-col gap-6">
-        <AjustesForm whatsappInicial={config.whatsapp} />
+        <AjustesForm whatsappInicial={config.whatsapp} whatsapp2Inicial={config.whatsapp2 ?? ""} />
         <AjustesReservas cuentasIniciales={cuentas.cuentas} textoAnterior={cuentas.textoLibre} eventosPorDiaInicial={reservas?.eventosPorDia ?? 3} />
         <EstadoAvisoCorreo />
         <CambiarClave />

@@ -2,6 +2,7 @@
 
 import { createContext, useCallback, useContext, useMemo, useRef, useState, useSyncExternalStore, type ReactNode } from "react";
 import { useWhatsApp } from "@/components/site/SitioConfigProvider";
+import { EVENTO_ELEGIR_WHATSAPP } from "@/components/site/ElegirWhatsApp";
 import { useToast } from "@/components/ui/Toast";
 import {
   buildMensajeCotizacion,
@@ -41,7 +42,12 @@ interface MiFiestaContextValue {
 const MiFiestaContext = createContext<MiFiestaContextValue | null>(null);
 
 // Se abre en el mismo clic (sin await antes) para que el navegador no lo bloquee.
-function abrirWhatsApp(link: string) {
+function abrirWhatsApp(link: string, elegir = false) {
+  // Con dos números se deja que la persona elija a cuál escribir.
+  if (elegir) {
+    window.dispatchEvent(new CustomEvent(EVENTO_ELEGIR_WHATSAPP, { detail: link }));
+    return;
+  }
   if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
     window.location.href = link;
   } else {
@@ -128,7 +134,7 @@ export function MiFiestaProvider({ children }: { children: ReactNode }) {
   const sendWhatsAppCotizacion = useCallback(() => {
     const { items: actuales, form: datos } = miFiestaStore.getSnapshot();
     const mensaje = buildMensajeCotizacion(actuales, datos);
-    abrirWhatsApp(whatsapp.link(mensaje));
+    abrirWhatsApp(whatsapp.link(mensaje), whatsapp.numeros.length > 1);
     setIsEnviado(true);
 
     // Copia para la bandeja del admin, sin bloquear la apertura de WhatsApp.
@@ -161,7 +167,7 @@ export function MiFiestaProvider({ children }: { children: ReactNode }) {
 
   const reabrirWhatsApp = useCallback(() => {
     const { items: actuales, form: datos } = miFiestaStore.getSnapshot();
-    abrirWhatsApp(whatsapp.link(buildMensajeCotizacion(actuales, datos)));
+    abrirWhatsApp(whatsapp.link(buildMensajeCotizacion(actuales, datos)), whatsapp.numeros.length > 1);
   }, [whatsapp]);
 
   const value = useMemo<MiFiestaContextValue>(

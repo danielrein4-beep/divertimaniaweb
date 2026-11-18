@@ -71,3 +71,16 @@ describe("listas separadas por comas del editor de servicio", () => {
     expect(leerLista(" boda , quince ,")).toEqual(["boda", "quince"]);
   });
 });
+
+describe("dos números de WhatsApp", () => {
+  it("lista los números sin repetir ni vacíos", async () => {
+    const { numerosWhatsApp } = await import("@/lib/configSitio");
+    expect(numerosWhatsApp({ whatsapp: "584147286881", whatsapp2: "584247435744" })).toEqual(["584147286881", "584247435744"]);
+    expect(numerosWhatsApp({ whatsapp: "584147286881", whatsapp2: null })).toEqual(["584147286881"]);
+    expect(numerosWhatsApp({ whatsapp: "584147286881", whatsapp2: "584147286881" })).toEqual(["584147286881"]);
+  });
+  it("normaliza el segundo número tal como lo escribiría el equipo", () => {
+    expect(normalizarTelefono("0424-743.5744")).toBe("584247435744");
+    expect(formatTelefono("584247435744")).toBe("+58 424-743-5744");
+  });
+});

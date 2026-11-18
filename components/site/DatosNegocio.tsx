@@ -2,7 +2,7 @@ import { INSTAGRAM_URL } from "@/lib/site";
 import { SITE_URL } from "@/lib/negocio";
 
 /** Ficha del negocio para Google (schema.org): nombre, teléfono, zona y redes. */
-export default function DatosNegocio({ whatsapp }: { whatsapp: string }) {
+export default function DatosNegocio({ numeros }: { numeros: string[] }) {
   const datos = {
     "@context": "https://schema.org",
     "@type": "EntertainmentBusiness",
@@ -10,7 +10,7 @@ export default function DatosNegocio({ whatsapp }: { whatsapp: string }) {
     url: SITE_URL,
     logo: `${SITE_URL}/logo-square.png`,
     image: `${SITE_URL}/og.jpg`,
-    telephone: `+${whatsapp}`,
+    telephone: numeros.map((n) => `+${n}`),
     address: { "@type": "PostalAddress", addressLocality: "San Cristóbal", addressRegion: "Táchira", addressCountry: "VE" },
     areaServed: { "@type": "Country", name: "Venezuela" },
     sameAs: [INSTAGRAM_URL],

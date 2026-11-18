@@ -1,6 +1,8 @@
 // Número de WhatsApp: se guarda solo con dígitos (código de país incluido) y se muestra formateado.
 
 export const WHATSAPP_POR_DEFECTO = "584147286881";
+/** Segundo número de WhatsApp: se ofrece junto al primero; el cliente elige a cuál escribir. */
+export const WHATSAPP2_POR_DEFECTO = "584247435744";
 
 /** "+58 414-728.6881" -> "584147286881"; convierte "0414..." al formato internacional de Venezuela. */
 export function normalizarTelefono(valor: string): string {

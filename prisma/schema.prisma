@@ -171,6 +171,7 @@ model AdminUser {
 model ConfiguracionSitio {
   id            String   @id @default("principal")
   whatsapp      String // solo dígitos con código de país, ej. 584147286881
+  whatsapp2     String? // segundo número (opcional): el cliente elige a cuál escribir
   datosPago     String? // cuentas para el anticipo (pago móvil, Zelle…), las ve el cliente en su reserva
   eventosPorDia Int      @default(3) // tope de fiestas por día para ofrecer una fecha como disponible
   cifras          String? // JSON {fiestas, anios, ciudades}: números de confianza del Inicio (vacío = no se muestran)

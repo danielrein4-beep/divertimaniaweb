@@ -157,7 +157,7 @@ async function main() {
   await prisma.configuracionSitio.upsert({
     where: { id: "principal" },
     update: {},
-    create: { id: "principal", whatsapp: "584147286881" },
+    create: { id: "principal", whatsapp: "584147286881", whatsapp2: "584247435744" },
   });
 
   // En el servidor la clave inicial sale de ADMIN_CLAVE_INICIAL (variable de Coolify, nunca en el código).

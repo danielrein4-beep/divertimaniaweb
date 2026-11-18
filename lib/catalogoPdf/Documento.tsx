@@ -99,7 +99,7 @@ export default function DocumentoCatalogo({ datos, sitio }: { datos: CatalogoPdf
         <Text style={s.subtitulo}>Personajes, shows y animación para toda clase de celebraciones</Text>
         <Text style={[s.subtitulo, { color: C.lima, fontSize: 11, marginTop: 14 }]}>{COBERTURA.titulo}</Text>
         <Text style={{ position: "absolute", bottom: 64, left: 0, right: 0, textAlign: "center", fontSize: 11 }}>
-          WhatsApp {datos.whatsappTexto}  ·  @{INSTAGRAM_HANDLE}{web}
+          WhatsApp {datos.whatsappTextoTodos}  ·  @{INSTAGRAM_HANDLE}{web}
         </Text>
       </Page>
 
@@ -127,7 +127,7 @@ export default function DocumentoCatalogo({ datos, sitio }: { datos: CatalogoPdf
         ))}
         <View style={s.pie} fixed>
           <Text>Divertimania · Catálogo {anio}</Text>
-          <Text>Cotiza por WhatsApp {datos.whatsappTexto}</Text>
+          <Text>Cotiza por WhatsApp {datos.whatsappTextoTodos}</Text>
           <Text render={({ pageNumber }) => `${pageNumber}`} />
         </View>
       </Page>
@@ -139,7 +139,7 @@ export default function DocumentoCatalogo({ datos, sitio }: { datos: CatalogoPdf
           {/* eslint-disable-next-line jsx-a11y/alt-text -- Image de react-pdf, no lleva alt */}
           <Image src={{ data: datos.whatsappQr, format: "png" }} style={{ width: 200, height: 200 }} />
         </View>
-        <Text style={{ fontFamily: "Baloo", fontWeight: 800, fontSize: 20, color: C.lima, marginTop: 20 }}>{datos.whatsappTexto}</Text>
+        <Text style={{ fontFamily: "Baloo", fontWeight: 800, fontSize: datos.whatsappTextoTodos.length > 20 ? 15 : 20, color: C.lima, marginTop: 20 }}>{datos.whatsappTextoTodos}</Text>
         <Text style={[s.subtitulo, { fontSize: 11 }]}>@{INSTAGRAM_HANDLE}{web}</Text>
         <Text style={[s.subtitulo, { fontSize: 10, color: C.suave, marginTop: 18, maxWidth: 380 }]}>{COBERTURA.texto}</Text>
       </Page>

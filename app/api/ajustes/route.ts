@@ -12,6 +12,12 @@ const schema = z.object({
     .transform(normalizarTelefono)
     .refine(esTelefonoValido, "Escribe el número completo con código de país, por ejemplo 58 414 728 6881")
     .optional(),
+  // Segundo número (opcional): vacío lo quita.
+  whatsapp2: z
+    .string()
+    .transform((v) => (v.trim() ? normalizarTelefono(v) : ""))
+    .refine((v) => v === "" || esTelefonoValido(v), "El segundo número no está completo: escríbelo con código de país, por ejemplo 58 424 743 5744")
+    .optional(),
   // Reservas: cuentas para cobrar (por método) y cuántas fiestas por día se aceptan.
   cuentasPago: cuentasSchema.optional(),
   // Confianza: cifras del Inicio y precios «desde» de los paquetes.
@@ -30,7 +36,7 @@ export async function PUT(request: NextRequest) {
     return NextResponse.json({ error: parsed.error.issues[0]?.message ?? "Datos inválidos" }, { status: 400 });
   }
 
-  const { whatsapp, cuentasPago, eventosPorDia, cifras, preciosPaquetes } = parsed.data;
+  const { whatsapp, whatsapp2, cuentasPago, eventosPorDia, cifras, preciosPaquetes } = parsed.data;
   const reservas = {
     ...(cuentasPago ? { datosPago: JSON.stringify(cuentasPago) } : {}),
     ...(eventosPorDia ? { eventosPorDia } : {}),
@@ -40,8 +46,8 @@ export async function PUT(request: NextRequest) {
   const actual = await prisma.configuracionSitio.findUnique({ where: { id: "principal" } });
   const config = await prisma.configuracionSitio.upsert({
     where: { id: "principal" },
-    update: { ...(whatsapp ? { whatsapp } : {}), ...reservas },
-    create: { id: "principal", whatsapp: whatsapp ?? actual?.whatsapp ?? WHATSAPP_POR_DEFECTO, ...reservas },
+    update: { ...(whatsapp ? { whatsapp } : {}), ...(whatsapp2 !== undefined ? { whatsapp2: whatsapp2 || null } : {}), ...reservas },
+    create: { id: "principal", whatsapp: whatsapp ?? actual?.whatsapp ?? WHATSAPP_POR_DEFECTO, whatsapp2: whatsapp2 || null, ...reservas },
   });
   return NextResponse.json({ config });
 }

@@ -8,6 +8,7 @@ import { MiFiestaProvider } from "@/context/MiFiestaContext";
 import MiFiestaBar from "@/components/mifiesta/MiFiestaBar";
 import MiFiestaSheet from "@/components/mifiesta/MiFiestaSheet";
 import Medidor from "@/components/site/Medidor";
+import ElegirWhatsApp from "@/components/site/ElegirWhatsApp";
 
 export default function PublicProviders({ config, children }: { config: ConfigSitio; children: ReactNode }) {
   return (
@@ -18,6 +19,7 @@ export default function PublicProviders({ config, children }: { config: ConfigSi
           <MiFiestaBar />
           <MiFiestaSheet />
           <Medidor />
+          <ElegirWhatsApp />
         </MiFiestaProvider>
       </ToastProvider>
     </SitioConfigProvider>

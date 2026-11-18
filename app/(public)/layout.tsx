@@ -2,7 +2,7 @@ import Navbar from "@/components/site/Navbar";
 import Footer from "@/components/site/Footer";
 import WhatsAppButton from "@/components/site/WhatsAppButton";
 import PublicProviders from "@/components/mifiesta/PublicProviders";
-import { getConfigSitio } from "@/lib/configSitio";
+import { getConfigSitio, numerosWhatsApp } from "@/lib/configSitio";
 import DatosNegocio from "@/components/site/DatosNegocio";
 
 // Lee los ajustes del sitio (número de WhatsApp) en cada request para reflejar los cambios del admin.
@@ -12,7 +12,7 @@ export default async function PublicLayout({ children }: { children: React.React
   const config = await getConfigSitio();
   return (
     <PublicProviders config={config}>
-      <DatosNegocio whatsapp={config.whatsapp} />
+      <DatosNegocio numeros={numerosWhatsApp(config)} />
       <Navbar />
       <main className="flex-1">{children}</main>
       <Footer />
