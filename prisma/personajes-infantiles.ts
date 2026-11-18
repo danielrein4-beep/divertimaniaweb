@@ -95,7 +95,7 @@ export const PERSONAJES: PersonajeDef[] = [
   { nombre: "Diverticandy", descripcion: "Diverticandy acompaña a tus niños durante toda la fiesta y les da los mejores caramelos. ¡Diversión y dulzura en un solo show!" },
   { nombre: "Space Glitter", descripcion: "Space Glitter son nuestras chicas que van a tu evento y le llenan de brillo la noche." },
   { nombre: "Guerreras K-Pop", descripcion: "Guerreras K-Pop para tu fiesta." },
-  { nombre: "Catrinas", descripcion: "Catrinas para tu fiesta." },
+  { nombre: "Catrinas", descripcion: "Catrinas y Catrines, pueden ser mujeres u hombres, con el maquillaje y el vestuario más elegante del Día de Muertos. Reciben a tus invitados, sirven los tragos y llenan de misterio y color tu evento de adultos." },
   { nombre: "Robots", descripcion: "Robots para tu fiesta." },
   { nombre: "Daft Punk", descripcion: "Daft Punk para tu fiesta." },
   { nombre: "La Casa de Papel", descripcion: "La Casa de Papel para tu fiesta." },
