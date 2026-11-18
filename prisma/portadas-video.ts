@@ -20,7 +20,7 @@ export const PORTADAS_VIDEO: PortadaVideo[] = [
   { clave: "lilo", nombre: "Lilo y Stitch", foto: "/videos/lilo-stitch-show.jpg", video: "/videos/lilo-stitch-show.mp4" },
   { clave: "hada", nombre: "Hada", foto: "/videos/hada-show.jpg", video: "/videos/hada-show.mp4" },
   { clave: "zootopia", nombre: "Zootopia", foto: "/videos/zootopia-show-4x5.jpg", video: "/videos/zootopia-show-4x5.mp4" },
-  { clave: "sonic", nombre: "Show de Sonic", foto: "/videos/sonic-show.jpg", video: "/videos/sonic-show.mp4" },
+  { clave: "sonic", nombre: "Show de Sonic", foto: "/videos/sonic-show-4x5.jpg", video: "/videos/sonic-show-4x5.mp4" },
   { clave: "minecraft", nombre: "Minecraft", foto: "/videos/minecraft-show.jpg", video: "/videos/minecraft-show.mp4" },
   { clave: "luli", nombre: "Luli Pampin", foto: "/videos/luli-pampin-show.jpg", video: "/videos/luli-pampin-show.mp4" },
   { clave: "cristiano", nombre: "Cristiano Ronaldo", foto: "/videos/cristiano-ronaldo-show.jpg", video: "/videos/cristiano-ronaldo-show.mp4" },
