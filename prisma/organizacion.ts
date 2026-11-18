@@ -27,7 +27,7 @@ export const PERSONAJES_INFANTILES = [
   "Bright Monsters", "Diverticandy", "Guerreras K-Pop", "La Casa de Papel",
 ];
 
-export const PERSONAJES_ADULTOS = ["Bolas Disco", "Show LED", "Show según temática", "El Chacal de la Trompeta", "Neon Party", "Space Glitter", "Catrinas", "Robots", "Daft Punk", "Bailarinas Árabes"];
+export const PERSONAJES_ADULTOS = ["Bolas Disco", "Show LED", "Show según temática", "El Chacal de la Trompeta", "Neon Party", "Space Glitter", "Catrinas", "Robots", "Daft Punk", "Bailarinas Árabes", "Garotas", "Robots Tamboreros"];
 
 export const SERVICIOS = [
   "Animación Infantil", "Espumanía", "Día de Piscina Infantil", "Diverti Artistas",

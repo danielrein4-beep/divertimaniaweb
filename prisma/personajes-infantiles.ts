@@ -100,6 +100,8 @@ export const PERSONAJES: PersonajeDef[] = [
   { nombre: "Daft Punk", descripcion: "Daft Punk para tu fiesta." },
   { nombre: "La Casa de Papel", descripcion: "La Casa de Papel para tu fiesta." },
   { nombre: "Bailarinas Árabes", descripcion: "Bailarinas árabes para tu evento." },
+  { nombre: "Garotas", descripcion: "Garotas para tu evento." },
+  { nombre: "Robots Tamboreros", descripcion: "Robots tamboreros para tu evento." },
   { nombre: "Cristiano Ronaldo", descripcion: "Cristiano Ronaldo en persona, para jugar fútbol con los invitados y tomarse fotos en tu fiesta." },
   { nombre: "Messi", descripcion: "Messi en persona, para jugar fútbol con los invitados y tomarse fotos en tu fiesta." },
 ];
