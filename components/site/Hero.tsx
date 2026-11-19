@@ -26,11 +26,12 @@ function SlideNovedad({ novedad, visible }: { novedad: NovedadHero; visible: boo
   const [foto, setFoto] = useState(0);
 
   useEffect(() => {
-    if (!visible) return;
-    setFoto(0);
-    if (fotos.length < 2 || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (!visible || fotos.length < 2 || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const id = window.setInterval(() => setFoto((f) => (f + 1) % fotos.length), SEGUNDOS_POR_FOTO * 1000);
-    return () => window.clearInterval(id);
+    return () => {
+      window.clearInterval(id);
+      setFoto(0);
+    };
   }, [visible, fotos.length]);
 
   const palabras = novedad.titulo.split(" ");
@@ -95,15 +96,6 @@ export default function Hero({ novedades, categorias }: { novedades: NovedadHero
   const [actual, setActual] = useState(0);
   const [pausado, setPausado] = useState(false);
   const total = novedades.length + 1;
-
-  // /?diapositiva=1 abre directo esa novedad y la deja fija (para revisarla o compartir el enlace).
-  useEffect(() => {
-    const n = Number(new URLSearchParams(window.location.search).get("diapositiva"));
-    if (Number.isInteger(n) && n > 0 && n < total) {
-      setActual(n);
-      setPausado(true);
-    }
-  }, [total]);
 
   useEffect(() => {
     if (total < 2 || pausado) return;
@@ -205,32 +197,6 @@ export default function Hero({ novedades, categorias }: { novedades: NovedadHero
 
         </div>
 
-        {total > 1 && (
-          <nav aria-label="Novedades de la portada" className="absolute inset-x-0 bottom-6 z-20 mx-auto flex max-w-6xl gap-3 px-4 sm:px-6">
-            {["Divertimanía", ...novedades.map((n) => n.badge)].map((etiqueta, i) => (
-              <button
-                key={etiqueta + i}
-                type="button"
-                aria-current={actual === i}
-                onClick={() => setActual(i)}
-                className={`group flex-1 text-left text-[11px] font-extrabold uppercase tracking-[0.14em] transition-colors sm:text-xs ${
-                  actual === i ? "text-neon-green" : "text-white/55 hover:text-white"
-                }`}
-              >
-                <span className="mb-2 block h-[5px] overflow-hidden rounded-full bg-white/25">
-                  {actual === i && (
-                    <span
-                      key={`${actual}-${pausado}`}
-                      className="block h-full origin-left rounded-full bg-neon-green"
-                      style={pausado ? { transform: "scaleX(1)" } : { animation: `barra-hero ${actual === 0 ? SEGUNDOS_DIVERTIMANIA : SEGUNDOS_NOVEDAD}s linear forwards` }}
-                    />
-                  )}
-                </span>
-                {etiqueta}
-              </button>
-            ))}
-          </nav>
-        )}
       </div>
 
       {/* Novedades de temporada: cubren toda la portada */}
