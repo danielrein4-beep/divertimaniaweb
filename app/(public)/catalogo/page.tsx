@@ -10,7 +10,7 @@ export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: "Catálogo de shows y personajes | Divertimania",
   description:
-    "Personajes, shows, animación infantil, baby showers y atracciones en toda Venezuela. Descarga el catálogo en PDF o arma tu fiesta y pide tu cotización por WhatsApp.",
+    "Personajes, shows, animación infantil, baby showers y atracciones en toda Venezuela. Mira el catálogo completo o arma tu fiesta y pide tu cotización por WhatsApp.",
 };
 
 // Nombres viejos de sección (enlaces ya compartidos) → las 3 nuevas.

@@ -59,7 +59,7 @@ export default function VistaPreviaSecciones({ secciones, version }: { secciones
             className="hidden h-[640px] w-full bg-white md:block"
           />
           <div className="flex items-center justify-between gap-3 border-t border-white/[0.07] px-4 py-3">
-            <p className="text-xs text-muted">Catálogo diseñado 2026. Los cambios que guardas salen al momento en la web; el PDF se renueva cuando se pide un diseño nuevo.</p>
+            <p className="text-xs text-muted">Catálogo completo: todas las fichas activas, una por una, con foto, directorio y número de página. Se arma solo con lo que hay en el panel. Las visitas solo lo ven en la web (no pueden descargarlo); el equipo sí.</p>
             <a
               href="/catalogo/pdf"
               target="_blank"

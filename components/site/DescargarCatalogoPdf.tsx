@@ -1,6 +1,7 @@
-import { Download, FileText } from "lucide-react";
+import Link from "next/link";
+import { BookOpen, FileText } from "lucide-react";
 
-/** Catálogo: ver o descargar el PDF diseñado (o el automático del panel si no está). */
+/** Catálogo completo para ver (solo ver: no se puede descargar). */
 export default function DescargarCatalogoPdf() {
   return (
     <section className="mx-auto max-w-6xl px-4 pb-16 sm:px-6">
@@ -8,28 +9,17 @@ export default function DescargarCatalogoPdf() {
         <div className="flex items-start gap-4">
           <FileText className="mt-1 h-8 w-8 shrink-0 text-neon-green" aria-hidden />
           <div>
-            <h2 className="font-display text-xl font-bold">¿Lo prefieres en PDF?</h2>
-            <p className="text-sm text-muted">El catálogo completo para verlo con calma o reenviarlo por WhatsApp.</p>
+            <h2 className="font-display text-xl font-bold">¿Lo prefieres en formato catálogo?</h2>
+            <p className="text-sm text-muted">Todos los personajes y servicios, una ficha por una y con su foto, para verlos con calma.</p>
           </div>
         </div>
-        <div className="flex flex-wrap gap-3">
-          <a
-            href="/catalogo/pdf"
-            target="_blank"
-            rel="noopener"
-            className="touch-target rounded-full border border-white/20 px-5 text-sm font-semibold transition-colors hover:border-neon-green hover:text-neon-green"
-          >
-            Ver PDF
-          </a>
-          {/* eslint-disable-next-line @next/next/no-html-link-for-pages -- es un archivo PDF, no una página */}
-          <a
-            href="/catalogo/pdf?descargar"
-            className="touch-target gap-2 rounded-full bg-neon-green px-5 text-sm font-bold text-background transition-colors hover:bg-neon-green-dark"
-          >
-            <Download className="h-4 w-4" aria-hidden />
-            Descargar
-          </a>
-        </div>
+        <Link
+          href="/catalogo/ver"
+          className="touch-target gap-2 rounded-full bg-neon-green px-5 text-sm font-bold text-background transition-colors hover:bg-neon-green-dark"
+        >
+          <BookOpen className="h-4 w-4" aria-hidden />
+          Ver catálogo completo
+        </Link>
       </div>
     </section>
   );

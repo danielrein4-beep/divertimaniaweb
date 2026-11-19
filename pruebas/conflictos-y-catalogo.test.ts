@@ -80,16 +80,27 @@ describe("catálogo PDF", () => {
     await servicio("Solo web", "Shows", 1, { enPdf: false });
 
     const catalogo = await armarCatalogo(await leerFilas());
-    expect(catalogo.secciones.map((s) => [s.nombre, s.color, s.servicios.map((x) => x.nombre)])).toEqual([
-      ["Personajes", "#00e5ff", ["Mickey", "Bluey"]],
+    const grupos = catalogo.bloques.flatMap((b) => (b.tipo === "grupo" ? [b.grupo] : []));
+    expect(grupos.map((g) => [g.titulo, g.color, g.fichas.map((x) => x.nombre)])).toEqual([
+      ["Personajes · Infantiles", "#00e5ff", ["Mickey", "Bluey"]],
       ["Shows", "#ffd166", ["Show LED"]],
+    ]);
+    // El directorio dice en qué página está cada ficha: portada (1), directorio (2) y luego los grupos.
+    expect(catalogo.paginasDirectorio).toBe(1);
+    expect(catalogo.directorio.flat().map((l) => [l.texto, l.pagina])).toEqual([
+      ["Personajes · Infantiles", 3],
+      ["Mickey", 3],
+      ["Bluey", 3],
+      ["Shows", 4],
+      ["Show LED", 4],
     ]);
   });
 
   it("trae el QR de WhatsApp y el logo listos para el PDF", async () => {
     const catalogo = await armarCatalogo(await leerFilas());
-    expect(catalogo.whatsappTexto).toMatch(/^\+58 \d{3}-\d{3}-\d{4}$/);
-    expect(catalogo.whatsappQr.subarray(1, 4).toString()).toBe("PNG");
+    expect(catalogo.whatsappTextoTodos).toMatch(/^\+58 \d{3}-\d{3}-\d{4}(  ·  \+58 \d{3}-\d{3}-\d{4})?$/);
+    expect(catalogo.qrs.length).toBeGreaterThan(0);
+    expect(catalogo.qrs[0].qr.subarray(1, 4).toString()).toBe("PNG");
     expect(catalogo.logo.length).toBeGreaterThan(1000);
   });
 });

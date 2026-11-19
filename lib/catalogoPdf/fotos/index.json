@@ -1,0 +1,278 @@
+{
+ "Animación Infantil": {
+  "archivo": "animacion-infantil.jpg",
+  "detalle": "foto"
+ },
+ "Baby Shower": {
+  "archivo": "baby-shower.jpg",
+  "detalle": "video t=16.6s nitidez=455 luz=69"
+ },
+ "Princesas Disney": {
+  "archivo": "princesas-disney.jpg",
+  "detalle": "foto"
+ },
+ "Princesas Disney · Show de Rapunzel": {
+  "archivo": "princesas-disney-show-de-rapunzel.jpg",
+  "detalle": "foto"
+ },
+ "Princesas Disney · Rapunzel con el príncipe": {
+  "archivo": "princesas-disney-rapunzel-con-el-principe.jpg",
+  "detalle": "video t=0.1s nitidez=503 luz=99"
+ },
+ "Princesas Disney · Show de Rapunzel con Madre Gothel y Flynn": {
+  "archivo": "princesas-disney-show-de-rapunzel-con-madre-gothel-y-flynn.jpg",
+  "detalle": "video t=8.0s nitidez=554 luz=88"
+ },
+ "Princesas Disney · Show de Cenicienta": {
+  "archivo": "princesas-disney-show-de-cenicienta.jpg",
+  "detalle": "video t=1.7s nitidez=260 luz=109"
+ },
+ "Princesas Disney · Show de Blancanieves": {
+  "archivo": "princesas-disney-show-de-blancanieves.jpg",
+  "detalle": "video t=2.7s nitidez=1047 luz=100"
+ },
+ "Princesas Disney · Show de Bella": {
+  "archivo": "princesas-disney-show-de-bella.jpg",
+  "detalle": "foto"
+ },
+ "Princesas Disney · Show con la Bestia": {
+  "archivo": "princesas-disney-show-con-la-bestia.jpg",
+  "detalle": "foto"
+ },
+ "Princesas Disney · Show de Ariel": {
+  "archivo": "princesas-disney-show-de-ariel.jpg",
+  "detalle": "foto"
+ },
+ "Princesas Disney · Show de toda la película La Sirenita": {
+  "archivo": "princesas-disney-show-de-toda-la-pelicula-la-sirenita.jpg",
+  "detalle": "foto"
+ },
+ "Princesas Disney · Show de Elsa": {
+  "archivo": "princesas-disney-show-de-elsa.jpg",
+  "detalle": "foto"
+ },
+ "Princesas Disney · Show de Elsa y Anna": {
+  "archivo": "princesas-disney-show-de-elsa-y-anna.jpg",
+  "detalle": "foto"
+ },
+ "Princesas Disney · Show de toda la película de Frozen": {
+  "archivo": "princesas-disney-show-de-toda-la-pelicula-de-frozen.jpg",
+  "detalle": "foto"
+ },
+ "Princesas Disney · Show de Moana": {
+  "archivo": "princesas-disney-show-de-moana.jpg",
+  "detalle": "foto"
+ },
+ "Princesas Disney · Show de Jazmín": {
+  "archivo": "princesas-disney-show-de-jazmin.jpg",
+  "detalle": "foto"
+ },
+ "Espumanía": {
+  "archivo": "espumania.jpg",
+  "detalle": "foto"
+ },
+ "Super Mario Bros": {
+  "archivo": "super-mario-bros.jpg",
+  "detalle": "video t=5.8s nitidez=596 luz=101"
+ },
+ "Revelación de Género": {
+  "archivo": "revelacion-de-genero.jpg",
+  "detalle": "foto"
+ },
+ "Día de Piscina Infantil": {
+  "archivo": "dia-de-piscina-infantil.jpg",
+  "detalle": "video t=23.9s nitidez=1690 luz=77"
+ },
+ "Mickey Mouse": {
+  "archivo": "mickey-mouse.jpg",
+  "detalle": "video t=6.6s nitidez=1017 luz=90"
+ },
+ "Diverti Artistas": {
+  "archivo": "diverti-artistas.jpg",
+  "detalle": "foto"
+ },
+ "Mickey y Minnie Mouse": {
+  "archivo": "mickey-y-minnie-mouse.jpg",
+  "detalle": "video t=1.2s nitidez=611 luz=104"
+ },
+ "Pelotas Boom": {
+  "archivo": "pelotas-boom.jpg",
+  "detalle": "foto"
+ },
+ "Minnie Mouse": {
+  "archivo": "minnie-mouse.jpg",
+  "detalle": "video t=0.2s nitidez=1594 luz=98"
+ },
+ "Casa de Mickey Mouse": {
+  "archivo": "casa-de-mickey-mouse.jpg",
+  "detalle": "video t=36.3s nitidez=785 luz=78"
+ },
+ "Pelotas Hámster": {
+  "archivo": "pelotas-hamster.jpg",
+  "detalle": "video t=11.0s nitidez=1183 luz=112"
+ },
+ "Show de Superhéroes": {
+  "archivo": "show-de-superheroes.jpg",
+  "detalle": "foto"
+ },
+ "Castillos Inflables": {
+  "archivo": "castillos-inflables.jpg",
+  "detalle": "foto"
+ },
+ "Encanto": {
+  "archivo": "encanto.jpg",
+  "detalle": "video t=1.9s nitidez=302 luz=93"
+ },
+ "Campanita (Tinkerbell)": {
+  "archivo": "campanita-tinkerbell.jpg",
+  "detalle": "video t=7.8s nitidez=2153 luz=104"
+ },
+ "Estación de Pulseras": {
+  "archivo": "estacion-de-pulseras.jpg",
+  "detalle": "video t=1.8s nitidez=1501 luz=127"
+ },
+ "Hada": {
+  "archivo": "hada.jpg",
+  "detalle": "video t=3.5s nitidez=821 luz=135"
+ },
+ "Estación de Galletas": {
+  "archivo": "estacion-de-galletas.jpg",
+  "detalle": "video t=3.2s nitidez=428 luz=73"
+ },
+ "Estación de Cotufas": {
+  "archivo": "estacion-de-cotufas.jpg",
+  "detalle": "video t=4.9s nitidez=1648 luz=120"
+ },
+ "Lilo y Stitch": {
+  "archivo": "lilo-y-stitch.jpg",
+  "detalle": "video t=0.1s nitidez=1514 luz=123"
+ },
+ "Zootopia": {
+  "archivo": "zootopia.jpg",
+  "detalle": "video t=1.3s nitidez=268 luz=69"
+ },
+ "Estación de Algodón de Azúcar": {
+  "archivo": "estacion-de-algodon-de-azucar.jpg",
+  "detalle": "video t=0.1s nitidez=1179 luz=108"
+ },
+ "Toy Story": {
+  "archivo": "toy-story.jpg",
+  "detalle": "video t=0.3s nitidez=1210 luz=111"
+ },
+ "Estación de Perros Calientes": {
+  "archivo": "estacion-de-perros-calientes.jpg",
+  "detalle": "video t=4.1s nitidez=928 luz=115"
+ },
+ "Spider-Man": {
+  "archivo": "spider-man.jpg",
+  "detalle": "video t=0.2s nitidez=1888 luz=90"
+ },
+ "La Mujer Maravilla": {
+  "archivo": "la-mujer-maravilla.jpg",
+  "detalle": "foto"
+ },
+ "Show de Paw Patrol": {
+  "archivo": "show-de-paw-patrol.jpg",
+  "detalle": "foto"
+ },
+ "Peppa y George": {
+  "archivo": "peppa-y-george.jpg",
+  "detalle": "foto"
+ },
+ "Plim Plim": {
+  "archivo": "plim-plim.jpg",
+  "detalle": "foto"
+ },
+ "Show Granja de Zenón": {
+  "archivo": "show-granja-de-zenon.jpg",
+  "detalle": "foto"
+ },
+ "Blippi": {
+  "archivo": "blippi.jpg",
+  "detalle": "foto"
+ },
+ "Muñecas LOL": {
+  "archivo": "munecas-lol.jpg",
+  "detalle": "foto"
+ },
+ "Show de Sonic": {
+  "archivo": "show-de-sonic.jpg",
+  "detalle": "video t=1.0s nitidez=332 luz=89"
+ },
+ "Minecraft": {
+  "archivo": "minecraft.jpg",
+  "detalle": "foto"
+ },
+ "Messi": {
+  "archivo": "messi.jpg",
+  "detalle": "video t=2.0s nitidez=1455 luz=118"
+ },
+ "Cristiano Ronaldo": {
+  "archivo": "cristiano-ronaldo.jpg",
+  "detalle": "video t=4.0s nitidez=1163 luz=84"
+ },
+ "Luli Pampin": {
+  "archivo": "luli-pampin.jpg",
+  "detalle": "video t=2.0s nitidez=632 luz=75"
+ },
+ "Bright Monsters": {
+  "archivo": "bright-monsters.jpg",
+  "detalle": "foto"
+ },
+ "Diverticandy": {
+  "archivo": "diverticandy.jpg",
+  "detalle": "video t=13.4s nitidez=1287 luz=125"
+ },
+ "Guerreras K-Pop": {
+  "archivo": "guerreras-k-pop.jpg",
+  "detalle": "foto"
+ },
+ "La Casa de Papel": {
+  "archivo": "la-casa-de-papel.jpg",
+  "detalle": "video t=4.6s nitidez=391 luz=100"
+ },
+ "Bolas Disco": {
+  "archivo": "bolas-disco.jpg",
+  "detalle": "foto"
+ },
+ "El Chacal de la Trompeta": {
+  "archivo": "el-chacal-de-la-trompeta.jpg",
+  "detalle": "video t=24.5s nitidez=1136 luz=76"
+ },
+ "Neon Party": {
+  "archivo": "neon-party.jpg",
+  "detalle": "video t=11.7s nitidez=422 luz=53"
+ },
+ "Space Glitter": {
+  "archivo": "space-glitter.jpg",
+  "detalle": "video t=0.1s nitidez=1839 luz=81"
+ },
+ "Catrinas": {
+  "archivo": "catrinas.jpg",
+  "detalle": "video t=4.9s nitidez=388 luz=58"
+ },
+ "Daft Punk": {
+  "archivo": "daft-punk.jpg",
+  "detalle": "foto"
+ },
+ "Bailarinas Árabes": {
+  "archivo": "bailarinas-arabes.jpg",
+  "detalle": "video t=15.0s nitidez=885 luz=104"
+ },
+ "Garotas": {
+  "archivo": "garotas.jpg",
+  "detalle": "video t=6.0s nitidez=517 luz=77"
+ },
+ "Robots Tamboreros": {
+  "archivo": "robots-tamboreros.jpg",
+  "detalle": "video t=2.6s nitidez=595 luz=35"
+ },
+ "Personajes de Pascua": {
+  "archivo": "personajes-de-pascua.jpg",
+  "detalle": "foto"
+ },
+ "Zombies": {
+  "archivo": "zombies.jpg",
+  "detalle": "foto"
+ }
+}

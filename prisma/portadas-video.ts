@@ -38,16 +38,16 @@ export const PORTADAS_VIDEO: PortadaVideo[] = [
   { clave: "neon", nombre: "Neon Party", foto: "/videos/neon-party-show.jpg", video: "/videos/neon-party-show.mp4", reemplazar: true },
   { clave: "glitter", nombre: "Space Glitter", foto: "/videos/space-glitter-show.jpg", video: "/videos/space-glitter-show.mp4", reemplazar: true },
   { clave: "toy", nombre: "Toy Story", foto: "/videos/toy-story-1-4x5.jpg", videos: ["/videos/toy-story-1-4x5.mp4", "/videos/toy-story-2-4x5.mp4"], reemplazar: true },
-  { clave: "bright", nombre: "Bright Monsters", foto: "/videos/bright-monsters-1.jpg", videos: ["/videos/bright-monsters-1.mp4", "/videos/bright-monsters-2.mp4", "/videos/bright-monsters-3.mp4"], reemplazar: true },
+  { clave: "bright", nombre: "Bright Monsters", foto: "/videos/bright-monsters-1.jpg", videos: ["/videos/bright-monsters-1-v2.mp4", "/videos/bright-monsters-2.mp4", "/videos/bright-monsters-3.mp4"], reemplazar: true },
   { clave: "kpop", nombre: "Guerreras K-Pop", foto: "/videos/guerreras-kpop-show.jpg", video: "/videos/guerreras-kpop-show.mp4", reemplazar: true },
   { clave: "garotas", nombre: "Garotas", foto: "/videos/garotas-show.jpg", video: "/videos/garotas-show.mp4", reemplazar: true },
   { clave: "tamboreros", nombre: "Robots Tamboreros", foto: "/videos/robots-tamboreros-1.jpg", videos: ["/videos/robots-tamboreros-1.mp4", "/videos/robots-tamboreros-2.mp4"], reemplazar: true },
   { clave: "casapapel", nombre: "La Casa de Papel", foto: "/videos/casa-de-papel-show.jpg", videos: ["/videos/casa-de-papel-show.mp4", "/videos/casa-de-papel-show-2.mp4"], reemplazar: true },
   { clave: "catrinas", nombre: "Catrinas", foto: "/videos/catrinas-show.jpg", video: "/videos/catrinas-show.mp4", reemplazar: true },
   { clave: "daftpunk", nombre: "Daft Punk", foto: "/videos/daft-punk-show.jpg", video: "/videos/daft-punk-show.mp4", reemplazar: true },
-  { clave: "pascua", nombre: "Personajes de Pascua", foto: "/videos/personajes-pascua-show.jpg", video: "/videos/personajes-pascua-show.mp4", reemplazar: true },
+  { clave: "pascua", nombre: "Personajes de Pascua", foto: "/videos/personajes-pascua-show-v2.jpg", video: "/videos/personajes-pascua-show-v2.mp4", reemplazar: true },
   { clave: "zombies", nombre: "Zombies", foto: "/videos/zombies-show.jpg", video: "/videos/zombies-show.mp4", reemplazar: true },
-  { clave: "princesas", nombre: "Princesas Disney", foto: "/videos/princesas-disney-show.jpg", video: "/videos/princesas-disney-show.mp4", reemplazar: true },
+  { clave: "princesas", nombre: "Princesas Disney", foto: "/videos/princesas-disney-show-v2.jpg", video: "/videos/princesas-disney-show-v2.mp4", reemplazar: true },
 ];
 
 /** Idempotente: pone la portada si falta (o siempre, si reemplaza) y deja los videos primero en la galería de la tarjeta. */

@@ -1,26 +1,18 @@
 import { createHash } from "node:crypto";
-import { readFile } from "node:fs/promises";
-import path from "node:path";
 import { createElement } from "react";
 import { renderToBuffer } from "@react-pdf/renderer";
 import { armarCatalogo, leerFilas } from "@/lib/catalogoPdf/datos";
 import DocumentoCatalogo from "@/lib/catalogoPdf/Documento";
+import { requireAdmin } from "@/lib/auth";
 import { SITE_URL } from "@/lib/negocio";
 
 export const dynamic = "force-dynamic";
 
-// Catálogo diseñado (estilo póster, 2026) que escogieron los dueños. Si el archivo no está,
-// se arma el PDF automático con lo que hay en el panel, como antes.
-const CATALOGO_DISENADO = path.join(process.cwd(), "public", "pdf", "catalogo-divertimania-2026.pdf");
-
-let disenado: Buffer | null | undefined;
+// Catálogo completo armado con lo que hay en el panel (todas las fichas, una por una, con su foto).
+// Las visitas solo lo VEN en /catalogo/ver (visor propio, sin botón de descargar): abrir esta dirección directamente
+// en el navegador las lleva al visor. El equipo (con sesión del panel) sí puede abrirlo y guardarlo.
 let guardado: { clave: string; pdf: Buffer } | null = null;
 let armando: Promise<Buffer> | null = null;
-
-async function leerDisenado(): Promise<Buffer | null> {
-  if (disenado === undefined) disenado = await readFile(CATALOGO_DISENADO).catch(() => null);
-  return disenado;
-}
 
 async function pdfAutomatico(): Promise<Buffer> {
   const filas = await leerFilas();
@@ -36,13 +28,21 @@ async function pdfAutomatico(): Promise<Buffer> {
 }
 
 export async function GET(request: Request) {
-  const pdf = (await leerDisenado()) ?? (await pdfAutomatico());
-  const descargar = new URL(request.url).searchParams.has("descargar");
+  const esEquipo = (await requireAdmin()) === null;
+  // Solo el visor de la página lo pide (fetch desde el mismo sitio); abrirlo como documento, en un marco o desde
+  // otro sitio no entrega el archivo.
+  const sitio = request.headers.get("sec-fetch-site");
+  const destino = request.headers.get("sec-fetch-dest");
+  const desdeElVisor = sitio === "same-origin" && destino === "empty";
+  if (!esEquipo && !desdeElVisor) {
+    return new Response(null, { status: 302, headers: { Location: "/catalogo/ver", "Cache-Control": "no-store" } });
+  }
+  const pdf = await pdfAutomatico();
   return new Response(new Uint8Array(pdf), {
     headers: {
       "Content-Type": "application/pdf",
-      "Content-Disposition": `${descargar ? "attachment" : "inline"}; filename="Catalogo-Divertimania-2026.pdf"`,
-      "Cache-Control": "public, max-age=300",
+      "Content-Disposition": 'inline; filename="Catalogo-Divertimania-2026.pdf"',
+      "Cache-Control": "private, no-store",
     },
   });
 }
