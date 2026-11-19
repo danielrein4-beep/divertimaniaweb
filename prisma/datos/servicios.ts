@@ -130,12 +130,12 @@ export const servicios: ServicioSeed[] = [
   {
     categoria: "Baby Shower",
     nombre: "Fogatadas",
-    descripcion: "Fogatadas para tu celebración. Cuéntanos la fecha y el lugar y te cotizamos.",
+    descripcion: "Fogatadas para graduaciones. Cuéntanos la fecha y el lugar y te cotizamos.",
     incluye: "",
     masPedido: false,
     destacado: false,
     soloAdultos: false,
-    ocasiones: "cumpleanos",
+    ocasiones: "graduacion",
   },
   {
     categoria: "Baby Shower",
