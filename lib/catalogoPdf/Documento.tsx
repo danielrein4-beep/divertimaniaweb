@@ -193,20 +193,15 @@ function Apertura({ g, datos, web }: { g: GrupoPdf; datos: CatalogoPdf; web: str
   );
 }
 
-/** Relleno de la última página de un grupo: invita a seguir bajando en vez de dejar el espacio vacío. */
-function Continua({ datos, ancho, alto }: { datos: CatalogoPdf; ancho: number; alto: number }) {
-  const grande = ancho > 300;
+/** Relleno de la última página de un grupo: una sola invitación a seguir bajando, sencilla y sin caja. */
+function Continua({ ancho, alto }: { ancho: number; alto: number }) {
   return (
-    <View style={{ width: ancho, height: alto, borderWidth: 1, borderColor: "#2c3a12", backgroundColor: "#0e1508", alignItems: "center", justifyContent: "center", padding: 16 }}>
-      {grande && (
-        // eslint-disable-next-line jsx-a11y/alt-text -- Image de react-pdf, no lleva alt
-        <Image src={{ data: datos.logo, format: "png" }} style={{ width: 130, marginBottom: 14 }} />
-      )}
-      <Text style={{ fontSize: grande ? 9 : 7.5, fontWeight: 800, letterSpacing: 3.5, color: C.lima, textTransform: "uppercase" }}>Continúa bajando</Text>
-      <Text style={{ fontFamily: "Anton", fontSize: grande ? 30 : 19, color: "#fff", textTransform: "uppercase", textAlign: "center", lineHeight: 1.15, marginTop: 8 }}>
+    <View style={{ width: ancho, height: alto, alignItems: "center", justifyContent: "center", paddingHorizontal: 20 }}>
+      <View style={{ width: 28, height: 2, backgroundColor: C.lima, marginBottom: 10 }} />
+      <Text style={{ fontSize: 7.5, fontWeight: 800, letterSpacing: 3.5, color: C.lima, textTransform: "uppercase" }}>Continúa bajando</Text>
+      <Text style={{ fontFamily: "Anton", fontSize: ancho > 300 ? 24 : 17, color: "#fff", textTransform: "uppercase", textAlign: "center", lineHeight: 1.2, marginTop: 6 }}>
         para que descubras la magia de Divertimanía
       </Text>
-      <View style={{ width: 36, height: 3, backgroundColor: C.lima, marginTop: grande ? 16 : 10 }} />
     </View>
   );
 }
@@ -227,11 +222,12 @@ function PaginasFichas({ g, datos, web }: { g: GrupoPdf; datos: CatalogoPdf; web
               {fila.map((f) => (
                 <Tile key={f.id} f={f} g={g} />
               ))}
-              {fila.length === 1 && (i === paginas.length - 1 ? <Continua datos={datos} ancho={261} alto={216} /> : <View style={{ width: 261 }} />)}
+              {fila.length === 1 &&
+                (i === paginas.length - 1 && Math.ceil(fichas.length / 2) >= FICHAS_POR_PAGINA / 2 ? <Continua ancho={261} alto={216} /> : <View style={{ width: 261 }} />)}
             </View>
           ))}
           {i === paginas.length - 1 && fichas.length > 0 && Math.ceil(fichas.length / 2) < FICHAS_POR_PAGINA / 2 && (
-            <Continua datos={datos} ancho={531} alto={(FICHAS_POR_PAGINA / 2 - Math.ceil(fichas.length / 2)) * 226 - 10} />
+            <Continua ancho={531} alto={(FICHAS_POR_PAGINA / 2 - Math.ceil(fichas.length / 2)) * 226 - 10} />
           )}
           <Pie datos={datos} web={web} />
         </Page>
