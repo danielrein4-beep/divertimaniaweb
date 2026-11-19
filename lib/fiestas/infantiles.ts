@@ -19,7 +19,7 @@ export const CUMPLEANOS: Fiesta = {
   ],
   preguntas: [
     { pregunta: "¿Desde qué edad se puede hacer la animación?", respuesta: "Desde el primer añito. Para los más pequeños usamos dinámicas suaves y personajes amigables; a partir de los 4 años, juegos y concursos." },
-    { pregunta: "¿Cuánto dura la animación?", respuesta: "Entre 2 y 3 horas según el paquete. Si la fiesta es más larga, se agrega tiempo." },
+    { pregunta: "¿Cuánto dura la animación?", respuesta: "Dura 4 horas. Si la fiesta es más larga, se agrega tiempo." },
     { pregunta: "¿Pueden ir a un parque o a una piscina?", respuesta: "Sí. Tenemos animación para día de piscina y para espacios abiertos; solo necesitamos un punto de electricidad cerca." },
   ],
   seo: {

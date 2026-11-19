@@ -140,13 +140,16 @@ export async function leerFilas() {
 type Filas = Awaited<ReturnType<typeof leerFilas>>;
 type ServicioFila = Filas["servicios"][number];
 
+/** El texto de relleno («Elige cómo lo quieres…») no se muestra, igual que en la web. */
+const textoUtil = (t: string) => (t.startsWith("Elige cómo lo quieres") ? "" : t);
+
 const lineas = (texto: string | null) => (texto ?? "").split("\n").map((l) => l.trim()).filter(Boolean);
 
 async function ficha(s: ServicioFila): Promise<FichaPdf> {
   return {
     id: s.id,
     nombre: s.nombre,
-    descripcion: s.descripcion,
+    descripcion: textoUtil(s.descripcion),
     incluye: lineas(s.incluye),
     duracion: s.duracion,
     edadIdeal: s.edadIdeal,

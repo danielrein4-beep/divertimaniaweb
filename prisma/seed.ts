@@ -118,23 +118,6 @@ async function main() {
   // Catálogo en 3 secciones (Personajes · Servicios para tu fiesta · Celebraciones)
   await organizarCatalogo(prisma);
 
-  // Dinámicas de Baby Shower
-  const babyShowerId = createdServices["Baby Shower"];
-  if (babyShowerId) {
-    await prisma.opcion.createMany({
-      data: [
-        { servicioId: babyShowerId, tipo: "DINAMICA", nombre: "Carrera de biberones", descripcion: "Los invitados compiten llenando un biberón con agua lo más rápido posible.", orden: 0 },
-        { servicioId: babyShowerId, tipo: "DINAMICA", nombre: "Adivina la pancita", descripcion: "Medir el contorno de la pancita de la mamá con cinta o papel, a ojo.", orden: 1 },
-        { servicioId: babyShowerId, tipo: "DINAMICA", nombre: "El pañal sorpresa", descripcion: "Diferentes tipos de chocolate derretido en pañales para adivinar el sabor.", orden: 2 },
-        { servicioId: babyShowerId, tipo: "DINAMICA", nombre: "Bingo de bebé", descripcion: "Cartones temáticos de bebé, el clásico bingo con premios para los invitados.", orden: 3 },
-        { servicioId: babyShowerId, tipo: "DINAMICA", nombre: "¿Niño o niña?", descripcion: "Dinámica de predicciones de los invitados antes de la revelación de género.", orden: 4 },
-        { servicioId: babyShowerId, tipo: "DINAMICA", nombre: "Memoria de bebé", descripcion: "Juego de memoria con artículos de bebé.", orden: 5 },
-        { servicioId: babyShowerId, tipo: "DINAMICA", nombre: "Decora el body", descripcion: "Los invitados personalizan bodies para el bebé como recuerdo.", orden: 6 },
-        { servicioId: babyShowerId, tipo: "DINAMICA", nombre: "Trivia de mamá y papá", descripcion: "Preguntas divertidas sobre los futuros padres para ver quién los conoce mejor.", orden: 7 },
-      ],
-    });
-  }
-
   for (const m of mediaList) {
     const servId = createdServices[m.servicioNombre];
     if (servId) {
