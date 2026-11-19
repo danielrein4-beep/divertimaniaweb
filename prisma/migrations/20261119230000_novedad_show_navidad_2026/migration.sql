@@ -4,7 +4,7 @@ ALTER TABLE "Novedad" ADD COLUMN "fotos" TEXT;
 UPDATE "Novedad" SET
   "badge" = 'Diciembre · Temporada navideña',
   "titulo" = 'Show de Navidad 2026',
-  "descripcion" = 'Duendes, Santa, renos y animación especial de fin de año para fiestas familiares, colegios y empresas. Los cupos de diciembre se llenan rápido.',
+  "descripcion" = 'La época más esperada del año llega y Divertimanía lleva la magia a tu colegio o empresa. Los cupos de diciembre se llenan rápido.',
   "fotoUrl" = '/images/navidad-2026-1.jpg',
   "fotos" = '/images/navidad-2026-2.jpg,/images/navidad-2026-3.jpg,/images/navidad-2026-4.jpg',
   "ctaTexto" = 'Consultar fecha navideña',
