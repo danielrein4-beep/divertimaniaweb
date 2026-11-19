@@ -102,6 +102,8 @@ export const PERSONAJES: PersonajeDef[] = [
   { nombre: "Bailarinas Árabes", descripcion: "Bailarinas árabes para tu evento." },
   { nombre: "Garotas", descripcion: "Garotas para tu evento." },
   { nombre: "Robots Tamboreros", descripcion: "Robots tamboreros para tu evento." },
+  { nombre: "Personajes de Pascua", descripcion: "Personajes de Pascua para tu fiesta: conejos y personajes con animación, baile y fotos para los pequeños." },
+  { nombre: "Zombies", descripcion: "Zombies para tu evento: personajes caracterizados que recorren la fiesta, bailan y le dan un susto de buen humor a tus invitados." },
   { nombre: "Cristiano Ronaldo", descripcion: "Cristiano Ronaldo en persona, para jugar fútbol con los invitados y tomarse fotos en tu fiesta." },
   { nombre: "Messi", descripcion: "Messi en persona, para jugar fútbol con los invitados y tomarse fotos en tu fiesta." },
 ];
