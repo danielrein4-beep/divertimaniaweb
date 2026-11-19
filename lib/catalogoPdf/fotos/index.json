@@ -111,6 +111,10 @@
   "archivo": "minnie-mouse.jpg",
   "detalle": "video t=0.2s nitidez=1594 luz=98"
  },
+ "Fogatadas": {
+  "archivo": "fogatadas.jpg",
+  "detalle": "foto"
+ },
  "Casa de Mickey Mouse": {
   "archivo": "casa-de-mickey-mouse.jpg",
   "detalle": "video t=36.3s nitidez=785 luz=78"
@@ -118,6 +122,10 @@
  "Pelotas Hámster": {
   "archivo": "pelotas-hamster.jpg",
   "detalle": "video t=11.0s nitidez=1183 luz=112"
+ },
+ "Último Timbre": {
+  "archivo": "ultimo-timbre.jpg",
+  "detalle": "foto"
  },
  "Show de Superhéroes": {
   "archivo": "show-de-superheroes.jpg",
