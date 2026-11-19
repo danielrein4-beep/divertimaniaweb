@@ -111,7 +111,7 @@ export const servicios: ServicioSeed[] = [
     categoria: "Baby Shower",
     nombre: "Opciones para tu boda",
     descripcion: "Opciones para tu boda: te armamos la propuesta según tu fecha, el lugar y lo que quieras para tu gran día.",
-    fotoUrl: "/images/boda-portada.jpg",
+    fotoUrl: "/videos/opciones-boda-show.jpg",
     soloAdultos: false,
     masPedido: false,
     destacado: false,
