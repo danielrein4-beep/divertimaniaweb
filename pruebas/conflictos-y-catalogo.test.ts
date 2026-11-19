@@ -85,20 +85,22 @@ describe("catálogo PDF", () => {
       ["Personajes · Infantiles", "#00e5ff", ["Mickey", "Bluey"]],
       ["Shows", "#ffd166", ["Show LED"]],
     ]);
-    // El directorio dice en qué página está cada ficha: portada (1), directorio (2) y luego los grupos.
+    // El directorio dice en qué página está cada ficha: portada (1), bienvenida (2), directorio (3) y luego cada
+    // grupo con su página de apertura y sus fichas en la siguiente.
     expect(catalogo.paginasDirectorio).toBe(1);
     expect(catalogo.directorio.flat().map((l) => [l.texto, l.pagina])).toEqual([
-      ["Personajes · Infantiles", 3],
-      ["Mickey", 3],
-      ["Bluey", 3],
-      ["Shows", 4],
-      ["Show LED", 4],
+      ["Personajes · Infantiles", 4],
+      ["Mickey", 5],
+      ["Bluey", 5],
+      ["Shows", 6],
+      ["Show LED", 7],
     ]);
   });
 
   it("trae el QR de WhatsApp y el logo listos para el PDF", async () => {
     const catalogo = await armarCatalogo(await leerFilas());
-    expect(catalogo.whatsappTextoTodos).toMatch(/^\+58 \d{3}-\d{3}-\d{4}(  ·  \+58 \d{3}-\d{3}-\d{4})?$/);
+    expect(catalogo.telefonos.length).toBeGreaterThan(0);
+    for (const t of catalogo.telefonos) expect(t).toMatch(/^\+58 \d{3}-\d{3}-\d{4}$/);
     expect(catalogo.qrs.length).toBeGreaterThan(0);
     expect(catalogo.qrs[0].qr.subarray(1, 4).toString()).toBe("PNG");
     expect(catalogo.logo.length).toBeGreaterThan(1000);
