@@ -35,7 +35,7 @@ export const SERVICIOS = [
   "Estación de Cotufas", "Estación de Algodón de Azúcar", "Estación de Perros Calientes",
 ];
 
-export const CELEBRACIONES = ["Baby Shower", "Revelación de Género", "Fogatadas", "Último Timbre"];
+export const CELEBRACIONES = ["Baby Shower", "Revelación de Género", "Opciones para tu boda", "Openings para tus 15 años", "Fogatadas", "Último Timbre"];
 
 export type Asignacion = { nombre: string; categoria: string; subcategoria: string | null; orden: number };
 

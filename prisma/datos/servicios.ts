@@ -109,6 +109,26 @@ export const servicios: ServicioSeed[] = [
 
   {
     categoria: "Baby Shower",
+    nombre: "Opciones para tu boda",
+    descripcion: "Opciones para tu boda: te armamos la propuesta según tu fecha, el lugar y lo que quieras para tu gran día.",
+    fotoUrl: "/images/boda-portada.jpg",
+    soloAdultos: false,
+    masPedido: false,
+    destacado: false,
+    ocasiones: "boda",
+  },
+  {
+    categoria: "Baby Shower",
+    nombre: "Openings para tus 15 años",
+    descripcion: "Openings para tus 15 años: la entrada que tu quinceañera merece. Cuéntanos la fecha y la temática y te cotizamos.",
+    fotoUrl: "/images/quince-portada.jpg",
+    soloAdultos: false,
+    masPedido: false,
+    destacado: false,
+    ocasiones: "quince",
+  },
+  {
+    categoria: "Baby Shower",
     nombre: "Fogatadas",
     descripcion: "Fogatadas para tu celebración. Cuéntanos la fecha y el lugar y te cotizamos.",
     incluye: "",
