@@ -54,6 +54,7 @@ export const PORTADAS_VIDEO: PortadaVideo[] = [
   { clave: "tequileras", nombre: "Tequileras Biker", foto: "/videos/tequileras-biker-show.jpg", video: "/videos/tequileras-biker-show.mp4", reemplazar: true },
   { clave: "elvismarilyn", nombre: "Elvis y Marilyn Monroe", foto: "/videos/elvis-marilyn-show.jpg", video: "/videos/elvis-marilyn-show.mp4", reemplazar: true },
   { clave: "revelacion", nombre: "Revelación de Género", foto: "/images/revelacion-genero.jpg", video: "/videos/revelacion-genero-show.mp4", reemplazar: true },
+  { clave: "tequileras2", nombre: "Tequileras", foto: "/videos/tequileras-show.jpg", video: "/videos/tequileras-show.mp4", reemplazar: true },
 ];
 
 /** Idempotente: pone la portada si falta (o siempre, si reemplaza) y deja los videos primero en la galería de la tarjeta. */

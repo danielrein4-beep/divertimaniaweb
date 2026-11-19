@@ -6,7 +6,7 @@ import DocumentoCatalogo from "./Documento";
 import { SITE_URL } from "@/lib/negocio";
 
 // Subir este número cuando cambie el diseño del documento (el PDF guardado en memoria se renueva solo si cambian los datos).
-const VERSION_DISENO = 16;
+const VERSION_DISENO = 17;
 
 let guardado: { clave: string; pdf: Buffer } | null = null;
 let armando: Promise<Buffer> | null = null;
