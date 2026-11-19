@@ -47,7 +47,7 @@ export const PORTADAS_VIDEO: PortadaVideo[] = [
   { clave: "daftpunk", nombre: "Daft Punk", foto: "/videos/daft-punk-show.jpg", video: "/videos/daft-punk-show.mp4", reemplazar: true },
   { clave: "pascua", nombre: "Personajes de Pascua", foto: "/videos/personajes-pascua-show-v4.jpg", video: "/videos/personajes-pascua-show-v4.mp4", reemplazar: true },
   { clave: "zombies", nombre: "Zombies", foto: "/videos/zombies-show.jpg", video: "/videos/zombies-show.mp4", reemplazar: true },
-  { clave: "princesas", nombre: "Princesas Disney", foto: "/videos/princesas-disney-show-v2.jpg", video: "/videos/princesas-disney-show-v2.mp4", reemplazar: true },
+  { clave: "princesas", nombre: "Princesas Disney", foto: "/videos/princesas-disney-show-v5.jpg", video: "/videos/princesas-disney-show-v5.mp4", reemplazar: true },
   { clave: "opcionesboda", nombre: "Opciones para tu boda", foto: "/videos/opciones-boda-show.jpg", video: "/videos/opciones-boda-show.mp4", reemplazar: true },
   { clave: "ultimotimbre", nombre: "Último Timbre", foto: "/videos/ultimo-timbre-show.jpg", video: "/videos/ultimo-timbre-show.mp4", reemplazar: true },
   { clave: "fogatadas", nombre: "Fogatadas", foto: "/videos/fogatadas-show.jpg", video: "/videos/fogatadas-show.mp4", reemplazar: true },
