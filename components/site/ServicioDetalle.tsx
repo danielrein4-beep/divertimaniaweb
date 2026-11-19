@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import { Check, Plus } from "lucide-react";
 import { useMiFiesta } from "@/context/MiFiestaContext";
@@ -40,50 +40,18 @@ function SelectorVariantes({
 }: ServicioBase & { variantes: Opcion[] }) {
   const { addItem, removeItem, getItem } = useMiFiesta();
 
-  const grupos = useMemo(() => {
-    const map = new Map<string, Opcion[]>();
-    for (const v of variantes) {
-      const key = v.grupo || servicioNombre;
-      map.set(key, [...(map.get(key) ?? []), v]);
-    }
-    return Array.from(map.entries());
-  }, [variantes, servicioNombre]);
-
-  const [grupoActivo, setGrupoActivo] = useState<string>(grupos[0]?.[0] ?? "");
-  const opcionesGrupo = grupos.find(([g]) => g === grupoActivo)?.[1] ?? [];
-
+  // Todas las variantes juntas, en su orden: sin pestañas por personaje (cada princesa lleva una sola ficha).
   return (
     <section aria-labelledby="variantes-titulo" className="flex flex-col gap-5">
       <div>
         <h2 id="variantes-titulo" className="type-h3 font-bold">
-          Elige tu personaje
+          Elige tu show
         </h2>
-        <p className="mt-1 text-sm text-muted">Primero el personaje, después el show exacto. Puedes sumar varios.</p>
+        <p className="mt-1 text-sm text-muted">Toca Agregar en el que más te guste. Puedes sumar varios.</p>
       </div>
 
-      {grupos.length > 1 && (
-        <div className="scrollbar-none -mx-4 flex gap-2 overflow-x-auto px-4 sm:mx-0 sm:flex-wrap sm:px-0" role="tablist">
-          {grupos.map(([grupo]) => (
-            <button
-              key={grupo}
-              type="button"
-              role="tab"
-              aria-selected={grupoActivo === grupo}
-              onClick={() => setGrupoActivo(grupo)}
-              className={`touch-target shrink-0 rounded-full border px-4 text-sm font-semibold transition-colors ${
-                grupoActivo === grupo
-                  ? "border-neon-green bg-neon-green/15 text-neon-green"
-                  : "border-border text-muted hover:border-white/25 hover:text-foreground"
-              }`}
-            >
-              {grupo}
-            </button>
-          ))}
-        </div>
-      )}
-
       <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3">
-        {opcionesGrupo.map((v) => {
+        {variantes.map((v) => {
           const enFiesta = getItem(servicioId, v.nombre);
           const foto = v.fotoUrl || servicioFotoUrl;
 

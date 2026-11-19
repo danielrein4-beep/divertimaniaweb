@@ -98,7 +98,7 @@ async function main() {
         { servicioId: princesasId, tipo: "VARIANTE", grupo: "Elsa (Frozen)", nombre: "Show de Elsa y Anna", descripcion: "Las dos hermanas de Arendelle juntas, con canciones, juegos y un amor de hermanas que derrite hasta el hielo.", fotoUrl: "/images/frozen-olaf-elsa.jpg", videoUrl: null, orden: 51 },
         { servicioId: princesasId, tipo: "VARIANTE", grupo: "Elsa (Frozen)", nombre: "Show de toda la película de Frozen", descripcion: "Incluye a Elsa, Anna, Olaf y Copito de Nieve. Toda la magia de Arendelle en un solo show: canciones, nieve y mucha diversión.", fotoUrl: "/images/frozen-olaf-elsa.jpg", videoUrl: null, orden: 53 },
         { servicioId: princesasId, tipo: "VARIANTE", grupo: "Moana", nombre: "Show de Moana", descripcion: "Moana zarpa hasta tu fiesta con su espíritu aventurero y el ritmo del océano: un show lleno de valentía, baile y mar.", fotoUrl: "/images/moana.jpg", orden: 60 },
-        { servicioId: princesasId, tipo: "VARIANTE", grupo: "Jasmine", nombre: "Show de Jasmine", descripcion: "Jasmine llega desde Agrabah con su elegancia y su espíritu libre para llenar tu fiesta de magia oriental, baile y fotos de ensueño.", fotoUrl: "/images/aladdin-genio-jazmin.jpg", orden: 70 },
+        { servicioId: princesasId, tipo: "VARIANTE", grupo: "Jazmín", nombre: "Show de Jazmín", descripcion: "Jazmín llega desde Agrabah con su elegancia y su espíritu libre para llenar tu fiesta de magia oriental, baile y fotos de ensueño.", fotoUrl: "/images/aladdin-genio-jazmin.jpg", orden: 70 },
       ],
     });
   }

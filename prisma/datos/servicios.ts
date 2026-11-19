@@ -290,7 +290,7 @@ export const servicios: ServicioSeed[] = [
     categoria: "Personajes Infantiles",
     nombre: "Princesas Disney",
     descripcion:
-      "Sirenita (Ariel, Sebastián, Úrsula), Aladdín (Jazmín, Genio, Jafar), Frozen (Elsa, Ana, Olaf), Aurora, Maléfica, Cenicienta, Blanca Nieves y Moana.",
+      "Ariel, Elsa, Rapunzel, Cenicienta, Blancanieves, Bella, Moana y Jazmín llegan a tu fiesta con vestuario de cuento, baile, fotos y mucha magia. Elige a la princesa de tus sueños.",
     fotoUrl: "/images/princesas-disney-grupo.jpg",
     incluye: "Visita sorpresa de los personajes al cumpleaños o al lugar de la fiesta\nShow temático de princesas\nTe acompañan en la hora loca (si contratas la animación)\nFotos con todos los presentes\nAcompañamiento en la torta y la piñata",
     edadIdeal: "2 a 9 años",
