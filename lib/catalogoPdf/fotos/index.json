@@ -237,7 +237,7 @@
  },
  "Diverticandy": {
   "archivo": "diverticandy.jpg",
-  "detalle": "video t=13.4s nitidez=1287 luz=125"
+  "detalle": "video t=4.0s nitidez=1026 luz=80"
  },
  "Guerreras K-Pop": {
   "archivo": "guerreras-k-pop.jpg",
@@ -289,6 +289,14 @@
  },
  "Zombies": {
   "archivo": "zombies.jpg",
+  "detalle": "foto"
+ },
+ "Tequileras Biker": {
+  "archivo": "tequileras-biker.jpg",
+  "detalle": "foto"
+ },
+ "Elvis y Marilyn Monroe": {
+  "archivo": "elvis-y-marilyn-monroe.jpg",
   "detalle": "foto"
  }
 }

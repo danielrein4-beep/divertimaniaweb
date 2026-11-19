@@ -34,7 +34,7 @@ export const PORTADAS_VIDEO: PortadaVideo[] = [
   { clave: "mickey_minnie", nombre: "Mickey y Minnie Mouse", foto: "/videos/mickey-minnie-show.jpg", video: "/videos/mickey-minnie-show.mp4", reemplazar: true },
   { clave: "minnie", nombre: "Minnie Mouse", foto: "/videos/minnie-show.jpg", video: "/videos/minnie-show.mp4", reemplazar: true },
   { clave: "arabes", nombre: "Bailarinas Árabes", foto: "/videos/bailarinas-arabes-show-v2.jpg", video: "/videos/bailarinas-arabes-show.mp4" },
-  { clave: "diverticandy", nombre: "Diverticandy", foto: "/videos/diverticandy-show-4x5.jpg", video: "/videos/diverticandy-show-4x5.mp4", reemplazar: true },
+  { clave: "diverticandy", nombre: "Diverticandy", foto: "/videos/diverticandy-show-v2.jpg", video: "/videos/diverticandy-show-v2.mp4", reemplazar: true },
   { clave: "neon", nombre: "Neon Party", foto: "/videos/neon-party-show.jpg", video: "/videos/neon-party-show.mp4", reemplazar: true },
   { clave: "glitter", nombre: "Space Glitter", foto: "/videos/space-glitter-show.jpg", video: "/videos/space-glitter-show.mp4", reemplazar: true },
   { clave: "toy", nombre: "Toy Story", foto: "/videos/toy-story-1-4x5.jpg", videos: ["/videos/toy-story-1-4x5.mp4", "/videos/toy-story-2-4x5.mp4"], reemplazar: true },
@@ -51,6 +51,9 @@ export const PORTADAS_VIDEO: PortadaVideo[] = [
   { clave: "opcionesboda", nombre: "Opciones para tu boda", foto: "/videos/opciones-boda-show.jpg", video: "/videos/opciones-boda-show.mp4", reemplazar: true },
   { clave: "ultimotimbre", nombre: "Último Timbre", foto: "/videos/ultimo-timbre-show.jpg", video: "/videos/ultimo-timbre-show.mp4", reemplazar: true },
   { clave: "fogatadas", nombre: "Fogatadas", foto: "/videos/fogatadas-show.jpg", video: "/videos/fogatadas-show.mp4", reemplazar: true },
+  { clave: "tequileras", nombre: "Tequileras Biker", foto: "/videos/tequileras-biker-show.jpg", video: "/videos/tequileras-biker-show.mp4", reemplazar: true },
+  { clave: "elvismarilyn", nombre: "Elvis y Marilyn Monroe", foto: "/videos/elvis-marilyn-show.jpg", video: "/videos/elvis-marilyn-show.mp4", reemplazar: true },
+  { clave: "revelacion", nombre: "Revelación de Género", foto: "/images/revelacion-genero.jpg", video: "/videos/revelacion-genero-show.mp4", reemplazar: true },
 ];
 
 /** Idempotente: pone la portada si falta (o siempre, si reemplaza) y deja los videos primero en la galería de la tarjeta. */

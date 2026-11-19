@@ -104,6 +104,8 @@ export const PERSONAJES: PersonajeDef[] = [
   { nombre: "Robots Tamboreros", descripcion: "Robots Tamboreros: robots con trajes de luces LED que tocan los tambores en vivo y animan tu evento con ritmo y show de luz." },
   { nombre: "Personajes de Pascua", descripcion: "Personajes de Pascua para tu fiesta: conejos y personajes con animación, baile y fotos para los pequeños." },
   { nombre: "Zombies", descripcion: "Zombies para tu evento: personajes caracterizados que recorren la fiesta, bailan y le dan un susto de buen humor a tus invitados." },
+  { nombre: "Tequileras Biker", descripcion: "Tequileras estilo biker para darle ritmo y brillo a tu evento." },
+  { nombre: "Elvis y Marilyn Monroe", descripcion: "Elvis y Marilyn Monroe en persona para tu evento: fotos, baile y mucho estilo." },
   { nombre: "Cristiano Ronaldo", descripcion: "Cristiano Ronaldo en persona, para jugar fútbol con los invitados y tomarse fotos en tu fiesta." },
   { nombre: "Messi", descripcion: "Messi en persona, para jugar fútbol con los invitados y tomarse fotos en tu fiesta." },
 ];

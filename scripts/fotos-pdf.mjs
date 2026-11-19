@@ -78,7 +78,7 @@ async function mejorar(buf, ancho = 640, alto = 800) {
 }
 
 // Fichas donde el mejor fotograma automático no es el mejor: se usa la foto curada a mano (o una foto real).
-const FOTO_CURADA = new Set(["Princesas Disney · Show de toda la película de Frozen", "Último Timbre", "Fogatadas", "Opciones para tu boda", "Encanto", "Blippi", "Bailarinas Árabes", "Garotas", "Robots Tamboreros", "Baby Shower", "Revelación de Género", "Princesas Disney · Show de Cenicienta", "Princesas Disney · Show de Rapunzel", "Espumanía", "Animación Infantil", "Minecraft", "Guerreras K-Pop", "Daft Punk", "Personajes de Pascua", "Zombies", "Bright Monsters"]);
+const FOTO_CURADA = new Set(["Tequileras Biker", "Elvis y Marilyn Monroe", "Princesas Disney · Show de toda la película de Frozen", "Último Timbre", "Fogatadas", "Opciones para tu boda", "Encanto", "Blippi", "Bailarinas Árabes", "Garotas", "Robots Tamboreros", "Baby Shower", "Revelación de Género", "Princesas Disney · Show de Cenicienta", "Princesas Disney · Show de Rapunzel", "Espumanía", "Animación Infantil", "Minecraft", "Guerreras K-Pop", "Daft Punk", "Personajes de Pascua", "Zombies", "Bright Monsters"]);
 const FOTO_FIJA = {
   "Princesas Disney": "/images/princesas-disney-grupo.jpg",
   "Princesas Disney · Show de Bella": "/images/bella-show-2.jpg",
