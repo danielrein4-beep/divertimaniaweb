@@ -152,6 +152,7 @@ model Novedad {
   titulo      String
   descripcion String
   fotoUrl     String?
+  fotos       String? // fotos extra de fondo del Inicio, separadas por coma (se van pasando con fundido)
   ctaTexto    String    @default("Consultar disponibilidad")
   ctaUrl      String?
   activo      Boolean   @default(true)

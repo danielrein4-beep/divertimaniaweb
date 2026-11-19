@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { prisma } from "@/lib/db";
 import { requireAdmin } from "@/lib/auth";
+import { fechaDeFormulario } from "@/lib/novedades";
 
 export async function GET() {
   const novedades = await prisma.novedad.findMany({ orderBy: { orden: "asc" } });
@@ -17,6 +18,9 @@ const schema = z.object({
   ctaUrl: z.string().trim().optional().or(z.literal("")),
   activo: z.boolean().default(true),
   orden: z.number().int().default(0),
+  // Desde cuándo y hasta cuándo se muestra en el Inicio (vacío = sin límite).
+  fechaInicio: z.string().trim().nullable().optional(),
+  fechaFin: z.string().trim().nullable().optional(),
 });
 
 export async function POST(request: NextRequest) {
@@ -31,7 +35,13 @@ export async function POST(request: NextRequest) {
 
   const data = parsed.data;
   const novedad = await prisma.novedad.create({
-    data: { ...data, fotoUrl: data.fotoUrl || null, ctaUrl: data.ctaUrl || null },
+    data: {
+      ...data,
+      fotoUrl: data.fotoUrl || null,
+      ctaUrl: data.ctaUrl || null,
+      fechaInicio: fechaDeFormulario(data.fechaInicio),
+      fechaFin: fechaDeFormulario(data.fechaFin, true),
+    },
   });
   return NextResponse.json({ novedad }, { status: 201 });
 }

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { prisma } from "@/lib/db";
 import { requireAdmin } from "@/lib/auth";
+import { fechaDeFormulario } from "@/lib/novedades";
 
 const schema = z.object({
   badge: z.string().trim().min(1),
@@ -12,6 +13,8 @@ const schema = z.object({
   ctaUrl: z.string().trim().optional().or(z.literal("")),
   activo: z.boolean(),
   orden: z.number().int(),
+  fechaInicio: z.string().trim().nullable().optional(),
+  fechaFin: z.string().trim().nullable().optional(),
 });
 
 export async function PUT(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
@@ -28,7 +31,14 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
   const data = parsed.data;
   const novedad = await prisma.novedad.update({
     where: { id },
-    data: { ...data, fotoUrl: data.fotoUrl || null, ctaUrl: data.ctaUrl || null },
+    data: {
+      ...data,
+      fotoUrl: data.fotoUrl || null,
+      ctaUrl: data.ctaUrl || null,
+      // Si no se envían las fechas (por ejemplo, al activar o desactivar), se conservan las que ya tiene.
+      ...(data.fechaInicio !== undefined ? { fechaInicio: fechaDeFormulario(data.fechaInicio) } : {}),
+      ...(data.fechaFin !== undefined ? { fechaFin: fechaDeFormulario(data.fechaFin, true) } : {}),
+    },
   });
   return NextResponse.json({ novedad });
 }

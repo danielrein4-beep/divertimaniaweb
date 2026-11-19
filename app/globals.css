@@ -245,3 +245,9 @@ h1, h2, h3, h4, .font-display {
     0 0 2px rgba(0, 0, 0, 0.9),
     0 4px 18px rgba(0, 0, 0, 0.45);
 }
+
+/* Barra de progreso de la diapositiva activa del Inicio. */
+@keyframes barra-hero {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}

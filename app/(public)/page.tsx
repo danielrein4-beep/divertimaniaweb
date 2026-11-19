@@ -2,6 +2,7 @@ import Link from "next/link";
 import { clipDeTarjeta } from "@/lib/clipTarjeta";
 import { ArrowRight } from "lucide-react";
 import Hero from "@/components/site/Hero";
+import { listaDeFotos, type NovedadHero } from "@/lib/novedades";
 import QueCelebras from "@/components/site/QueCelebras";
 import ShowsEstrella from "@/components/site/ShowsEstrella";
 import PersonajesCarousel from "@/components/site/PersonajesCarousel";
@@ -21,8 +22,9 @@ export const dynamic = "force-dynamic";
 
 export default async function Home() {
   const now = new Date();
-  const [novedad, personajes, destacados, totalPersonajes, categorias, conServicios, config] = await Promise.all([
-    prisma.novedad.findFirst({
+  const [novedadesBd, personajes, destacados, totalPersonajes, categorias, conServicios, config] = await Promise.all([
+    prisma.novedad.findMany({
+      take: 5,
       where: {
         activo: true,
         AND: [
@@ -31,7 +33,7 @@ export default async function Home() {
         ],
       },
       orderBy: { orden: "asc" },
-      select: { id: true, titulo: true, badge: true, ctaUrl: true },
+      select: { id: true, titulo: true, badge: true, descripcion: true, fotoUrl: true, fotos: true, ctaTexto: true, ctaUrl: true },
     }),
     prisma.servicio.findMany({
       where: { activo: true, categoria: "Personajes", subcategoria: { not: "Adultos" }, soloAdultos: false, fotoUrl: { not: null } },
@@ -53,9 +55,11 @@ export default async function Home() {
     prisma.configuracionSitio.findUnique({ where: { id: "principal" }, select: { datosPago: true, cifras: true } }),
   ]);
 
+  const novedades: NovedadHero[] = novedadesBd.map(({ fotos, ...n }) => ({ ...n, fotos: listaDeFotos(n.fotoUrl, fotos) }));
+
   return (
     <div>
-      <Hero novedad={novedad} categorias={categorias.map((c) => c.nombre).filter((n) => conServicios.some((s) => s.categoria === n))} />
+      <Hero novedades={novedades} categorias={categorias.map((c) => c.nombre).filter((n) => conServicios.some((s) => s.categoria === n))} />
       <CifrasConfianza cifras={leerCifras(config?.cifras)} />
       <QueCelebras />
       <ShowsEstrella
