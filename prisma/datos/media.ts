@@ -43,7 +43,7 @@ export const mediaList: Array<{
   { servicioNombre: "El Chacal de la Trompeta", url: "/reels/reel-1.mp4", tipo: "VIDEO", poster: "/reels/posters/reel-1-poster.jpg", orden: 0 },
 
   // Video Reel Baby Shower
-  { servicioNombre: "Baby Shower o Revelación de Género", url: "/reels/reel-6.mp4", tipo: "VIDEO", poster: "/reels/posters/reel-6-poster.jpg", orden: 0 },
+  { servicioNombre: "Baby Shower", url: "/reels/reel-6.mp4", tipo: "VIDEO", poster: "/reels/posters/reel-6-poster.jpg", orden: 0 },
 
   // Video Reel Día de Piscina Infantil
   { servicioNombre: "Día de Piscina Infantil", url: "/reels/reel-9.mp4", tipo: "VIDEO", poster: "/reels/posters/reel-9-poster.jpg", orden: 0 },

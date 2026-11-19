@@ -64,7 +64,8 @@ async function main() {
     "Súper Mario": ["Animación Infantil", "Castillos Inflables", "Pelotas Boom"],
     "Bolas Disco": ["Show LED", "El Chacal de la Trompeta", "Espumanía"],
     "Show LED": ["Bolas Disco", "Show según temática", "El Chacal de la Trompeta"],
-    "Baby Shower o Revelación de Género": ["Diverti Artistas", "Carritos de Comida"],
+    "Baby Shower": ["Diverti Artistas", "Carritos de Comida"],
+    "Revelación de Género": ["Diverti Artistas", "Carritos de Comida"],
     "Pelotas Boom": ["Espumanía", "Castillos Inflables", "Día de Piscina Infantil"],
   };
 
@@ -119,7 +120,7 @@ async function main() {
   await organizarCatalogo(prisma);
 
   // Dinámicas de Baby Shower
-  const babyShowerId = createdServices["Baby Shower o Revelación de Género"];
+  const babyShowerId = createdServices["Baby Shower"];
   if (babyShowerId) {
     await prisma.opcion.createMany({
       data: [

@@ -91,7 +91,7 @@ export const GRADUACION: Fiesta = {
   paquetes: [
     { nombre: "Esencial", para: "Preescolar y primaria", incluye: ["Animación con sonido", "Personaje invitado", "Juegos para el grupo"], desde: null },
     { nombre: "Completo", para: "El más elegido", incluye: ["Todo lo del Esencial", "Espumanía o hora loca", "Más tiempo de animación"], desde: null, destacado: true },
-    { nombre: "Fiesta de promoción", para: "Bachilleres y universitarios", incluye: ["Show según temática", "Bolas disco o show LED", "Hora loca"], desde: null },
+    { nombre: "Fiesta de promoción", para: "Bachilleres y universitarios", incluye: ["Personajes según temática", "Bolas disco", "Hora loca"], desde: null },
   ],
   preguntas: [
     { pregunta: "¿Trabajan con colegios?", respuesta: "Sí. Coordinamos con la directiva o la comisión de padres el horario, el espacio y lo que se puede hacer en el lugar." },
@@ -115,7 +115,7 @@ export const NAVIDAD: Fiesta = {
   paquetes: [
     { nombre: "Esencial", para: "Fiestas en familia", incluye: ["Animación navideña con sonido", "Juegos y villancicos"], desde: null },
     { nombre: "Completo", para: "El más elegido", incluye: ["Todo lo del Esencial", "Visita de personajes navideños", "Momento de entrega de regalos"], desde: null, destacado: true },
-    { nombre: "Empresas", para: "Fiesta de los hijos de los trabajadores", incluye: ["Animación para grupos grandes", "Personajes navideños", "Show según temática"], desde: null },
+    { nombre: "Empresas", para: "Fiesta de los hijos de los trabajadores", incluye: ["Animación para grupos grandes", "Personajes navideños", "Personajes según temática"], desde: null },
   ],
   preguntas: [
     { pregunta: "¿Con cuánto tiempo hay que reservar en diciembre?", respuesta: "Lo antes posible: en diciembre las fechas se llenan semanas antes. Aparta con el anticipo para asegurar la tuya." },

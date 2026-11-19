@@ -80,17 +80,31 @@ export const servicios: ServicioSeed[] = [
   // Baby Shower
   {
     categoria: "Baby Shower",
-    nombre: "Baby Shower o Revelación de Género",
+    nombre: "Baby Shower",
     descripcion:
-      "Sonido e iluminación, 2 animadores encargados de juegos y dinámicas para los futuros padres y sus invitados, más la revelación de género: ¡en la dulce espera!",
+      "Sonido e iluminación y 2 animadores encargados de juegos y dinámicas para los futuros padres y sus invitados: ¡en la dulce espera!",
     fotoUrl: "/images/baby-shower.png",
-    incluye: "Sonido profesional y micrófono para la animación\n2 recreadores especializados en ambiente familiar\nSelección de 7+ dinámicas interactivas y emotivas\nMomento especial para la revelación de género o apertura de regalos\nMusicalización temática durante todo el evento",
+    incluye: "Sonido profesional y micrófono para la animación\n2 recreadores especializados en ambiente familiar\nSelección de 7+ dinámicas interactivas y emotivas\nMomento especial para la apertura de regalos\nMusicalización temática durante todo el evento",
     edadIdeal: "Adultos y familia",
     duracion: "2.5 horas",
     masPedido: true,
     destacado: false,
     soloAdultos: false,
-    ocasiones: "baby-shower,gender-reveal",
+    ocasiones: "baby-shower",
+  },
+  {
+    categoria: "Baby Shower",
+    nombre: "Revelación de Género",
+    descripcion:
+      "Sonido e iluminación y 2 animadores para llevar la emoción hasta el gran momento: la revelación del género de tu bebé, con juegos para todos los invitados.",
+    fotoUrl: "/images/gender-reveal-portada.jpg",
+    incluye: "Sonido profesional y micrófono para la animación\n2 recreadores especializados en ambiente familiar\nJuegos y dinámicas mientras llega el gran momento\nMomento especial para la revelación de género\nMusicalización temática durante todo el evento",
+    edadIdeal: "Adultos y familia",
+    duracion: "2.5 horas",
+    masPedido: false,
+    destacado: false,
+    soloAdultos: false,
+    ocasiones: "gender-reveal",
   },
 
   // Personajes
