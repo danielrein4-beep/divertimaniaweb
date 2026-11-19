@@ -6,7 +6,7 @@ import Image from "next/image";
 
 export type MediaItem = { url: string; tipo: "FOTO" | "VIDEO"; poster?: string | null };
 
-/** Video de la galería: corre solo, en bucle y sin sonido mientras su diapositiva se ve (con controles por si se quiere sonido). */
+/** Video de la galería: corre solo, en bucle y sin sonido mientras su diapositiva se ve (sin controles: no se toca ni se pausa). */
 function VideoAuto({ src, poster }: { src: string; poster?: string }) {
   const ref = useRef<HTMLVideoElement>(null);
   useEffect(() => {
@@ -22,7 +22,19 @@ function VideoAuto({ src, poster }: { src: string; poster?: string }) {
     io.observe(video);
     return () => io.disconnect();
   }, []);
-  return <video ref={ref} src={src} poster={poster} controls muted loop playsInline preload="none" className="h-full w-full bg-black object-contain" />;
+  return <video
+      ref={ref}
+      src={src}
+      poster={poster}
+      muted
+      loop
+      playsInline
+      disablePictureInPicture
+      disableRemotePlayback
+      preload="none"
+      aria-hidden
+      className="pointer-events-none h-full w-full bg-black object-cover"
+    />;
 }
 
 /** Galería deslizable (scroll-snap) con fotos y reels. */
