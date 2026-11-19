@@ -80,26 +80,25 @@ async function main() {
     }
   }
 
-  // Opciones y variantes de Princesas Disney (con fotos de opciones asignadas)
+  // Opciones y variantes de Princesas Disney: una ficha por show (el video de presentación va en portadas-video.ts)
   const princesasId = createdServices["Princesas Disney"];
   if (princesasId) {
     await prisma.opcion.createMany({
       data: [
-        { servicioId: princesasId, tipo: "VARIANTE", grupo: "Rapunzel", nombre: "Rapunzel sola", descripcion: "Solo el personaje de Rapunzel para fotos, baile y coronación.", fotoUrl: "/videos/rapunzel-sola.jpg", videoUrl: "/videos/rapunzel-sola.mp4", orden: 0 },
-        { servicioId: princesasId, tipo: "VARIANTE", grupo: "Rapunzel", nombre: "Rapunzel con el príncipe", descripcion: "Rapunzel acompañada de Flynn / el príncipe.", fotoUrl: "/videos/rapunzel-flynn.jpg", videoUrl: "/videos/rapunzel-flynn.mp4", orden: 1 },
-        { servicioId: princesasId, tipo: "VARIANTE", grupo: "Rapunzel", nombre: "Show de Rapunzel con Madre Gothel y Flynn", descripcion: "Rapunzel, el príncipe Flynn Rider y Madre Gothel, su madrastra, en un show juntos.", fotoUrl: "/videos/rapunzel-gothel-flynn.jpg", videoUrl: "/videos/rapunzel-gothel-flynn.mp4", orden: 2 },
-        { servicioId: princesasId, tipo: "VARIANTE", grupo: "Cenicienta", nombre: "Cenicienta", descripcion: null, fotoUrl: "/videos/cenicienta.jpg", videoUrl: "/videos/cenicienta.mp4", orden: 10 },
-        { servicioId: princesasId, tipo: "VARIANTE", grupo: "Blancanieves", nombre: "Show de Blancanieves", descripcion: null, fotoUrl: "/videos/blancanieves-show.jpg", videoUrl: "/videos/blancanieves-show.mp4", orden: 20 },
-        { servicioId: princesasId, tipo: "VARIANTE", grupo: "Blancanieves", nombre: "Blancanieves con acompañamiento", descripcion: null, fotoUrl: "/videos/blancanieves-acompanada.jpg", videoUrl: "/videos/blancanieves-acompanada.mp4", orden: 21 },
-        { servicioId: princesasId, tipo: "VARIANTE", grupo: "Bella", nombre: "Show de Bella", descripcion: null, fotoUrl: "/images/bella-show.jpg", orden: 30 },
-        { servicioId: princesasId, tipo: "VARIANTE", grupo: "Bella", nombre: "Show con la Bestia", descripcion: "Vals clásico de Bella y Bestia con vestuario de salón.", fotoUrl: "/videos/bella-bestia-show.jpg", videoUrl: "/videos/bella-bestia-show.mp4", orden: 31 },
-        { servicioId: princesasId, tipo: "VARIANTE", grupo: "Ariel", nombre: "Ariel sola", descripcion: null, fotoUrl: "/images/sirenita-ursula-sebastian.jpg", orden: 40 },
-        { servicioId: princesasId, tipo: "VARIANTE", grupo: "Ariel", nombre: "Ariel con el Príncipe Eric", descripcion: null, fotoUrl: "/images/sirenita-ursula-sebastian.jpg", orden: 41 },
-        { servicioId: princesasId, tipo: "VARIANTE", grupo: "Ariel", nombre: "Show de toda la película La Sirenita", descripcion: null, fotoUrl: "/images/sirenita-ursula-sebastian.jpg", orden: 42 },
-        { servicioId: princesasId, tipo: "VARIANTE", grupo: "Elsa (Frozen)", nombre: "Elsa sola", descripcion: "Solo Elsa para fotos, baile y magia invernal.", fotoUrl: "/images/frozen-olaf-elsa.jpg", orden: 50 },
-        { servicioId: princesasId, tipo: "VARIANTE", grupo: "Elsa (Frozen)", nombre: "Elsa y Anna", descripcion: "Show con las dos hermanas de Arendelle.", fotoUrl: "/images/frozen-olaf-elsa.jpg", orden: 51 },
-        { servicioId: princesasId, tipo: "VARIANTE", grupo: "Elsa (Frozen)", nombre: "Elsa, Anna y Olaf", descripcion: "Show completo de Frozen con Olaf incluido.", fotoUrl: "/images/frozen-olaf-elsa.jpg", orden: 52 },
-        { servicioId: princesasId, tipo: "VARIANTE", grupo: "Elsa (Frozen)", nombre: "Show de toda la película Frozen", descripcion: null, fotoUrl: "/images/frozen-olaf-elsa.jpg", orden: 53 },
+        { servicioId: princesasId, tipo: "VARIANTE", grupo: "Rapunzel", nombre: "Show de Rapunzel", descripcion: "Rapunzel llega con su larguísima cabellera dorada para cantar, bailar y regalar fotos mágicas a tus invitados.", fotoUrl: "/videos/rapunzel-sola.jpg", videoUrl: "/videos/rapunzel-sola.mp4", orden: 0 },
+        { servicioId: princesasId, tipo: "VARIANTE", grupo: "Rapunzel", nombre: "Rapunzel con el príncipe", descripcion: "Rapunzel y Flynn Rider juntos en una aventura romántica llena de baile, fotos y farolillos de ensueño.", fotoUrl: "/videos/rapunzel-flynn.jpg", videoUrl: "/videos/rapunzel-flynn.mp4", orden: 1 },
+        { servicioId: princesasId, tipo: "VARIANTE", grupo: "Rapunzel", nombre: "Show de Rapunzel con Madre Gothel y Flynn", descripcion: "El cuento completo: Rapunzel, Flynn Rider y la intrigante Madre Gothel en un show lleno de aventura, humor y magia.", fotoUrl: "/videos/rapunzel-gothel-flynn.jpg", videoUrl: "/videos/rapunzel-gothel-flynn.mp4", orden: 2 },
+        { servicioId: princesasId, tipo: "VARIANTE", grupo: "Cenicienta", nombre: "Show de Cenicienta", descripcion: "Cenicienta llega con su vestido de baile y su zapatilla de cristal para que cada niña viva su propio cuento de hadas.", fotoUrl: "/videos/cenicienta.jpg", videoUrl: "/videos/cenicienta.mp4", orden: 10 },
+        { servicioId: princesasId, tipo: "VARIANTE", grupo: "Blancanieves", nombre: "Show de Blancanieves", descripcion: "Blancanieves, la más bella del reino, llega con su dulzura y su canto para enamorar a grandes y pequeños: ¡un cuento de hadas en tu fiesta!", fotoUrl: "/videos/blancanieves-show-completo.jpg", videoUrl: "/videos/blancanieves-show-completo.mp4", orden: 20 },
+        { servicioId: princesasId, tipo: "VARIANTE", grupo: "Bella", nombre: "Show de Bella", descripcion: "Bella llega con su elegante vestido amarillo y su amor por los libros para llenar tu fiesta de encanto.", fotoUrl: "/images/bella-show.jpg", videoUrl: null, orden: 30 },
+        { servicioId: princesasId, tipo: "VARIANTE", grupo: "Bella", nombre: "Show con la Bestia", descripcion: "El vals más romántico del cine: Bella y la Bestia bailan juntos con vestuario de gran salón, como en el cuento.", fotoUrl: "/videos/bella-bestia-show.jpg", videoUrl: "/videos/bella-bestia-show.mp4", orden: 31 },
+        { servicioId: princesasId, tipo: "VARIANTE", grupo: "Ariel", nombre: "Show de Ariel", descripcion: "Ariel sale del fondo del mar para cantar, bailar y compartir con todos tus invitados su sueño de conocer el mundo.", fotoUrl: "/images/sirenita-ursula-sebastian.jpg", videoUrl: null, orden: 40 },
+        { servicioId: princesasId, tipo: "VARIANTE", grupo: "Ariel", nombre: "Show de toda la película La Sirenita", descripcion: "Toda La Sirenita en vivo: Ariel, Sebastián, Úrsula y los personajes de la película en un show lleno de música y aventura bajo el mar.", fotoUrl: "/images/sirenita-ursula-sebastian.jpg", videoUrl: null, orden: 42 },
+        { servicioId: princesasId, tipo: "VARIANTE", grupo: "Elsa (Frozen)", nombre: "Show de Elsa", descripcion: "Elsa llega con su capa de hielo y su magia invernal para dejar a todos tus invitados congelados de emoción.", fotoUrl: "/images/frozen-olaf-elsa.jpg", videoUrl: null, orden: 50 },
+        { servicioId: princesasId, tipo: "VARIANTE", grupo: "Elsa (Frozen)", nombre: "Show de Elsa y Anna", descripcion: "Las dos hermanas de Arendelle juntas, con canciones, juegos y un amor de hermanas que derrite hasta el hielo.", fotoUrl: "/images/frozen-olaf-elsa.jpg", videoUrl: null, orden: 51 },
+        { servicioId: princesasId, tipo: "VARIANTE", grupo: "Elsa (Frozen)", nombre: "Show de toda la película de Frozen", descripcion: "Incluye a Elsa, Anna, Olaf y Copito de Nieve. Toda la magia de Arendelle en un solo show: canciones, nieve y mucha diversión.", fotoUrl: "/images/frozen-olaf-elsa.jpg", videoUrl: null, orden: 53 },
+        { servicioId: princesasId, tipo: "VARIANTE", grupo: "Moana", nombre: "Show de Moana", descripcion: "Moana zarpa hasta tu fiesta con su espíritu aventurero y el ritmo del océano: un show lleno de valentía, baile y mar.", fotoUrl: "/images/moana.jpg", orden: 60 },
+        { servicioId: princesasId, tipo: "VARIANTE", grupo: "Jasmine", nombre: "Show de Jasmine", descripcion: "Jasmine llega desde Agrabah con su elegancia y su espíritu libre para llenar tu fiesta de magia oriental, baile y fotos de ensueño.", fotoUrl: "/images/aladdin-genio-jazmin.jpg", orden: 70 },
       ],
     });
   }

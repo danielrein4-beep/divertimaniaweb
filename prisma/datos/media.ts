@@ -19,11 +19,6 @@ export const mediaList: Array<{
   { servicioNombre: "Casa de Mickey Mouse", url: "/reels/reel-4.mp4", tipo: "VIDEO", poster: "/reels/posters/reel-4-poster.jpg", orden: 4 },
   { servicioNombre: "Casa de Mickey Mouse", url: "/reels/reel-5.mp4", tipo: "VIDEO", poster: "/reels/posters/reel-5-poster.jpg", orden: 5 },
 
-  // Galería Princesas Disney
-  { servicioNombre: "Princesas Disney", url: "/images/princesa-rapunzel.jpg", tipo: "FOTO", orden: 1 },
-  { servicioNombre: "Princesas Disney", url: "/images/rapunzel-cumpleanos-hd.jpg", tipo: "FOTO", orden: 2 },
-
-  { servicioNombre: "Princesas Disney", url: "/videos/blancanieves-primer-plano.mp4", tipo: "VIDEO", poster: "/videos/blancanieves-primer-plano.jpg", orden: 5 },
   // Galería Pelotas Boom
 
   // Galería Show según temática
@@ -55,7 +50,6 @@ export const mediaList: Array<{
 
   // Fotos de eventos reales (WhatsApp, octubre 2026)
   ...galeria("Casa de Mickey Mouse", ["mickey-amigos", "mickey-minnie", "minnie-evento", "mickey-minnie-cumple", "pluto-evento"]),
-  ...galeria("Princesas Disney", ["bella-bestia-evento", "sirenita-ursula-sebastian", "aladdin-genio-jazmin", "moana", "frozen-olaf-elsa-2", "rapunzel-salon", "villanos-disney"]),
   ...galeria("Superhéroes", ["superheroes-equipo", "spiderman", "mujer-maravilla", "capitan-america"]),
   ...galeria("Show de Paw Patrol", ["paw-patrol-equipo", "paw-patrol-marshall", "paw-patrol-rubble"]),
   ...galeria("Show Granja de Zenón", ["granja-zenon-leon"]),
@@ -63,7 +57,6 @@ export const mediaList: Array<{
   ...galeria("Show según temática", ["show-tematico-robots", "show-tematico-retro", "show-tematico-casa-papel", "show-tematico-terror", "show-tematico-neon"]),
   ...galeria("Show LED", ["show-led-astronautas", "show-led-bailarina"]),
   ...galeria("Casa de Mickey Mouse", ["mickey-hechicero"], 20),
-  ...galeria("Princesas Disney", ["cenicienta", "rapunzel-cumpleanera", "rapunzel-flynn", "rapunzel-flynn-gothel"], 20),
   ...galeria("Show según temática", ["show-tematico-bailarinas", "show-tematico-piano", "show-tematico-retro-rojo", "show-tematico-magos"], 20),
   ...galeria("Show LED", ["show-led-pareja", "show-led-astronautas-2"], 20),
   { servicioNombre: "Show según temática", url: "/reels/reel-13.mp4", tipo: "VIDEO", poster: "/reels/posters/reel-13-poster.jpg", orden: 30 },

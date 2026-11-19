@@ -47,6 +47,7 @@ export const PORTADAS_VIDEO: PortadaVideo[] = [
   { clave: "daftpunk", nombre: "Daft Punk", foto: "/videos/daft-punk-show.jpg", video: "/videos/daft-punk-show.mp4", reemplazar: true },
   { clave: "pascua", nombre: "Personajes de Pascua", foto: "/videos/personajes-pascua-show.jpg", video: "/videos/personajes-pascua-show.mp4", reemplazar: true },
   { clave: "zombies", nombre: "Zombies", foto: "/videos/zombies-show.jpg", video: "/videos/zombies-show.mp4", reemplazar: true },
+  { clave: "princesas", nombre: "Princesas Disney", foto: "/videos/princesas-disney-show.jpg", video: "/videos/princesas-disney-show.mp4", reemplazar: true },
 ];
 
 /** Idempotente: pone la portada si falta (o siempre, si reemplaza) y deja los videos primero en la galería de la tarjeta. */
