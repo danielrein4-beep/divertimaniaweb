@@ -81,7 +81,8 @@ async function mejorar(buf, ancho = 640, alto = 800) {
 const FOTO_CURADA = new Set(["Último Timbre", "Fogatadas", "Opciones para tu boda", "Encanto", "Blippi", "Bailarinas Árabes", "Garotas", "Robots Tamboreros", "Baby Shower", "Revelación de Género", "Princesas Disney · Show de Cenicienta", "Princesas Disney · Show de Rapunzel", "Espumanía", "Animación Infantil", "Minecraft", "Guerreras K-Pop", "Daft Punk", "Personajes de Pascua", "Zombies", "Bright Monsters"]);
 const FOTO_FIJA = {
   "Princesas Disney": "/images/princesas-disney-grupo.jpg",
-  "Princesas Disney · Show con la Bestia": "/images/bella-y-bestia-hd.jpg",
+  "Princesas Disney · Show de Bella": "/images/bella-show-2.jpg",
+  "Princesas Disney · Show de Bella y la Bestia": "/images/bella-bestia-show-2.jpg",
 };
 const indice = {};
 async function procesar(nombre, video, foto) {
