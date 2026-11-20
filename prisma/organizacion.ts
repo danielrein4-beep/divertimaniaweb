@@ -27,11 +27,11 @@ export const PERSONAJES_INFANTILES = [
   "Bright Monsters", "Diverticandy", "Guerreras K-Pop", "La Casa de Papel", "Personajes de Pascua",
 ];
 
-export const PERSONAJES_ADULTOS = ["Bolas Disco", "Show LED", "Show según temática", "El Chacal de la Trompeta", "Neon Party", "Space Glitter", "Catrinas", "Robots", "Daft Punk", "Bailarinas Árabes", "Garotas", "Robots Tamboreros", "Zombies", "Tequileras Biker", "Elvis y Marilyn Monroe", "Tequileras"];
+export const PERSONAJES_ADULTOS = ["Bolas Disco", "Show LED", "Show según temática", "Neon Party", "Space Glitter", "Catrinas", "Robots", "Daft Punk", "Bailarinas Árabes", "Garotas", "Robots Tamboreros", "Zombies", "Tequileras Biker", "Elvis y Marilyn Monroe", "Tequileras"];
 
 export const SERVICIOS = [
   "Animación Infantil", "Espumanía", "Día de Piscina Infantil", "Diverti Artistas",
-  "Pelotas Boom", "Pelotas Hámster", "Castillos Inflables", "Estación de Pulseras", "Estación de Galletas",
+  "Pelotas Boom", "Pelotas Hámster", "Castillos Inflables", "El Chacal de la Trompeta", "Estación de Pulseras", "Estación de Galletas",
   "Estación de Cotufas", "Estación de Algodón de Azúcar", "Estación de Perros Calientes",
 ];
 
